@@ -6,11 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.Vector;
 
 import com.calypso.tk.bo.BOCache;
-import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.Log;
 import com.calypso.tk.publish.jaxb.CalypsoAcknowledgement;
 import com.calypso.tk.service.DSConnection;
@@ -141,7 +138,7 @@ public class ReferenceEnvironment extends ResourceReader {
      * @return the resource files
      */
     public List<CdufFile> getResourceFiles(final String path) {
-	final List<CdufFile> filenames = new ArrayList<CdufFile>();
+	final List<CdufFile> filenames = new ArrayList<>();
 
 	try (InputStream inputStream = getResourceAsStream(path)) {
 	    if (inputStream != null) {
@@ -294,42 +291,6 @@ public class ReferenceEnvironment extends ResourceReader {
 	for (final CdufFile file : list) {
 	    insert(file);
 	}
-    }
-
-    /**
-     * returns the vector with the posible differnt products.
-     *
-     * @param line the line
-     * @return the vector
-     */
-    private Vector<String> loadVectorProduct(final String line) {
-	final Vector<String> vectorReturn = new Vector<String>();
-	final StringTokenizer tokens = new StringTokenizer(line, ",");
-	while (tokens.hasMoreTokens()) {
-	    final String str = tokens.nextToken();
-	    vectorReturn.add(str);
-	}
-	return vectorReturn;
-
-    }
-
-    /**
-     * Parses the dates.
-     *
-     * @param dateString the date string
-     * @return the j date
-     */
-    private JDate parseDates(final String dateString) {
-
-	final List<String> vectorReturn = new ArrayList<String>();
-	final StringTokenizer tokens = new StringTokenizer(dateString, "/");
-	while (tokens.hasMoreTokens()) {
-	    final String str = tokens.nextToken();
-	    vectorReturn.add(str);
-	}
-
-	return JDate.valueOf(Integer.parseInt(vectorReturn.get(2)), Integer.parseInt(vectorReturn.get(1)),
-		Integer.parseInt(vectorReturn.get(0)));
     }
 
     public DSConnection getDSConnection() {
