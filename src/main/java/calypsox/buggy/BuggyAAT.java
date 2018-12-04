@@ -1,5 +1,7 @@
 package calypsox.buggy;
 
+import java.util.Properties;
+
 import org.concordion.api.FullOGNL;
 import org.concordion.api.extension.Extensions;
 import org.concordion.ext.EmbedExtension;
@@ -22,6 +24,20 @@ public class BuggyAAT extends BuggyVersion {
 
     /** The Constant DEFAULT_CHECK_TIMES. */
     private static final int DEFAULT_CHECK_TIMES = 200;
+
+    private final Properties testProperties;
+
+    public BuggyAAT() {
+	testProperties = new Properties();
+    }
+
+    public void setProperty(final String key, final String value) {
+	testProperties.setProperty(key, value);
+    }
+
+    public String getProperty(final String key) {
+	return testProperties.getProperty(key);
+    }
 
     /**
      * Wait for engine.

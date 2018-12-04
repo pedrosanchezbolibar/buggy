@@ -12,5 +12,109 @@
 		
 		
 
-	</body>
+	<h2>Descripción</h2>
+
+	<p>
+		Las operaciones de Collateral imputadas en Calypso se articulan
+		a través de los productos MarginCall (principal) e InterestBearing
+		(intereses).
+	</p>
+
+	<p>
+		Para nuestra prueba se va a realizar un alta de una operación de
+		Interest Bearing contra una contrapartida sin SDIs válidas. La
+		operación no puede por tanto ser validada.
+	</p>
+
+	<h2>Datos de referencia</h2>
+
+	<p>
+		Insertamos una operación de tipo Interest Bearing utlizando el template 
+		<span concordion:execute="addPrototypeParam('TEMPLATE', #TEXT)">/com/bbva/klyo/aat/collateral/data/trade/InterestBearingNoSdi.xml</span>
+		y la contrapartida <span concordion:execute="addPrototypeParam('CPTY', #TEXT)">AAT_160621MACQUARIEC_NOSDI</span>,
+		para la cual no cargamos SDIs.
+		<span style="visibility: hidden;" concordion:set="#img">/com/bbva/klyo/aat/collateral/data/img/AltaOperacionInteressinSDIsValidas/SDIsContrapartida.png</span>
+		<span ext:embed="getImage(#img)"> </span>
+	</p>
+	
+	<p>
+		El pricing environment utilizado será 
+		<span concordion:set="#pricingEnv">OFFICIAL-MAD</span>, 
+		la External Reference de la operación 
+		<span concordion:execute="#extRef1=addExternalRef()"> </span> 
+		<span concordion:echo="#extRef1"> </span> y la Internal Reference 
+		<span concordion:execute="#intRef=getIntRefForCollateral()"> </span> 
+		<span concordion:execute="addPrototypeParam('INTERNAL_REFERENCE', #intRef)"> </span>
+		<span concordion:echo="#intRef"> </span>.
+	</p>
+
+	<h2>Proceso de prueba</h2>
+
+	<p>
+		Insertamos la operación. La operación insertada será copia de la operación de producción: 
+		<span concordion:execute="publishIncomingKKSYTrade()"> </span> 
+		<span style="visibility: hidden;" concordion:set="#img">/com/bbva/klyo/aat/collateral/data/img/AltaOperacionInteressinSDIsValidas/InterestBearingProd.png</span>
+		<span ext:embed="getImage(#img)"> </span>
+	</p>
+
+	<p>
+		Esperamos hasta que el <span concordion:set="#engine">TradeUploaderEngine</span>
+		(<span concordion:echo="waitForEngine(#engine)"> </span> eventos pendientes) procesen
+		todos sus eventos pendientes.
+	</p>
+
+	<h2>Resultado</h2>
+	
+	<p>
+		Comprobamos que se ha insertado correctamente la operación:
+	</p>
+
+	<table concordion:execute="#trade=getTrade(#extRef1)">
+		<tr>
+			<th concordion:echo="#trade.id">Id</th>
+			<th concordion:assertEquals="#trade.productType">Product type</th>
+			<th concordion:assertEquals="#trade.status">Status</th>
+			<th concordion:assertEquals="#trade.counterParty">Cpty</th>
+			<th concordion:assertEquals="#trade.tradeCurrency">Currency</th>
+			<th concordion:assertEquals="#trade.tradeDate">Trade Date</th>
+			<th concordion:assertEquals="#trade.settleDate">Settle Date</th>
+		</tr>
+		<tr>
+			<td></td>
+			<td>InterestBearing</td>
+			<td>PENDING</td>
+			<td>AAT_160621MACQUARIEC_NOSDI</td>
+			<td>EUR</td>
+			<td>28/02/28 22:01:34.450 o'clock CET</td>
+			<td>02/03/2028</td>
+		</tr>
+	</table>
+
+	<p>
+		Se comprueba que se ha generado una BOTask por no existir SDi
+		válida para cada flujo de la operación.
+	</p>
+
+	<table concordion:verifyRows="#task : getTradeTasks(#extRef1)">
+        <tr>
+			<th concordion:echo="#task.id">Task Id</th>
+			<th concordion:assertEquals="#task.eventType">Event Type</th>
+			<th concordion:assertEquals="getTaskComment(#task.id)">Task comment</th>
+			<th concordion:echo="#task.tradeId">Trade Id</th>
+		</tr>
+		<tr>
+			<td></td>
+			<td>EX_MISSING_SI</td>
+			<td>1. No SI FOUND for CASH AAT_160621MACQUARIEC_NOSDI/CounterParty/EUR/InterestBearing</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>PENDING_TRADE</td>
+			<td>Missing SDI/[CheckSDI]</td>
+			<td></td>
+		</tr>
+	</table>
+
+</body>
 </html>
