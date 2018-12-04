@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import com.calypso.apps.util.CSVParser;
 import com.calypso.tk.bo.BOCache;
 import com.calypso.tk.core.CalypsoException;
 import com.calypso.tk.core.CalypsoServiceException;
@@ -223,8 +222,7 @@ public class ReferenceEnvironment extends ResourceReader {
 			clearCache();
 			insert(legalAgreements);
 			clearCache();
-			insertNettingMethods();
-			clearCache();
+
 			generateReport();
 
 			Log.info(this, "--------------- FIN static data ------------------");
@@ -236,33 +234,7 @@ public class ReferenceEnvironment extends ResourceReader {
 		return dontReload != null && "true".equals(dontReload);
 	}
 
-	/**
-	 * prepare the nettings for the le.
-	 */
-	public void insertNettingMethods() {
-		final List<CdufFile> files = getResourceFiles("com/bbva/klyo/aat/testenv/data/netting");
-		final RemoteReferenceData service = DSConnection.getDefault().getRemoteReferenceData();
-
-		for (final CdufFile file : files) {
-			List<com.calypso.tk.refdata.NettingMethod> nettingMethods;
-			try {
-				nettingMethods = createNettingMethods(file.getFileName());
-				for (final com.calypso.tk.refdata.NettingMethod newttingMethodOne : nettingMethods) {
-					if (checkNettingMethod(service, newttingMethodOne)) {
-						service.save(newttingMethodOne);
-					}
-				}
-			} catch (final UnsupportedEncodingException ex) {
-				Log.error(this, "Exception loading file '" + file + "'", ex);
-			} catch (final IOException ex) {
-				Log.error(this, "Exception loading file '" + file + "'", ex);
-			} catch (final Exception ex) {
-				Log.error(this, "Exception loading file '" + file + "'", ex);
-			}
-
-		}
-
-	}
+	
 
 	/**
 	 * checks if the netting is not duplicated if is not, return true.
@@ -305,35 +277,7 @@ public class ReferenceEnvironment extends ResourceReader {
 		LocalCache.clear();
 	}
 
-	/**
-	 * Creates the netting methods.
-	 *
-	 * @param fileName
-	 *            the file name
-	 * @return the list
-	 * @throws CalypsoException
-	 *             the calypso exception
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
-	private List<com.calypso.tk.refdata.NettingMethod> createNettingMethods(final String fileName)
-			throws CalypsoException, IOException {
-		final List<com.calypso.tk.refdata.NettingMethod> result = new ArrayList<com.calypso.tk.refdata.NettingMethod>();
-
-		final ResourceReader reader = new ResourceReader();
-		final File resourceFile = new File(reader.getResource(fileName).getFile());
-
-		final CSVParser parser = new CSVParser(resourceFile);
-		parser.init();
-
-		List<String> line = parser.getTokenizedLine();
-		while (line != null) {
-			result.add(parseNetting(line));
-			line = parser.getTokenizedLine();
-		}
-
-		return result;
-	}
+	
 
 	/**
 	 * Generate report.
