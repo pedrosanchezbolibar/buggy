@@ -29,26 +29,46 @@ public class BuggyVersion {
     }
 
     /**
+     * Gets the custom code version.
+     *
+     * @return the custom code version
+     */
+    public String getClientVersion() {
+	try {
+	    final ClientVersionInterface clientVersion = (ClientVersionInterface) InstantiateUtil
+		    .getInstance("tk.util.ClientVersion");
+	    return clientVersion.getVersion();
+	} catch (InstantiationException | IllegalAccessException e) {
+	    return "Unable to retrieve ClientVersion";
+	}
+    }
+
+    /**
      * Gets the data model version.
      *
      * @return the data model version
      * @throws CalypsoServiceException the remote exception
      */
     public String getDataModelVersion() throws CalypsoServiceException {
-
 	return DSConnection.getDefault().getRemoteAccess().getDataModelVersion();
-
     }
 
     /**
      * Gets the data uploader version.
      *
      * @return the data uploader version
-     * @throws IOException Signals that an I/O exception has occurred.
      */
     public String getDataUploaderVersion() {
 	return getModuleVersion(DATAUploader.class, "calypso-datauploader-version");
+    }
 
+    /**
+     * Gets the environment name.
+     *
+     * @return the environment name
+     */
+    public String getEnvironmentName() {
+	return Defaults.getProperty("ENV_NAME");
     }
 
     /**
@@ -75,30 +95,5 @@ public class BuggyVersion {
 	} catch (final IOException e) {
 	    return "Unable to retrieve DataUploaderVersion";
 	}
-    }
-
-    /**
-     * Gets the custom code version.
-     *
-     * @return the custom code version
-     * @throws IOException
-     */
-    public String getClientVersion() {
-	try {
-	    final ClientVersionInterface clientVersion = (ClientVersionInterface) InstantiateUtil
-		    .getInstance("tk.util.ClientVersion");
-	    return clientVersion.getVersion();
-	} catch (InstantiationException | IllegalAccessException e) {
-	    return "Unable to retrieve ClientVersion";
-	}
-    }
-
-    /**
-     * Gets the environment name.
-     *
-     * @return the environment name
-     */
-    public String getEnvironmentName() {
-	return Defaults.getProperty("ENV_NAME");
     }
 }
