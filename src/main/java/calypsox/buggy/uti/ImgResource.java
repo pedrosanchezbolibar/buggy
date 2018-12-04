@@ -1,4 +1,4 @@
-package calypsox.bug.uti;
+package calypsox.buggy.uti;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

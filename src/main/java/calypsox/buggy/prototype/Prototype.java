@@ -1,4 +1,4 @@
-package calypsox.bug.prototype;
+package calypsox.buggy.prototype;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 
 import com.calypso.tk.core.Log;
 
-import calypsox.bug.uti.ResourceReader;
+import calypsox.buggy.uti.ResourceReader;
 
 /**
  * The Class Prototype.

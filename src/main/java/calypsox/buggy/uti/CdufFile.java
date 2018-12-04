@@ -1,4 +1,4 @@
-package calypsox.bug.uti;
+package calypsox.buggy.uti;
 
 /**
  * The Class CdufFile.

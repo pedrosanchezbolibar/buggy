@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>calypsox</groupId>
-	<artifactId>bug</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>BUG</name>
-	<description>Autotatic Test API</description>
+	<artifactId>buggy</artifactId>
+	<version>0.0.1</version>
+	<name>Buggy</name>
+	<description>Calypso Automatic Acceptance and Functional Test API</description>
 
 	<!-- Properties Section -->
 	<properties>

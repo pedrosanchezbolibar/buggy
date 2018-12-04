@@ -1,4 +1,4 @@
-package calypsox.bug.infra;
+package calypsox.buggy.infra;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -28,7 +28,7 @@ import com.calypso.tk.service.RemoteTrade;
 import com.calypso.tk.util.ConnectException;
 import com.calypso.tk.util.VersionMismatchException;
 
-import calypsox.bug.uti.ReferenceEnvironment;
+import calypsox.buggy.uti.ReferenceEnvironment;
 
 /**
  * The Class AATDSConnection.

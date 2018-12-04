@@ -1,4 +1,4 @@
-package calypsox.bug.infra;
+package calypsox.buggy.infra;
 
 import java.util.Enumeration;
 import java.util.Hashtable;

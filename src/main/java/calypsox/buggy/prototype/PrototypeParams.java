@@ -1,4 +1,4 @@
-package calypsox.bug.prototype;
+package calypsox.buggy.prototype;
 
 import java.util.ArrayList;
 import java.util.Iterator;

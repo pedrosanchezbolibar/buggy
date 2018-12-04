@@ -1,4 +1,4 @@
-package calypsox.bug.uti;
+package calypsox.buggy.uti;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,8 +16,8 @@ import com.calypso.tk.util.ConnectException;
 import com.calypso.tk.util.ConnectionUtil;
 import com.calypso.tk.util.DataUploaderUtil;
 
-import calypsox.bug.prototype.Prototype;
-import calypsox.bug.uploader.AATAck;
+import calypsox.buggy.prototype.Prototype;
+import calypsox.buggy.uploader.AATAck;
 
 /**
  * The Class ReferenceEnvironment.

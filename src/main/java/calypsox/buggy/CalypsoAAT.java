@@ -1,4 +1,4 @@
-package calypsox.bug;
+package calypsox.buggy;
 
 import org.concordion.api.FullOGNL;
 import org.concordion.api.extension.Extensions;
@@ -7,7 +7,7 @@ import org.concordion.ext.TimestampFormatterExtension;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
-import calypsox.bug.infra.AATEngines;
+import calypsox.buggy.infra.AATEngines;
 
 /**
  * The Class AatTest.

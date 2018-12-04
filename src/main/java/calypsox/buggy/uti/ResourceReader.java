@@ -1,4 +1,4 @@
-package calypsox.bug.uti;
+package calypsox.buggy.uti;
 
 import java.io.InputStream;
 import java.net.URL;

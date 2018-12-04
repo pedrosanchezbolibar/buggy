@@ -1,4 +1,4 @@
-package calypsox.bug.uploader;
+package calypsox.buggy.uploader;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,7 +12,7 @@ import javax.xml.bind.Unmarshaller;
 import com.calypso.tk.core.Log;
 import com.calypso.tk.publish.jaxb.CalypsoAcknowledgement;
 
-import calypsox.bug.uti.JAXBContextBinder;
+import calypsox.buggy.uti.JAXBContextBinder;
 
 /**
  * The Class AATAck.
