@@ -47,20 +47,7 @@ public class BuggyAAT extends BuggyVersion {
      * @throws InterruptedException the interrupted exception
      */
     public int waitForEngine(final String engine) throws InterruptedException {
-	return waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
-    }
-
-    /**
-     * Wait engine.
-     *
-     * @param engineName the engine name
-     * @param millis     the millis
-     * @param times      the times
-     * @return number of pending events
-     * @throws InterruptedException the interrupted exception
-     */
-    public int waitForEngine(final String engineName, final long millis, final int times) throws InterruptedException {
-	return new AATEngines().waitForEngine(engineName, millis, times);
+	return new AATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
     }
 
 }
