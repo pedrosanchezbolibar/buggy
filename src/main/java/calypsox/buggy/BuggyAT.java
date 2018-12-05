@@ -1,5 +1,6 @@
 package calypsox.buggy;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import org.concordion.api.FullOGNL;
@@ -14,6 +15,7 @@ import com.calypso.tk.util.ConnectException;
 
 import calypsox.buggy.infra.ATEngines;
 import calypsox.buggy.uti.CalypsoEnvironment;
+import calypsox.buggy.uti.ImgResource;
 
 /**
  * Parent class for all tests fixtures.
@@ -39,6 +41,17 @@ public class BuggyAT extends BuggyVersion {
 
     public BuggyAT() {
 	testProperties = new Properties();
+    }
+
+    /**
+     * Gets the image.
+     *
+     * @param resource the resource
+     * @return the image
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public String getImage(final String resource) throws IOException {
+	return new ImgResource().getImage(this, resource);
     }
 
     public void setProperty(final String key, final String value) {
