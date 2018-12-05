@@ -17,7 +17,7 @@ import com.calypso.tk.util.ConnectionUtil;
 import com.calypso.tk.util.DataUploaderUtil;
 
 import calypsox.buggy.prototype.Prototype;
-import calypsox.buggy.uploader.ATAck;
+import calypsox.buggy.uploader.AATAck;
 
 /**
  * The Class ReferenceEnvironment.
@@ -227,7 +227,7 @@ public class CalypsoEnvironment {
 	    file.setReceived(ack.getReceived());
 
 	    if (ack.getRejected() > 0) {
-		final ATAck aatack = new ATAck(ack);
+		final AATAck aatack = new AATAck(ack);
 		Log.error(this, "NACK cargando datos de referencia: \r\n" + aatack.getAckAsString());
 	    }
 	} catch (final Exception ex) {

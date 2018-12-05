@@ -7,9 +7,13 @@ import org.concordion.api.extension.Extensions;
 import org.concordion.ext.EmbedExtension;
 import org.concordion.ext.TimestampFormatterExtension;
 import org.concordion.integration.junit4.ConcordionRunner;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
+import com.calypso.tk.util.ConnectException;
+
 import calypsox.buggy.infra.ATEngines;
+import calypsox.buggy.uti.CalypsoEnvironment;
 
 /**
  * Parent class for all tests fixtures.
@@ -26,6 +30,12 @@ public class BuggyAT extends BuggyVersion {
     private static final int DEFAULT_CHECK_TIMES = 200;
 
     private final Properties testProperties;
+
+    @BeforeClass
+    public static void init() throws ConnectException {
+	CalypsoEnvironment.getInstance().connect();
+	CalypsoEnvironment.getInstance().insertFullTestDataSet();
+    }
 
     public BuggyAT() {
 	testProperties = new Properties();
