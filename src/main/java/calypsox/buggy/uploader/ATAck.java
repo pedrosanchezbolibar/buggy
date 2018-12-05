@@ -17,7 +17,7 @@ import calypsox.buggy.uti.JAXBContextBinder;
 /**
  * The Class AATAck.
  */
-public class AATAck {
+public class ATAck {
 
 	/** The ack. */
 	private final CalypsoAcknowledgement ack;
@@ -48,7 +48,7 @@ public class AATAck {
 	 * @param ackStr
 	 *            the ack str
 	 */
-	public AATAck(final String ackStr) {
+	public ATAck(final String ackStr) {
 		this.ackStr = ackStr;
 		ack = unmarshal(ackStr);
 	}
@@ -59,7 +59,7 @@ public class AATAck {
 	 * @param ackStr
 	 *            the ack str
 	 */
-	public AATAck(final CalypsoAcknowledgement ack) {
+	public ATAck(final CalypsoAcknowledgement ack) {
 		ackStr = marshal(ack);
 		this.ack = ack;
 	}
