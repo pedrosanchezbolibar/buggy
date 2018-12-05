@@ -135,8 +135,14 @@
 			<systemPath>${calypso.home}/client/lib/calypso-datauploader-6.6.4-15.2.0.0.jar</systemPath>
 		</dependency>
 
-
-
+		<dependency>
+			<groupId>com.calypso</groupId>
+			<artifactId>jboss-client</artifactId>
+			<version>7.0.9.0</version>
+			<scope>system</scope>
+			<systemPath>${calypso.home}/jboss/jboss-eap-7.0.9.0/bin/client/jboss-client.jar</systemPath>
+		</dependency>
+		
 		<!-- oracle driver -->
 
 		<dependency>
