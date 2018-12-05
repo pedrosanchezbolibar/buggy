@@ -117,7 +117,7 @@ public class CalypsoEnvironment {
     public List<CdufFile> getResourceFiles(final String path) {
 	final List<CdufFile> filenames = new ArrayList<>();
 
-	try (InputStream inputStream = new ResourceReader().getResourceAsStream(path)) {
+	try (InputStream inputStream = new ResourceReader().getResourceAsStream(this, path)) {
 	    if (inputStream != null) {
 		final BufferedReader breader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -222,7 +222,7 @@ public class CalypsoEnvironment {
      */
     private void insert(final CdufFile file) {
 	try {
-	    final StringBuilder messageText = new Prototype().readResource(file.getFileName());
+	    final StringBuilder messageText = new Prototype().readResource(this, file.getFileName());
 	    final CalypsoAcknowledgement ack = DataUploaderUtil.uploadXML(messageText.toString());
 
 	    file.setRejected(ack.getRejected());

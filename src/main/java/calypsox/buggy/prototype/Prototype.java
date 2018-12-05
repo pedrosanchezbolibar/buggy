@@ -25,14 +25,14 @@ public class Prototype extends ResourceReader {
      * @return the prototype
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public String getPrototype(final String filename, final Properties params) throws IOException {
+    public String getPrototype(final Object owner, final String filename, final Properties params) throws IOException {
 
 	String eol = params.getProperty("EOL");
 	if (eol == null) {
 	    eol = "";
 	}
 
-	String output = readResourceEOL(filename, eol).toString();
+	String output = readResourceEOL(owner, filename, eol).toString();
 
 	for (final Entry<Object, Object> entry : params.entrySet()) {
 	    if (entry.getValue() != null) {
@@ -55,8 +55,8 @@ public class Prototype extends ResourceReader {
      * @throws IOException                  Signals that an I/O exception has
      *                                      occurred.
      */
-    public StringBuilder readResource(final String filename) throws IOException {
-	return readResourceEOL(filename, "");
+    public StringBuilder readResource(final Object owner, final String filename) throws IOException {
+	return readResourceEOL(owner, filename, "");
     }
 
     /**
@@ -69,8 +69,9 @@ public class Prototype extends ResourceReader {
      * @throws IOException                  Signals that an I/O exception has
      *                                      occurred.
      */
-    StringBuilder readResourceEOL(final String filename, final String eol) throws IOException {
-	final InputStream is = getResourceAsStream(filename);
+    private StringBuilder readResourceEOL(final Object owner, final String filename, final String eol)
+	    throws IOException {
+	final InputStream is = getResourceAsStream(owner, filename);
 	if (is == null) {
 	    Log.error(this, "Can not read the template '" + filename + "'");
 	    return new StringBuilder();

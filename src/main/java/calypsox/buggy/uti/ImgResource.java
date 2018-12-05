@@ -26,21 +26,22 @@ public class ImgResource extends ResourceReader {
      * @return the image
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public String getImage(final String resource) throws IOException {
-	return getImage(resource, null, null);
+    public String getImage(final Object owner, final String resource) throws IOException {
+	return getImage(owner, resource, null, null);
     }
 
     /**
      * Gets the image.
      *
      * @param resource the resource
-     * @param width the width
-     * @param height the height
+     * @param width    the width
+     * @param height   the height
      * @return the image
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public String getImage(final String resource, final String width, final String height) throws IOException {
-	final InputStream inputStream = getResourceAsStream(resource);
+    public String getImage(final Object owner, final String resource, final String width, final String height)
+	    throws IOException {
+	final InputStream inputStream = getResourceAsStream(owner, resource);
 
 	if (inputStream == null) {
 	    throw new FileNotFoundException("Image file not found " + resource);
