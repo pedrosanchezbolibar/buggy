@@ -21,7 +21,7 @@
 	<h2>Test Data</h2>
 
 	<p>
-		Template: <span concordion:execute="setProperty('TEMPLATE', #TEXT)">insert.xml</span>
+		Template: <span concordion:set="#template">insert.xml</span>
 		CPTY<span concordion:execute="setProperty('CPTY', #TEXT)">KK</span>.
 		<span style="visibility: hidden;" concordion:set="#img">trade.png</span>
 		<span ext:embed="getImage(#img)"> </span>
@@ -37,7 +37,7 @@
 
 	<p>
 		Insertamos la operación. La operación insertada será copia de la operación de producción: 
-		<span concordion:execute="#ack=insertCDUFTrade()"> </span> 
+		<span concordion:execute="#ack=insertCDUF(#template)"> </span> 
 	</p>
 
 	<h2>Results</h2>

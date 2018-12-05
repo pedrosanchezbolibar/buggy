@@ -13,7 +13,10 @@ import org.junit.runner.RunWith;
 import com.calypso.tk.util.ConnectException;
 
 import calypsox.buggy.infra.ATEngines;
+import calypsox.buggy.uploader.DUPAck;
+import calypsox.buggy.uploader.DUPImporter;
 import calypsox.buggy.uti.CalypsoEnvironment;
+import calypsox.buggy.uti.References;
 
 /**
  * Parent class for all tests fixtures.
@@ -29,24 +32,32 @@ public class BuggyAT extends BuggyVersion {
     /** The Constant DEFAULT_CHECK_TIMES. */
     private static final int DEFAULT_CHECK_TIMES = 200;
 
-    private final Properties testProperties;
-
     @BeforeClass
     public static void init() throws ConnectException {
 	CalypsoEnvironment.getInstance().connect();
 	CalypsoEnvironment.getInstance().insertFullTestDataSet();
     }
 
+    private final Properties testProperties;
+
     public BuggyAT() {
 	testProperties = new Properties();
     }
 
-    public void setProperty(final String key, final String value) {
-	testProperties.setProperty(key, value);
+    public String generateExternalRef() {
+	return new References().generateExternalRef();
     }
 
     public String getProperty(final String key) {
 	return testProperties.getProperty(key);
+    }
+
+    public DUPAck insertCDUF(final String template) throws Exception {
+	return new DUPImporter().insert(this, template, testProperties);
+    }
+
+    public void setProperty(final String key, final String value) {
+	testProperties.setProperty(key, value);
     }
 
     /**
