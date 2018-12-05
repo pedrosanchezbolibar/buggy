@@ -17,7 +17,7 @@ import com.calypso.tk.util.ConnectException;
 /**
  * Manage calypso engines.
  */
-public class AATEngines {
+public class ATEngines {
 
 	/**
 	 * Restart an engine

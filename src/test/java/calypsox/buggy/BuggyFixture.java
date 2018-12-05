@@ -1,5 +1,5 @@
 package calypsox.buggy;
 
-public class BuggyFixture extends BuggyAAT {
+public class BuggyFixture extends BuggyAT {
 
 }

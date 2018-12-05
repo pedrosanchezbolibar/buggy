@@ -9,7 +9,7 @@ import org.concordion.ext.TimestampFormatterExtension;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
-import calypsox.buggy.infra.AATEngines;
+import calypsox.buggy.infra.ATEngines;
 
 /**
  * Parent class for all tests fixtures.
@@ -17,7 +17,7 @@ import calypsox.buggy.infra.AATEngines;
 @RunWith(ConcordionRunner.class)
 @FullOGNL
 @Extensions({ EmbedExtension.class, TimestampFormatterExtension.class })
-public class BuggyAAT extends BuggyVersion {
+public class BuggyAT extends BuggyVersion {
 
     /** The Constant DEFAULT_WAIT_INTERVAL. */
     private static final long DEFAULT_WAIT_INTERVAL = 200;
@@ -27,7 +27,7 @@ public class BuggyAAT extends BuggyVersion {
 
     private final Properties testProperties;
 
-    public BuggyAAT() {
+    public BuggyAT() {
 	testProperties = new Properties();
     }
 
@@ -47,7 +47,7 @@ public class BuggyAAT extends BuggyVersion {
      * @throws InterruptedException the interrupted exception
      */
     public int waitForEngine(final String engine) throws InterruptedException {
-	return new AATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
+	return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
     }
 
 }

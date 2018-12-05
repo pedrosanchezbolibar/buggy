@@ -22,17 +22,21 @@ import calypsox.buggy.uploader.AATAck;
 /**
  * The Class ReferenceEnvironment.
  */
-public class ReferenceEnvironment extends ResourceReader {
+public class CalypsoEnvironment {
 
     /** The instance. */
-    private static final ReferenceEnvironment INSTANCE = new ReferenceEnvironment();
+    private static final CalypsoEnvironment INSTANCE = new CalypsoEnvironment();
+
+    /** The Constant DATA_DIRECTORIES. */
+    private static final String[] DATA_DIRECTORIES = { "testdata/le", "testdata/account", "testdata/relation",
+	    "testdata/contact", "testdata/sdi", "testdata/legalAgreement" };
 
     /**
      * Gets the single instance of ReferenceEnvironment.
      *
      * @return single instance of ReferenceEnvironment
      */
-    public static ReferenceEnvironment getInstance() {
+    public static CalypsoEnvironment getInstance() {
 
 	return INSTANCE;
 
@@ -41,31 +45,13 @@ public class ReferenceEnvironment extends ResourceReader {
     /** The ds. */
     private DSConnection dsConnnection;
 
-    /** The legal entities. */
-    private List<CdufFile> legalEntities;
-
-    /** The relations. */
-    private List<CdufFile> relations;
-
-    /** The contacts. */
-    private List<CdufFile> contacts;
-
-    /** The sdis. */
-    private List<CdufFile> sdis;
-
-    /** The legal Agreements. */
-    private List<CdufFile> legalAgreements;
-
     /** The loaded. */
     private boolean loaded = false;
-
-    /** The accounts. */
-    private List<CdufFile> accounts;
 
     /**
      * Instantiates a new reference environment.
      */
-    private ReferenceEnvironment() {
+    private CalypsoEnvironment() {
 	super();
 	// this is just to avoid class instantiation
     }
@@ -93,24 +79,12 @@ public class ReferenceEnvironment extends ResourceReader {
     }
 
     /**
-     * Disconnect default DSConnection.
+     * Gets the DS connection.
      *
-     * @throws ConnectException the connect exception
+     * @return the DS connection
      */
-    public void reconnect() throws ConnectException {
-	final SecurityManager prevSecManager = System.getSecurityManager();
-	System.setSecurityManager(new AvoidSystemExitSecurityManager());
-
-	try {
-	    DSConnection.logout();
-	} catch (final SecurityException e) {
-	    // please, don't write to log.
-	}
-
-	System.setSecurityManager(prevSecManager);
-	DSConnection.setDefault(null);
-	dsConnnection = null;
-	connect();
+    public DSConnection getDSConnection() {
+	return dsConnnection;
     }
 
     /**
@@ -140,7 +114,7 @@ public class ReferenceEnvironment extends ResourceReader {
     public List<CdufFile> getResourceFiles(final String path) {
 	final List<CdufFile> filenames = new ArrayList<>();
 
-	try (InputStream inputStream = getResourceAsStream(path)) {
+	try (InputStream inputStream = new ResourceReader().getResourceAsStream(path)) {
 	    if (inputStream != null) {
 		final BufferedReader breader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -187,38 +161,37 @@ public class ReferenceEnvironment extends ResourceReader {
     public void insertFullTestDataSet() {
 	if (!loaded && !dontReloadStaticDataOption()) {
 	    loaded = true;
-	    Log.info(this, "--------------- cargando static data ------------------");
-	    Log.info(this, "----- este mensaje no debe salir más de una vez -------");
+	    Log.info(this, "--------------- Loading Reference and Static Data ------------------");
 
-	    legalEntities = getResourceFiles("com/bbva/klyo/aat/testenv/data/le");
-	    accounts = getResourceFiles("com/bbva/klyo/aat/testenv/data/account");
-	    relations = getResourceFiles("com/bbva/klyo/aat/testenv/data/relation");
-	    contacts = getResourceFiles("com/bbva/klyo/aat/testenv/data/contact");
-	    sdis = getResourceFiles("com/bbva/klyo/aat/testenv/data/sdi");
-	    legalAgreements = getResourceFiles("com/bbva/klyo/aat/testenv/data/legalAgreement");
+	    for (final String directory : DATA_DIRECTORIES) {
+		final List<CdufFile> dataFiles = getResourceFiles(directory);
+		insert(dataFiles);
+		clearCache();
+	    }
 
-	    insert(legalEntities);
-	    clearCache();
-	    insert(accounts);
-	    clearCache();
-	    insert(relations);
-	    clearCache();
-	    insert(contacts);
-	    clearCache();
-	    insert(sdis);
-	    clearCache();
-	    insert(legalAgreements);
-	    clearCache();
-
-	    generateReport();
-
-	    Log.info(this, "--------------- FIN static data ------------------");
+	    Log.info(this, "--------------- END Loading Reference and Static Data ------------------");
 	}
     }
 
-    private boolean dontReloadStaticDataOption() {
-	final String dontReload = System.getProperty("dontReloadStaticData");
-	return dontReload != null && "true".equals(dontReload);
+    /**
+     * Disconnect default DSConnection.
+     *
+     * @throws ConnectException the connect exception
+     */
+    public void reconnect() throws ConnectException {
+	final SecurityManager prevSecManager = System.getSecurityManager();
+	System.setSecurityManager(new AvoidSystemExitSecurityManager());
+
+	try {
+	    DSConnection.logout();
+	} catch (final SecurityException e) {
+	    // please, don't write to log.
+	}
+
+	System.setSecurityManager(prevSecManager);
+	DSConnection.setDefault(null);
+	dsConnnection = null;
+	connect();
     }
 
     /**
@@ -230,33 +203,13 @@ public class ReferenceEnvironment extends ResourceReader {
     }
 
     /**
-     * Generate report.
+     * Dont reload static data option.
+     *
+     * @return true, if successful
      */
-    private void generateReport() {
-	Log.info(this, "LEGAL ENTITIES");
-	for (final CdufFile file : legalEntities) {
-	    Log.info(this, file.toString());
-	}
-	Log.info(this, "LEGAL ENTITIES RELATIONSHIPS");
-	for (final CdufFile file : relations) {
-	    Log.info(this, file.toString());
-	}
-	Log.info(this, "LEGAL ENTITIES_CONTACTS");
-	for (final CdufFile file : contacts) {
-	    Log.info(this, file.toString());
-	}
-	Log.info(this, "SDI");
-	for (final CdufFile file : sdis) {
-	    Log.info(this, file.toString());
-	}
-	Log.info(this, "LEGAL AGREEMENT");
-	for (final CdufFile file : legalAgreements) {
-	    Log.info(this, file.toString());
-	}
-	Log.info(this, "ACCOUNTS");
-	for (final CdufFile file : accounts) {
-	    Log.info(this, file.toString());
-	}
+    private boolean dontReloadStaticDataOption() {
+	final String dontReload = System.getProperty("dontReloadStaticData");
+	return dontReload != null && "true".equals(dontReload);
     }
 
     /**
@@ -292,9 +245,4 @@ public class ReferenceEnvironment extends ResourceReader {
 	    insert(file);
 	}
     }
-
-    public DSConnection getDSConnection() {
-	return dsConnnection;
-    }
-
 }
