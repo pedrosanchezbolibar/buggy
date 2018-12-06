@@ -99,7 +99,7 @@ public class ATTransfers {
      * @return the BO transfers
      * @throws CalypsoServiceException the calypso service exception
      */
-    public List<ATTransfer> getBOTransfers(final ATTrade trade) throws CalypsoServiceException {
+    public List<ATTransfer> getTransfers(final ATTrade trade) throws CalypsoServiceException {
 	if (trade != null) {
 	    final String where = String.format("trade_id = %d and netted_transfer_id = 0", trade.getId());
 	    return getBOTransfers(null, where);
