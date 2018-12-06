@@ -42,8 +42,8 @@ public class CalypsoEnvironment {
 
     }
 
-    /** The ds. */
-    private DSConnection dsConnnection;
+    /** The ds connection */
+    private DSConnection dsConnection;
 
     /** The loaded. */
     private boolean loaded = false;
@@ -62,7 +62,7 @@ public class CalypsoEnvironment {
      * @throws ConnectException the connect exception
      */
     public void connect() throws ConnectException {
-	if (dsConnnection == null) {
+	if (dsConnection == null) {
 
 	    final String user = System.getProperty("user");
 	    final String password = System.getProperty("password");
@@ -73,9 +73,10 @@ public class CalypsoEnvironment {
 		Log.error(this, msg);
 		throw new ConnectException(msg);
 	    } else {
-//		final String[] logParams = { "-trace", "ALL", "-loglevel", "INFO", "-env", env };
-//		AppStarter.startLog(logParams, "BuggyTests");
-		dsConnnection = ConnectionUtil.connect(user, password, "MainEntry", env);
+		// final String[] logParams = { "-trace", "ALL", "-loglevel", "INFO", "-env",
+		// env };
+		// AppStarter.startLog(logParams, "BuggyTests");
+		dsConnection = ConnectionUtil.connect(user, password, "MainEntry", env);
 	    }
 	}
     }
@@ -86,7 +87,7 @@ public class CalypsoEnvironment {
      * @return the DS connection
      */
     public DSConnection getDSConnection() {
-	return dsConnnection;
+	return dsConnection;
     }
 
     /**
@@ -192,7 +193,7 @@ public class CalypsoEnvironment {
 
 	System.setSecurityManager(prevSecManager);
 	DSConnection.setDefault(null);
-	dsConnnection = null;
+	dsConnection = null;
 	connect();
     }
 
@@ -230,7 +231,7 @@ public class CalypsoEnvironment {
 
 	    if (ack.getRejected() > 0) {
 		final DUPAck aatack = new DUPAck(ack);
-		Log.error(this, "NACK cargando datos de referencia: \r\n" + aatack);
+		Log.error(this, "NACK inserting referece data: \r\n" + aatack);
 	    }
 	} catch (final Exception ex) {
 	    Log.error(this, "Exception loading file '" + file + "'", ex);
