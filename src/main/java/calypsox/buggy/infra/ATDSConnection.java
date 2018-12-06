@@ -520,6 +520,7 @@ public class ATDSConnection extends DSConnection {
      *
      * @see com.calypso.tk.service.DSConnection#getApplicationNames()
      */
+    @SuppressWarnings("rawtypes")
     @Override
     public Collection getApplicationNames() throws RemoteException {
 

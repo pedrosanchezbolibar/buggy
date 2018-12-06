@@ -2,7 +2,7 @@ package calypsox.buggy.uti;
 
 import java.lang.reflect.Method;
 
-import com.calypso.tk.bo.BOTransfer;
+import com.calypso.tk.product.FX;
 
 public class WarpCalypoClass {
 
@@ -10,7 +10,7 @@ public class WarpCalypoClass {
 
     public static void main(final String[] args) {
 	int count = 0;
-	final Class clazz = BOTransfer.class;
+	final Class<?> clazz = FX.class;
 	for (final Method method : clazz.getMethods()) {
 	    if (method.getName().startsWith("get") && method.getParameterTypes().length == 0) {
 		if (!SKIP_METHOD.contains(method.getName())) {

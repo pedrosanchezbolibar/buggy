@@ -1,5 +1,8 @@
 package calypsox.buggy.product;
 
+import java.util.List;
+
+import com.calypso.tk.bo.Fee;
 import com.calypso.tk.core.Trade;
 
 /**
@@ -27,7 +30,7 @@ public class ATTrade {
      *
      * @return the accrual
      */
-    public final double getAccrual() {
+    public double getAccrual() {
 	return trade.getAccrual();
     }
 
@@ -36,7 +39,7 @@ public class ATTrade {
      *
      * @return the action
      */
-    public final com.calypso.tk.core.Action getAction() {
+    public com.calypso.tk.core.Action getAction() {
 	return trade.getAction();
     }
 
@@ -45,7 +48,7 @@ public class ATTrade {
      *
      * @return the alternate amount
      */
-    public final double getAlternateAmount() {
+    public double getAlternateAmount() {
 	return trade.getAlternateAmount();
     }
 
@@ -63,7 +66,7 @@ public class ATTrade {
      *
      * @return the comment
      */
-    public final String getComment() {
+    public String getComment() {
 	return trade.getComment();
     }
 
@@ -81,7 +84,7 @@ public class ATTrade {
      *
      * @return the entered date
      */
-    public final com.calypso.tk.core.JDatetime getEnteredDate() {
+    public com.calypso.tk.core.JDatetime getEnteredDate() {
 	return trade.getEnteredDate();
     }
 
@@ -90,7 +93,7 @@ public class ATTrade {
      *
      * @return the entered user
      */
-    public final String getEnteredUser() {
+    public String getEnteredUser() {
 	return trade.getEnteredUser();
     }
 
@@ -99,7 +102,7 @@ public class ATTrade {
      *
      * @return the exchange id
      */
-    public final int getExchangeId() {
+    public int getExchangeId() {
 	return trade.getExchangeId();
     }
 
@@ -108,7 +111,7 @@ public class ATTrade {
      *
      * @return the external reference
      */
-    public final String getExternalReference() {
+    public String getExternalReference() {
 	return trade.getExternalReference();
     }
 
@@ -117,7 +120,8 @@ public class ATTrade {
      *
      * @return the fees
      */
-    public final java.util.Vector getFees() {
+    @SuppressWarnings("unchecked")
+    public List<Fee> getFees() {
 	return trade.getFees();
     }
 
@@ -126,7 +130,7 @@ public class ATTrade {
      *
      * @return the fees list
      */
-    public final java.util.Vector<com.calypso.tk.bo.Fee> getFeesList() {
+    public List<Fee> getFeesList() {
 	return trade.getFeesList();
     }
 
@@ -144,7 +148,7 @@ public class ATTrade {
      *
      * @return the internal reference
      */
-    public final String getInternalReference() {
+    public String getInternalReference() {
 	return trade.getInternalReference();
     }
 
@@ -163,7 +167,7 @@ public class ATTrade {
      *
      * @return the modified user
      */
-    public final String getModifiedUser() {
+    public String getModifiedUser() {
 	return trade.getModifiedUser();
     }
 
@@ -181,7 +185,7 @@ public class ATTrade {
      *
      * @return the product family
      */
-    public final String getProductFamily() {
+    public String getProductFamily() {
 	return trade.getProductFamily();
     }
 
@@ -190,7 +194,7 @@ public class ATTrade {
      *
      * @return the product sub type
      */
-    public final String getProductSubType() {
+    public String getProductSubType() {
 	return trade.getProductSubType();
     }
 
@@ -199,7 +203,7 @@ public class ATTrade {
      *
      * @return the product type
      */
-    public final String getProductType() {
+    public String getProductType() {
 	return trade.getProductType();
     }
 
@@ -208,7 +212,7 @@ public class ATTrade {
      *
      * @return the quantity
      */
-    public final double getQuantity() {
+    public double getQuantity() {
 	return trade.getQuantity();
     }
 
@@ -217,7 +221,7 @@ public class ATTrade {
      *
      * @return the sales person
      */
-    public final String getSalesPerson() {
+    public String getSalesPerson() {
 	return trade.getSalesPerson();
     }
 
@@ -226,7 +230,7 @@ public class ATTrade {
      *
      * @return the settle currency
      */
-    public final String getSettleCurrency() {
+    public String getSettleCurrency() {
 	return trade.getSettleCurrency();
     }
 
@@ -235,7 +239,7 @@ public class ATTrade {
      *
      * @return the settle date
      */
-    public final com.calypso.tk.core.JDate getSettleDate() {
+    public com.calypso.tk.core.JDate getSettleDate() {
 	return trade.getSettleDate();
     }
 
@@ -244,7 +248,7 @@ public class ATTrade {
      *
      * @return the status
      */
-    public final com.calypso.tk.core.Status getStatus() {
+    public com.calypso.tk.core.Status getStatus() {
 	return trade.getStatus();
     }
 
@@ -253,7 +257,7 @@ public class ATTrade {
      *
      * @return the trade currency
      */
-    public final String getTradeCurrency() {
+    public String getTradeCurrency() {
 	return trade.getTradeCurrency();
     }
 
@@ -262,7 +266,7 @@ public class ATTrade {
      *
      * @return the trade date
      */
-    public final com.calypso.tk.core.JDatetime getTradeDate() {
+    public com.calypso.tk.core.JDatetime getTradeDate() {
 	return trade.getTradeDate();
     }
 
@@ -271,7 +275,7 @@ public class ATTrade {
      *
      * @return the trade price
      */
-    public final double getTradePrice() {
+    public double getTradePrice() {
 	return trade.getTradePrice();
     }
 
@@ -280,7 +284,7 @@ public class ATTrade {
      *
      * @return the trader name
      */
-    public final String getTraderName() {
+    public String getTraderName() {
 	return trade.getTraderName();
     }
 
@@ -289,13 +293,13 @@ public class ATTrade {
      *
      * @return the updated time
      */
-    public final com.calypso.tk.core.JDatetime getUpdatedTime() {
+    public com.calypso.tk.core.JDatetime getUpdatedTime() {
 	return trade.getUpdatedTime();
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
