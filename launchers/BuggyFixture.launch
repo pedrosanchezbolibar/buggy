@@ -329,5 +329,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="calypsox.buggy.BuggyFixture"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="buggy"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser=calypso_user -Dpassword=Calypso!123 -Denv=localKLYODEV41"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser=calypso_user -Dpassword=Calypso!123 -Denv=localKLYODEV41 -DdontReloadStaticData=true"/>
 </launchConfiguration>

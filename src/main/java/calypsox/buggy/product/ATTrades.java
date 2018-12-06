@@ -37,7 +37,7 @@ public class ATTrades {
      */
     @SuppressWarnings("unchecked")
     public ATTrade createTrade(final Trade trade) {
-	final String className = "calypsox.buggy.product." + trade.getProductType();
+	final String className = "calypsox.buggy.product.AT" + trade.getProductType();
 
 	Class<ATTrade> clazz;
 	try {

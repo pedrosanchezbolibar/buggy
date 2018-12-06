@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CalypsoUploadDocument>
+    <CalypsoLegalEntityRelation>
+        <Action>NEW</Action>
+        <ProcessingOrg>SPAIN</ProcessingOrg>
+        <LegalEntity>NONFINANCIAL_SWIFT_2</LegalEntity>
+        <LegalEntityRole>CounterParty</LegalEntityRole>
+        <OtherLegalEntity></OtherLegalEntity>
+        <OtherLegalEntityRole>ALL</OtherLegalEntityRole>
+    </CalypsoLegalEntityRelation>
+    <CalypsoLegalEntityRelation>
+        <Action>NEW</Action>
+        <ProcessingOrg>CLEARING</ProcessingOrg>
+        <LegalEntity>NONFINANCIAL_SWIFT_2</LegalEntity>
+        <LegalEntityRole>CounterParty</LegalEntityRole>
+        <OtherLegalEntity></OtherLegalEntity>
+        <OtherLegalEntityRole>ALL</OtherLegalEntityRole>
+    </CalypsoLegalEntityRelation>    
+</CalypsoUploadDocument>

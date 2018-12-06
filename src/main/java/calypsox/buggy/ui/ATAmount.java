@@ -31,13 +31,19 @@ public class ATAmount {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
+	if (currency == null) {
+	    return "EMPTY";
+	}
+	int decimals = 2;
 	final CurrencyDefault ccyDefault = LocalCache.getCurrencyDefault(currency);
-	final int decimals = (int) ccyDefault.getRounding();
+	if (ccyDefault != null) {
+	    decimals = (int) ccyDefault.getRounding();
+	}
 
 	final DecimalFormat format = new DecimalFormat();
 	format.setMaximumFractionDigits(decimals);

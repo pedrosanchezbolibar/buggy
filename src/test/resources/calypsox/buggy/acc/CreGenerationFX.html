@@ -65,7 +65,8 @@
                 <th concordion:assertEquals="#trade.productType">Product type</th>
                 <th concordion:assertEquals="#trade.counterParty">Counterparty</th>
                 <th concordion:assertEquals="#trade.settleDate">Date</th>     
-                <th concordion:assertEquals="#trade.quantity">Quantity</th>    
+                <th concordion:assertEquals="#trade.primaryAmount">Primary Amount</th>  
+                <th concordion:assertEquals="#trade.quotingAmount">Quoting Amount</th>  
             </tr>
             <tr>
                 <td> </td>
@@ -73,7 +74,8 @@
                 <td>FX</td>
                 <td>NONFINANCIAL_SWIFT_2</td>
                 <td>11/01/2028</td>
-                <td>-29751.5200</td>
+                <td>-29,751.52 EUR</td>
+                <td>26,347.95 GBP</td>
             </tr>
         </table> 
 
@@ -84,7 +86,7 @@
 		</p>
 		
 		<p>Las Liquidaciones (Transfers) de este trade son:</p>
-		<table concordion:verifyRows="#xfer : getTranfers(#trade)">
+		<table concordion:verifyRows="#xfer : getTransfers(#trade)">
 			<tr>
 				<th concordion:echo="#xfer.id">Transfer Id</th>
 				<th concordion:assertEquals="#xfer.eventType">Event Type</th>
@@ -96,14 +98,14 @@
 				<td></td>
 				<td>PAYMENT</td>
 				<td>VERIFIED</td>
-				<td>29751.52</td>
+				<td>29,751.52 EUR</td>
 				<td>11/01/2028</td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>RECEIPT</td>
 				<td>VERIFIED</td>
-				<td>26347.95</td>
+				<td>26,347.95 GBP</td>
 				<td>11/01/2028</td>
 			</tr>
 		</table>
@@ -139,23 +141,23 @@
 	        	<td>NEW</td>
 	        	<td>COTFX</td>
 	        	<td>VERIFIED_TRADE</td>
-	        	<td>-29751.5200 EUR</td>
-	        	<td>26347.9500 GBP</td>
+	        	<td>-29,751.52 EUR</td>
+	        	<td>26,347.95 GBP</td>
 	        </tr>
 	        <tr>
 	        	<td>11/01/2028</td>
 	        	<td>NEW</td>
 	        	<td>COTFX_REV</td>
 	        	<td>VERIFIED_TRADE</td>
-	        	<td>-29751.5200 EUR</td>
-	        	<td>26347.9500 GBP</td>
+	        	<td>-29,751.52 EUR</td>
+	        	<td>26,347.95 GBP</td>
 	        </tr>
 	        <tr>
 	        	<td>11/01/2028</td>
 	        	<td>NEW</td>
 	        	<td>CST</td>
 	        	<td>VERIFIED_PAYMENT</td>
-	        	<td>-29751.5200 EUR</td>
+	        	<td>-29,751.52 EUR</td>
 	        	<td>EMPTY</td>
 	        </tr>
 	        <tr>
@@ -163,7 +165,7 @@
 	        	<td>NEW</td>
 	        	<td>CST</td>
 	        	<td>VERIFIED_RECEIPT</td>
-	        	<td>26347.9500 GBP</td>
+	        	<td>26,347.95 GBP</td>
 	        	<td>EMPTY</td>
 	        </tr>
 	    </table>

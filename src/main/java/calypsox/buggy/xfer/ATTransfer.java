@@ -757,7 +757,7 @@ public class ATTransfer {
      *
      * @return the s id
      */
-    public long getsId() {
+    public long getId() {
 	return botransfer.getLongId();
     }
 

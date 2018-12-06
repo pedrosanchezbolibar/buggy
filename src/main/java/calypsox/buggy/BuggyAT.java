@@ -1,6 +1,7 @@
 package calypsox.buggy;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import org.concordion.api.FullOGNL;
@@ -14,14 +15,19 @@ import org.junit.runner.RunWith;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.util.ConnectException;
 
+import calypsox.buggy.acc.ATCre;
+import calypsox.buggy.acc.ATCres;
 import calypsox.buggy.infra.ATEngines;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
+import calypsox.buggy.ui.ATAmount;
 import calypsox.buggy.uploader.DUPAck;
 import calypsox.buggy.uploader.DUPImporter;
 import calypsox.buggy.uti.CalypsoEnvironment;
 import calypsox.buggy.uti.ImgResource;
 import calypsox.buggy.uti.References;
+import calypsox.buggy.xfer.ATTransfer;
+import calypsox.buggy.xfer.ATTransfers;
 
 /**
  * Parent class for all tests fixtures.
@@ -73,8 +79,30 @@ public class BuggyAT extends BuggyVersion {
 	return new ImgResource().getImage(this, resource);
     }
 
+    /**
+     * Gets the trade indicated in the DataUploader ack
+     *
+     * @param ack the ack
+     * @return the trade
+     * @throws CalypsoServiceException the calypso service exception
+     */
     public ATTrade getTrade(final DUPAck ack) throws CalypsoServiceException {
 	return new ATTrades().getTrade(ack);
+    }
+
+    public List<ATCre> getCres(final ATTrade trade) throws CalypsoServiceException {
+	return new ATCres().getCres(trade);
+    }
+
+    /**
+     * Gets the netting transfers of the trade.
+     *
+     * @param trade the trade
+     * @return the transfers
+     * @throws CalypsoServiceException
+     */
+    public List<ATTransfer> getTransfers(final ATTrade trade) throws CalypsoServiceException {
+	return new ATTransfers().getTransfers(trade);
     }
 
     /**
@@ -119,4 +147,8 @@ public class BuggyAT extends BuggyVersion {
 	return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
     }
 
+    public ATAmount getCreAmount(final ATCre cre, final String strIndex) {
+	final int index = Integer.parseInt(strIndex);
+	return cre.getCreAmount(index);
+    }
 }
