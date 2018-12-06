@@ -11,9 +11,12 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
+import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.util.ConnectException;
 
 import calypsox.buggy.infra.ATEngines;
+import calypsox.buggy.product.ATTrade;
+import calypsox.buggy.product.ATTrades;
 import calypsox.buggy.uploader.DUPAck;
 import calypsox.buggy.uploader.DUPImporter;
 import calypsox.buggy.uti.CalypsoEnvironment;
@@ -68,6 +71,10 @@ public class BuggyAT extends BuggyVersion {
      */
     public String getImage(final String resource) throws IOException {
 	return new ImgResource().getImage(this, resource);
+    }
+
+    public ATTrade getTrade(final DUPAck ack) throws CalypsoServiceException {
+	return new ATTrades().getTrade(ack);
     }
 
     /**

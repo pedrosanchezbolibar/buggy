@@ -2,7 +2,6 @@ package calypsox.buggy.uploader;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -11,6 +10,7 @@ import javax.xml.bind.Unmarshaller;
 
 import com.calypso.tk.core.Log;
 import com.calypso.tk.publish.jaxb.CalypsoAcknowledgement;
+import com.calypso.tk.publish.jaxb.CalypsoTrades;
 
 import calypsox.buggy.uti.JAXBContextBinder;
 
@@ -112,11 +112,17 @@ public class DUPAck {
     }
 
     /**
-     * Gets the trade errors type.
+     * Gets the trade id.
      *
-     * @return the trade errors type
+     * @return the trade id
      */
-    public List<com.calypso.tk.publish.jaxb.Error> getErrors() {
-	return ack.getCalypsoTrades().getCalypsoTrade().get(0).getError();
+    public int getTradeId() {
+	int result = -1;
+	final CalypsoTrades calypsoTrades = ack.getCalypsoTrades();
+	if (calypsoTrades != null && calypsoTrades.getCalypsoTrade().size() == 1) {
+	    result = calypsoTrades.getCalypsoTrade().get(0).getCalypsoTradeId();
+	}
+
+	return result;
     }
 }

@@ -64,21 +64,25 @@
 	<table concordion:execute="#trade=getTrade(#ack)">
 		<tr>
 			<th concordion:echo="#trade.id">Id</th>
+			<th concordion:assertEquals="#trade.productDescription">Product Description</th>
 			<th concordion:assertEquals="#trade.productType">Product type</th>
 			<th concordion:assertEquals="#trade.status">Status</th>
 			<th concordion:assertEquals="#trade.counterParty">Cpty</th>
 			<th concordion:assertEquals="#trade.tradeCurrency">Currency</th>
 			<th concordion:assertEquals="#trade.tradeDate">Trade Date</th>
 			<th concordion:assertEquals="#trade.settleDate">Settle Date</th>
+			<th concordion:assertEquals="#trade.primaryAmount">Primary Amount</th>
 		</tr>
 		<tr>
 			<td></td>
+			<td>FX/EUR/GBP</td>
 			<td>InterestBearing</td>
 			<td>PENDING</td>
 			<td>AAT_160621MACQUARIEC_NOSDI</td>
 			<td>EUR</td>
 			<td>28/02/28 22:01:34.450 o'clock CET</td>
 			<td>02/03/2028</td>
+			<td>-29,751.52 EUR</td>
 		</tr>
 	</table>
 
