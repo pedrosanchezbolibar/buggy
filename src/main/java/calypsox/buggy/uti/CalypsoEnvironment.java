@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.calypso.apps.startup.AppStarter;
 import com.calypso.tk.bo.BOCache;
 import com.calypso.tk.core.Log;
 import com.calypso.tk.publish.jaxb.CalypsoAcknowledgement;
@@ -74,8 +73,8 @@ public class CalypsoEnvironment {
 		Log.error(this, msg);
 		throw new ConnectException(msg);
 	    } else {
-		final String[] logParams = { "-trace", "ALL", "-loglevel", "INFO", "-env", env };
-		AppStarter.startLog(logParams, "BuggyTests");
+//		final String[] logParams = { "-trace", "ALL", "-loglevel", "INFO", "-env", env };
+//		AppStarter.startLog(logParams, "BuggyTests");
 		dsConnnection = ConnectionUtil.connect(user, password, "MainEntry", env);
 	    }
 	}
@@ -231,7 +230,7 @@ public class CalypsoEnvironment {
 
 	    if (ack.getRejected() > 0) {
 		final DUPAck aatack = new DUPAck(ack);
-		Log.error(this, "NACK cargando datos de referencia: \r\n" + aatack.getAckAsString());
+		Log.error(this, "NACK cargando datos de referencia: \r\n" + aatack);
 	    }
 	} catch (final Exception ex) {
 	    Log.error(this, "Exception loading file '" + file + "'", ex);

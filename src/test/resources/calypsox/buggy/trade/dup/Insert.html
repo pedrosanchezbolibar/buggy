@@ -5,6 +5,16 @@
 	<head>
 		<title>Buggy automatic tests</title>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<script>
+            function showMessage(elementId) {
+	            var x = document.getElementById(elementId);
+	            if (x.style.display === "none") {
+	                x.style.display = "block";
+	            } else {
+	                x.style.display = "none";
+	            }
+            }
+        </script>
 	</head>	
 
 	<body>
@@ -21,15 +31,15 @@
 	<h2>Test Data</h2>
 
 	<p>
-		Template: <span concordion:set="#template">insert.xml</span>
-		CPTY<span concordion:execute="setProperty('CPTY', #TEXT)">KK</span>.
+		Template: <span concordion:set="#template">FX.xml</span>
+		CPTY<span concordion:execute="setProperty('CPTY', #TEXT)">BNPALULUX</span>.
 		<span style="visibility: hidden;" concordion:set="#img">trade.png</span>
 		<span ext:embed="getImage(#img)"> </span>
 	</p>
 	
 	<p>
 		La External Reference de la operación 
-		<span concordion:execute="#extRef=generateExternalRef()"> </span>  
+		<span concordion:echo="#extRef=generateExternalRef()"> </span>  
 		<span concordion:execute="setProperty('EXTERNAL_REFERENCE', #extRef)"> </span>
 	</p>
 
@@ -39,12 +49,13 @@
 		Insertamos la operación. La operación insertada será copia de la operación de producción: 
 		<span concordion:execute="#ack=insertCDUF(#template)"> </span> 
 	</p>
+	<button onclick="showMessage('ack')">Mostrar Ack completo</button>	
+	<pre concordion:echo="#ack" id="ack" style="display:none"> </pre>
 
 	<h2>Results</h2>
 	
-	<pre>
-<span concordion:echo="#ack"> </span>
-	</pre>
+
+	
 	
 	<p>
 		Comprobamos que se ha insertado correctamente la operación:

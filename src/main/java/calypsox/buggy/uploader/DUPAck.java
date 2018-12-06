@@ -19,107 +19,104 @@ import calypsox.buggy.uti.JAXBContextBinder;
  */
 public class DUPAck {
 
-	/** The ack. */
-	private final CalypsoAcknowledgement ack;
+    /** The ack. */
+    private final CalypsoAcknowledgement ack;
 
-	/** The ack str. */
-	private final String ackStr;
+    /** The ack str. */
+    private final String ackStr;
 
-	private static JAXBContext jaxbContext;
+    private static JAXBContext jaxbContext;
 
-	private static Unmarshaller unmarshaller;
+    private static Unmarshaller unmarshaller;
 
-	private static Marshaller marshaller;
+    private static Marshaller marshaller;
 
-	static {
-		try {
-			jaxbContext = JAXBContextBinder.getInstance().get("com.calypso.tk.publish.jaxb");
-			unmarshaller = jaxbContext.createUnmarshaller();
-			marshaller = jaxbContext.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		} catch (final JAXBException e) {
-			Log.error("AATAck", "Error getting marshaller/unmarshaller ", e);
-		}
+    static {
+	try {
+	    jaxbContext = JAXBContextBinder.getInstance().get("com.calypso.tk.publish.jaxb");
+	    unmarshaller = jaxbContext.createUnmarshaller();
+	    marshaller = jaxbContext.createMarshaller();
+	    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+	} catch (final JAXBException e) {
+	    Log.error("AATAck", "Error getting marshaller/unmarshaller ", e);
+	}
+    }
+
+    /**
+     * Instantiates a new AAT ack.
+     *
+     * @param ackStr the ack str
+     */
+    public DUPAck(final String ackStr) {
+	this.ackStr = ackStr;
+	ack = unmarshal(ackStr);
+    }
+
+    /**
+     * Instantiates a new AAT ack.
+     *
+     * @param ackStr the ack str
+     */
+    public DUPAck(final CalypsoAcknowledgement ack) {
+	ackStr = marshal(ack);
+	this.ack = ack;
+    }
+
+    /**
+     * Unmarshall.
+     *
+     * @param ackStr the ack str
+     * @return the calypso acknowledgement
+     */
+    protected CalypsoAcknowledgement unmarshal(final String ackStr) {
+
+	CalypsoAcknowledgement result = null;
+
+	try {
+	    result = (CalypsoAcknowledgement) unmarshaller.unmarshal(new StringReader(ackStr));
+	} catch (final JAXBException e) {
+	    Log.error(this, "Error while unmarshalling " + ackStr, e);
 	}
 
-	/**
-	 * Instantiates a new AAT ack.
-	 *
-	 * @param ackStr
-	 *            the ack str
-	 */
-	public DUPAck(final String ackStr) {
-		this.ackStr = ackStr;
-		ack = unmarshal(ackStr);
+	return result;
+    }
+
+    /**
+     * Unmarshall.
+     *
+     * @param ackStr the ack str
+     * @return the calypso acknowledgement
+     */
+    protected String marshal(final CalypsoAcknowledgement ack) {
+
+	final StringWriter result = new StringWriter();
+
+	try {
+	    marshaller.marshal(ack, result);
+	} catch (final JAXBException e) {
+	    Log.error(this, "Error while marshalling " + ackStr, e);
+	    return null;
 	}
 
-	/**
-	 * Instantiates a new AAT ack.
-	 *
-	 * @param ackStr
-	 *            the ack str
-	 */
-	public DUPAck(final CalypsoAcknowledgement ack) {
-		ackStr = marshal(ack);
-		this.ack = ack;
-	}
+	return result.toString();
+    }
 
-	/**
-	 * Unmarshall.
-	 *
-	 * @param ackStr
-	 *            the ack str
-	 * @return the calypso acknowledgement
-	 */
-	protected CalypsoAcknowledgement unmarshal(final String ackStr) {
+    /**
+     * Gets the ack as string.
+     *
+     * @return the ack as string
+     */
+    @Override
+    public String toString() {
+	return ackStr;
+    }
 
-		CalypsoAcknowledgement result = null;
-
-		try {
-			result = (CalypsoAcknowledgement) unmarshaller.unmarshal(new StringReader(ackStr));
-		} catch (final JAXBException e) {
-			Log.error(this, "Error while unmarshalling " + ackStr, e);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Unmarshall.
-	 *
-	 * @param ackStr
-	 *            the ack str
-	 * @return the calypso acknowledgement
-	 */
-	protected String marshal(final CalypsoAcknowledgement ack) {
-
-		final StringWriter result = new StringWriter();
-
-		try {
-			marshaller.marshal(ack, result);
-		} catch (final JAXBException e) {
-			Log.error(this, "Error while marshalling " + ackStr, e);
-			return null;
-		}
-
-		return result.toString();
-	}
-
-	/**
-	 * Gets the ack as string.
-	 *
-	 * @return the ack as string
-	 */
-	public String getAckAsString() {
-		return ackStr;
-	}
-
-	/**
-	 * Gets the trade errors type.
-	 *
-	 * @return the trade errors type
-	 */
-	public List<com.calypso.tk.publish.jaxb.Error> getErrors() {
-		return ack.getCalypsoTrades().getCalypsoTrade().get(0).getError();
-	}
+    /**
+     * Gets the trade errors type.
+     *
+     * @return the trade errors type
+     */
+    public List<com.calypso.tk.publish.jaxb.Error> getErrors() {
+	return ack.getCalypsoTrades().getCalypsoTrade().get(0).getError();
+    }
 }

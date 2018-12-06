@@ -18,6 +18,7 @@ import calypsox.buggy.uploader.DUPAck;
 import calypsox.buggy.uploader.DUPImporter;
 import calypsox.buggy.uti.CalypsoEnvironment;
 import calypsox.buggy.uti.ImgResource;
+import calypsox.buggy.uti.References;
 
 /**
  * Parent class for all tests fixtures.
@@ -52,6 +53,10 @@ public class BuggyAT extends BuggyVersion {
      */
     public BuggyAT() {
 	testProperties = new Properties();
+    }
+
+    public String generateExternalRef() {
+	return new References().generateExternalRef();
     }
 
     /**
@@ -89,7 +94,7 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Sets the property.
      *
-     * @param key   the key
+     * @param key the key
      * @param value the value
      */
     public void setProperty(final String key, final String value) {
