@@ -3,8 +3,10 @@ package calypsox.buggy.xfer;
 import java.util.List;
 
 import com.calypso.tk.bo.BOTransfer;
+import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
+import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.refdata.ATBook;
 import calypsox.buggy.refdata.ATLegalEntity;
@@ -25,6 +27,10 @@ public class ATTransfer {
      */
     public ATTransfer(final BOTransfer boTransfer) {
 	botransfer = boTransfer;
+    }
+
+    public ATTransfer(final long transferLongId) throws CalypsoServiceException {
+	botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(transferLongId);
     }
 
     /**
