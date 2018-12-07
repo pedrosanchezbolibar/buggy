@@ -13,4 +13,8 @@ public class ATSwiftMessage {
     public String getText() {
 	return swiftmessage.getText();
     }
+
+    public SwiftMessage getSwiftMessage() {
+	return swiftmessage;
+    }
 }
