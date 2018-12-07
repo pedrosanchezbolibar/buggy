@@ -12,6 +12,7 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
+import com.calypso.tk.bo.MessageFormatException;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.util.ConnectException;
 
@@ -20,6 +21,7 @@ import calypsox.buggy.acc.ATCres;
 import calypsox.buggy.infra.ATEngines;
 import calypsox.buggy.msg.ATMessage;
 import calypsox.buggy.msg.ATMessages;
+import calypsox.buggy.msg.ATSwiftMessage;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
 import calypsox.buggy.ui.ATAmount;
@@ -93,7 +95,7 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Gets the trade's message by msg type.
      *
-     * @param trade the trade
+     * @param trade   the trade
      * @param msgType the msg type
      * @return the message by msg type
      * @throws CalypsoServiceException
@@ -148,7 +150,7 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Sets the property.
      *
-     * @param key the key
+     * @param key   the key
      * @param value the value
      */
     public void setProperty(final String key, final String value) {
@@ -164,5 +166,10 @@ public class BuggyAT extends BuggyVersion {
      */
     public int waitForEngine(final String engine) throws InterruptedException {
 	return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
+    }
+
+    public ATSwiftMessage formatSwiftDocument(final ATMessage message, final String pricingEnv)
+	    throws CalypsoServiceException, MessageFormatException {
+	return new ATMessages().formatSwiftDocument(message, pricingEnv);
     }
 }

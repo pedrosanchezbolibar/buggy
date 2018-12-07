@@ -230,4 +230,8 @@ public class ATMessage {
     public int getTotalGroupMessages() {
 	return bomessage.getTotalGroupMessages();
     }
+
+    public BOMessage getBOMessage() {
+	return bomessage;
+    }
 }
