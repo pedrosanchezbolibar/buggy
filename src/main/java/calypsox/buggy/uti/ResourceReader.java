@@ -9,8 +9,28 @@ import java.net.URL;
 public class ResourceReader {
 
     /**
+     * Gets the context class loader.
+     *
+     * @return the context class loader
+     */
+    public ClassLoader getContextClassLoader() {
+	return Thread.currentThread().getContextClassLoader();
+    }
+
+    /**
+     * Gets the resource.
+     *
+     * @param resource the resource
+     * @return the resource
+     */
+    public URL getResource(final String resource) {
+	return getContextClassLoader().getResource(resource);
+    }
+
+    /**
      * Gets the resource as stream.
      *
+     * @param owner the owner
      * @param resource the resource
      * @return the resource as stream
      */
@@ -18,7 +38,7 @@ public class ResourceReader {
 	InputStream result = getResourceAsStream("", resource);
 	if (result == null) {
 	    final String classname = owner.getClass().getName().replace("Fixture", "");
-	    String base = replaceDots(classname + "/data");
+	    String base = replaceDots(classname);
 	    result = getResourceAsStream(base, resource);
 	    if (result == null) {
 		base = replaceDots(owner.getClass().getPackage().getName() + "/data");
@@ -29,10 +49,13 @@ public class ResourceReader {
 	return result;
     }
 
-    private String replaceDots(final String pkgname) {
-	return pkgname.replace('.', '/');
-    }
-
+    /**
+     * Gets the resource as stream.
+     *
+     * @param base the base
+     * @param resource the resource
+     * @return the resource as stream
+     */
     private InputStream getResourceAsStream(final String base, final String resource) {
 	String fullPath;
 	if ("".equals(base)) {
@@ -49,22 +72,13 @@ public class ResourceReader {
     }
 
     /**
-     * Gets the resource.
+     * Replace dots.
      *
-     * @param resource the resource
-     * @return the resource
+     * @param pkgname the pkgname
+     * @return the string
      */
-    public URL getResource(final String resource) {
-	return getContextClassLoader().getResource(resource);
-    }
-
-    /**
-     * Gets the context class loader.
-     *
-     * @return the context class loader
-     */
-    public ClassLoader getContextClassLoader() {
-	return Thread.currentThread().getContextClassLoader();
+    private String replaceDots(final String pkgname) {
+	return pkgname.replace('.', '/');
     }
 
 }

@@ -18,6 +18,8 @@ import com.calypso.tk.util.ConnectException;
 import calypsox.buggy.acc.ATCre;
 import calypsox.buggy.acc.ATCres;
 import calypsox.buggy.infra.ATEngines;
+import calypsox.buggy.msg.ATMessage;
+import calypsox.buggy.msg.ATMessages;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
 import calypsox.buggy.ui.ATAmount;
@@ -68,6 +70,15 @@ public class BuggyAT extends BuggyVersion {
 	return new References().generateExternalRef();
     }
 
+    public ATAmount getCreAmount(final ATCre cre, final String strIndex) {
+	final int index = Integer.parseInt(strIndex);
+	return cre.getCreAmount(index);
+    }
+
+    public List<ATCre> getCres(final ATTrade trade) throws CalypsoServiceException {
+	return new ATCres().getCres(trade);
+    }
+
     /**
      * Gets the image.
      *
@@ -77,6 +88,28 @@ public class BuggyAT extends BuggyVersion {
      */
     public String getImage(final String resource) throws IOException {
 	return new ImgResource().getImage(this, resource);
+    }
+
+    /**
+     * Gets the trade's message by msg type.
+     *
+     * @param trade the trade
+     * @param msgType the msg type
+     * @return the message by msg type
+     * @throws CalypsoServiceException
+     */
+    public ATMessage getMessageByMsgType(final ATTrade trade, final String msgType) throws CalypsoServiceException {
+	return new ATMessages().getMessageByMsgType(trade, msgType);
+    }
+
+    /**
+     * Gets the property.
+     *
+     * @param key the key
+     * @return the property
+     */
+    public String getProperty(final String key) {
+	return testProperties.getProperty(key);
     }
 
     /**
@@ -90,10 +123,6 @@ public class BuggyAT extends BuggyVersion {
 	return new ATTrades().getTrade(ack);
     }
 
-    public List<ATCre> getCres(final ATTrade trade) throws CalypsoServiceException {
-	return new ATCres().getCres(trade);
-    }
-
     /**
      * Gets the netting transfers of the trade.
      *
@@ -103,16 +132,6 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATTransfer> getTransfers(final ATTrade trade) throws CalypsoServiceException {
 	return new ATTransfers().getTransfers(trade);
-    }
-
-    /**
-     * Gets the property.
-     *
-     * @param key the key
-     * @return the property
-     */
-    public String getProperty(final String key) {
-	return testProperties.getProperty(key);
     }
 
     /**
@@ -145,10 +164,5 @@ public class BuggyAT extends BuggyVersion {
      */
     public int waitForEngine(final String engine) throws InterruptedException {
 	return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
-    }
-
-    public ATAmount getCreAmount(final ATCre cre, final String strIndex) {
-	final int index = Integer.parseInt(strIndex);
-	return cre.getCreAmount(index);
     }
 }

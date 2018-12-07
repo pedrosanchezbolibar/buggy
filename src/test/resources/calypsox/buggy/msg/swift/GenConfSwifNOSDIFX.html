@@ -1,0 +1,150 @@
+<html 
+	xmlns:concordion="http://www.concordion.org/2007/concordion" 
+	xmlns:ext="urn:concordion-extensions:2010">
+
+	<head>
+		<title>Generación de Confirmación Swift sin SDIs de un FX</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<script>
+	            function showMessage(elementId) {
+		            var x = document.getElementById(elementId);
+		            if (x.style.display === "none") {
+		                x.style.display = "block";
+		            } else {
+		                x.style.display = "none";
+		            }
+	            }
+	        </script>
+	</head>
+	
+	<body>
+	
+		<h1>Generación de Confirmación Swift sin SDIs de un FX</h1>
+			
+		<h2>Descripción</h2>
+	
+		<p>
+			Las operaciones de FX imputadas contra Contrapartidas en las cuales exista un contacto de tipo SwiftConf, generarán confirmaciones 
+			de tipo SWIFTCONFIRM en los estados VERIFIED, VALIDATED_NO_SDI, TERMINATED y CANCELED.
+		</p>
+		<p>
+			Este test inserta una operación para una contrapartida que tiene contacto SwiftConf pero no tiene SDI que cumplan con los 
+			requisitos para su asignación automática. La operación, por tanto, quedará detenida en VALIDATE_NO_SDI generando una 
+			confirmación de tipo SWIFTCONFIRM.
+		</p>
+
+		<h2>Datos de Referencia</h2>
+		<p>
+    		Insertamos una operación de tipo FXSwap utilizando el template 
+    		<span concordion:set="#template">GenConfSwifNOSDIFX.xml</span>
+	       	con la contrapartida  
+	       	<span concordion:execute="setProperty('CPTY', #TEXT)">AAT_AISIGBLON_SWAP</span>, 
+	       	con el Trade Keyword IS_CLS = false.
+		</p>
+		
+		<p>
+			La External Reference de la operación será 
+			<span concordion:echo="#extRef=generateExternalRef()"> </span>  
+			<span concordion:execute="setProperty('EXTERNAL_REFERENCE', #extRef)"> </span>
+			y el Pricing Environment será
+			 <span concordion:set="#pricingEnv">OFFICIAL-MAD</span>.
+		</p>
+
+		<p>
+			A modo de referencia se pueden tener en cuenta las siguientes
+			imágenes: 
+		</p>
+		<p>
+    		Los datos correspondientes al contacto SwiftConf de la contrapartida AAT_AISIGBLON_SWAP:
+			<span style="visibility: hidden;" concordion:set="#contactCpty">ContactCprtyFXnoSDI.png</span>
+			<span ext:embed="getImage(#contactCpty)"> </span>
+		</p>
+
+		<h2>Proceso de prueba</h2>
+		<p>			
+           Insertamos la operación. Para ello se toma como trade de referencia el que se muestra a continuación:
+			<span style="visibility: hidden;" concordion:set="#TradeFX">TradeConfSwiftNoSDI.png</span>
+			<span ext:embed="getImage(#TradeFX)"> </span>
+			<span concordion:execute="#ack=insertCDUF(#template)"> </span> 
+		</p>        
+		
+<button onclick="showMessage('ack')">Mostrar Ack completo</button>	
+<pre concordion:echo="#ack" id="ack" style="display:none"> </pre>			
+
+		<table concordion:execute="#trade = getTrade(#ack)">
+			<tr>
+				<th concordion:echo="#trade.id">Trade Id</th>
+				<th concordion:assertEquals="#trade.status">Status</th>
+				<th concordion:echo="#trade.settleDate">Settle Date</th>
+			</tr>
+			<tr><td></td><td>VALIDATED_NO_SDI</td><td></td></tr>
+		</table>
+
+		<p>
+            Esperamos hasta que el <span concordion:set="#engine">MessageEngine</span>
+            (<span concordion:echo="waitForEngine(#engine)"></span>)
+            procesen todos sus eventos pendientes.
+		</p>
+		
+		
+		<h2>Resultado</h2>
+		
+	    <p>
+			Comprobamos que Calypso ha generado una confirmacion de tipo 
+			<span concordion:set="#msgType">SWIFTCONFIRM</span>. 
+			Comprobamos su template asociado, 
+			estado y entidad receptora del mensaje: 
+		</p>
+
+		<table concordion:execute="#msg=getMessageByMsgType(#trade, #msgType)">
+				<tr>
+					<th concordion:echo="#msg.id">Message Id</th>
+					<th concordion:echo="#msg.tradeId">Trade Id</th>
+					<th concordion:assertEquals="#msg.eventType">Event Type</th>
+					<th concordion:assertEquals="#msg.messageType">Message Type</th>
+					<th concordion:assertEquals="#msg.templateName">Template Name</th>
+					<th concordion:assertEquals="#msg.receiver">Receiver</th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td>VALIDATED_NO_SDI_TRADE</td>
+					<td>SWIFTCONFIRM</td>
+					<td>MT300</td>
+					<td>AAT_AISIGBLON_SWAP</td>
+				</tr>
+		</table>
+		<p>
+			Se comprueba que el mensaje tiene los códigos BIC de la contrapartida y el agente informados:
+			<span concordion:execute="#swiftMessage=formatSwiftDocumentByTemplate(#extRef, 'MT300', #pricingEnv)"></span>
+		</p>
+	    
+	    <table>
+	        <tr>
+	            <th>Descripción</th>
+	            <th>TAG</th>
+	            <th>Value</th>
+	        </tr>
+	        <tr><td>General Information</td>			<td concordion:set="#tag">15A</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Transaction Reference Number</td>	<td concordion:set="#tag">20</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Type of Operation</td>				<td concordion:set="#tag">22A</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Scope of Operation</td>				<td concordion:set="#tag">94A</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Common Reference</td>				<td concordion:set="#tag">22C</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Party A</td>						<td concordion:set="#tag">82A</td>	<td concordion:assertEquals="getTag(#tag, 1)">BBVAESM0FXD</td></tr>	        
+	        <tr><td>Party B</td>		            	<td concordion:set="#tag">87A</td>	<td concordion:assertEquals="getTag(#tag, 1)">AISIGB20XXX</td></tr>
+	        <tr><td>New Sequence</td>					<td concordion:set="#tag">15B</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Trade Date</td>						<td concordion:set="#tag">30T</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Value Date</td>						<td concordion:set="#tag">30V</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Exchange Rate</td>					<td concordion:set="#tag">36</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Currency Amount</td>				<td concordion:set="#tag">32B</td>	<td concordion:assertEquals="getTag(#tag, 1)">EUR3811561,48</td></tr>
+	        <tr><td>Delivery Agent</td>					<td concordion:set="#tag">53A</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Receiving Agent</td>            	<td concordion:set="#tag">57A</td>	<td concordion:assertEquals="getTag(#tag, 1)">BBVAESM0FXD</td></tr>
+	        <tr><td>Currency Amount</td>				<td concordion:set="#tag">33B</td>	<td concordion:assertEquals="getTag(#tag, 1)">CNY30000000,</td></tr>
+	        <tr><td>Delivery Agent</td>					<td concordion:set="#tag">53A</td>	<td concordion:echo="getTag(#tag, 1)"></td></tr>
+	        <tr><td>Receiving Agent</td>            	<td concordion:set="#tag">57A</td>	<td concordion:echo="getTag(#tag, 2)"></td></tr>
+	        <tr><td>Beneficiary Institution</td>		<td concordion:set="#tag">58A</td>	<td concordion:assertEquals="getTag(#tag, 1)">AISIGB20XXX</td></tr>
+	    </table>
+	</body>
+	
+</html>
+		
