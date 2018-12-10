@@ -14,7 +14,7 @@
 		                x.style.display = "none";
 		            }
 	            }
-	        </script>
+	    </script>
 	</head>
 
 	<body>
@@ -86,7 +86,7 @@
 		</p>
 		
 		<p>Las Liquidaciones (Transfers) de este trade son:</p>
-		<table concordion:verifyRows="#xfer : getTransfers(#trade)">
+		<table concordion:verifyRows="#xfer : getNettedTransfers(#trade)">
 			<tr>
 				<th concordion:echo="#xfer.id">Transfer Id</th>
 				<th concordion:assertEquals="#xfer.eventType">Event Type</th>

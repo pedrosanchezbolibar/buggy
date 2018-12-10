@@ -1,22 +1,106 @@
 package calypsox.buggy.msg;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.calypso.tk.bo.BOMessage;
 import com.calypso.tk.bo.MessageFormatException;
 import com.calypso.tk.bo.SWIFTFormatterUtil;
 import com.calypso.tk.bo.document.AdviceDocument;
 import com.calypso.tk.bo.swift.SWIFTFormatter;
 import com.calypso.tk.bo.swift.SwiftMessage;
+import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.marketdata.PricingEnv;
+import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
+import com.calypso.tk.service.RemoteBackOffice;
 import com.calypso.tk.util.MessageArray;
 
+import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.product.ATTrade;
 
 /**
- * The Class ATMessages.
+ * Search and manipulates BOMessage and ATMessage
  */
 public class ATMessages {
+
+    /** The Constant ORDER_BY. */
+    private static final String ORDER_BY = "MESSAGE_TYPE , EVENT_TYPE , TEMPLATE_NAME , ADDRESS_METHOD , MESSAGE_ID ";;
+
+    /**
+     * Apply action to a message.
+     *
+     * @param msg      the msg
+     * @param action   the action
+     * @param userName the username
+     * @return true, if successful
+     * @throws CalypsoServiceException    the calypso service exception
+     * @throws CloneNotSupportedException the clone not supported exception
+     */
+    public boolean applyActionToMessage(final ATMessage msg, final String action, final String userName)
+	    throws CalypsoServiceException, CloneNotSupportedException {
+	boolean rst = false;
+
+	String userNameParam = userName;
+	if (userNameParam == null) {
+	    userNameParam = "calypso_user";
+	}
+
+	final ATDSConnection dsconn = new ATDSConnection(userNameParam);
+
+	final BOMessage clonedMsg = (BOMessage) msg.getBOMessage().clone();
+
+	final StringBuilder errorText = new StringBuilder();
+	if (AccessUtil.isAuthorized(clonedMsg, action, errorText)) {
+	    clonedMsg.setAction(Action.valueOf(action));
+	    clonedMsg.setEnteredUser(userNameParam);
+
+	    dsconn.getRemoteBackOffice().save(clonedMsg, 0, null);
+
+	    rst = true;
+	} else {
+	    dsconn.restoreRealConnection();
+
+	    throw new SecurityException("Action can't be performed with user " + userNameParam);
+	}
+
+	dsconn.restoreRealConnection();
+
+	return rst;
+    }
+
+    /**
+     * Format swift document.
+     *
+     * @param message    the message
+     * @param pricingEnv the pricing env
+     * @return the AT swift message
+     * @throws CalypsoServiceException the calypso service exception
+     * @throws MessageFormatException  the message format exception
+     */
+    public ATSwiftMessage formatSwiftDocument(final ATMessage message, final String pricingEnv)
+	    throws CalypsoServiceException, MessageFormatException {
+	return new ATSwiftMessage(generateSwiftDocument(message.getBOMessage(), pricingEnv));
+    }
+
+    /**
+     * Gets the message by event types.
+     *
+     * @param trade    the trade
+     * @param msgTypes the msg types
+     * @return the message by event types
+     * @throws CalypsoServiceException the calypso service exception
+     */
+    public List<ATMessage> getMessageByEventTypes(final ATTrade trade, final List<String> msgTypes)
+	    throws CalypsoServiceException {
+	final String where = String.format("trade_id = %d and event_type in ('%s')", trade.getId(),
+		StringUtils.join(msgTypes, "','"));
+	return getMessagesOrdered(where);
+    }
 
     /**
      * Gets the trade's message by msg type.
@@ -29,6 +113,54 @@ public class ATMessages {
     public ATMessage getMessageByMsgType(final ATTrade trade, final String msgType) throws CalypsoServiceException {
 	final String where = String.format("trade_id = %d and MESSAGE_TYPE = '%s'", trade.getId(), msgType);
 	return new ATMessage(getFirstMessage(where));
+    }
+
+    /**
+     * Gets the message by msg types.
+     *
+     * @param trade    the trade
+     * @param msgTypes the msg types
+     * @return the message by msg types
+     * @throws CalypsoServiceException the calypso service exception
+     */
+    public List<ATMessage> getMessageByMsgTypes(final ATTrade trade, final List<String> msgTypes)
+	    throws CalypsoServiceException {
+	final String where = String.format("trade_id = %d and message_type in ('%s')", trade.getId(),
+		StringUtils.join(msgTypes, "','"));
+	return getMessagesOrdered(where);
+    }
+
+    /**
+     * Reload a message from database
+     *
+     * @param msg the msg
+     * @return the AT message
+     * @throws CalypsoServiceException the calypso service exception
+     */
+    public ATMessage reload(final ATMessage msg) throws CalypsoServiceException {
+	return new ATMessage(msg.getId());
+    }
+
+    /**
+     * Generate swift document.
+     *
+     * @param boMessage      the bo message
+     * @param pricingEnvName the pricing env name
+     * @return the swift message
+     * @throws CalypsoServiceException the calypso service exception
+     * @throws MessageFormatException  the message format exception
+     */
+    private SwiftMessage generateSwiftDocument(final BOMessage boMessage, final String pricingEnvName)
+	    throws CalypsoServiceException, MessageFormatException {
+	final SWIFTFormatter swiftFormatter = SWIFTFormatterUtil.findSWIFTFormatter(boMessage);
+	final PricingEnv pricingEnv = DSConnection.getDefault().getRemoteMarketData().getPricingEnv(pricingEnvName);
+	final AdviceDocument doc = swiftFormatter.generate(pricingEnv, boMessage, true, DSConnection.getDefault());
+	final StringBuffer output = doc.getDocument();
+	SwiftMessage.stripExtraInfo(output);
+
+	final SwiftMessage result = new SwiftMessage();
+	result.parseSwiftText(output.toString(), false);
+	return result;
     }
 
     /**
@@ -46,22 +178,39 @@ public class ATMessages {
 	return null;
     }
 
-    public ATSwiftMessage formatSwiftDocument(final ATMessage message, final String pricingEnv)
-	    throws CalypsoServiceException, MessageFormatException {
-	return new ATSwiftMessage(generateSwiftDocument(message.getBOMessage(), pricingEnv));
+    /**
+     * Gets the messages sortered.
+     *
+     * @param where the where
+     * @return the messages sortered
+     * @throws CalypsoServiceException the remote exception
+     */
+    private List<ATMessage> getMessagesOrdered(final String where) throws CalypsoServiceException {
+
+	if (!where.isEmpty()) {
+	    final RemoteBackOffice remoteBO = DSConnection.getDefault().getRemoteBackOffice();
+	    final MessageArray array = remoteBO.getMessages(null, where, ORDER_BY);
+	    return toATMessageList(array);
+	} else {
+	    return null;
+	}
     }
 
-    private SwiftMessage generateSwiftDocument(final BOMessage boMessage, final String pricingEnvName)
-	    throws CalypsoServiceException, MessageFormatException {
-	final SWIFTFormatter swiftFormatter = SWIFTFormatterUtil.findSWIFTFormatter(boMessage);
-	final PricingEnv pricingEnv = DSConnection.getDefault().getRemoteMarketData().getPricingEnv(pricingEnvName);
-	final AdviceDocument doc = swiftFormatter.generate(pricingEnv, boMessage, true, DSConnection.getDefault());
-	final StringBuffer output = doc.getDocument();
-	SwiftMessage.stripExtraInfo(output);
+    /**
+     * To AT message list.
+     *
+     * @param array the array
+     * @return the list
+     */
+    private List<ATMessage> toATMessageList(final MessageArray array) {
+	final List<ATMessage> result = new ArrayList<>();
 
-	final SwiftMessage result = new SwiftMessage();
-	result.parseSwiftText(output.toString(), false);
+	final Iterator<BOMessage> iterator = array.iterator();
+	while (iterator.hasNext()) {
+	    final BOMessage msg = iterator.next();
+	    result.add(new ATMessage(msg));
+	}
+
 	return result;
     }
-
 }

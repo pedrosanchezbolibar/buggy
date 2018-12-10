@@ -307,4 +307,13 @@ public class ATTrade {
 	return trade.toString();
     }
 
+    /**
+     * Gets the Calypso trade.
+     *
+     * @return the trade
+     */
+    public Trade getTrade() {
+	return trade;
+    }
+
 }

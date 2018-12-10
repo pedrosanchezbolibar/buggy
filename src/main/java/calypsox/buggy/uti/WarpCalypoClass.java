@@ -2,7 +2,7 @@ package calypsox.buggy.uti;
 
 import java.lang.reflect.Method;
 
-import com.calypso.tk.bo.BOMessage;
+import com.calypso.tk.product.Cash;
 
 public class WarpCalypoClass {
 
@@ -10,7 +10,7 @@ public class WarpCalypoClass {
 
     public static void main(final String[] args) {
 	int count = 0;
-	final Class<?> clazz = BOMessage.class;
+	final Class<?> clazz = Cash.class;
 	for (final Method method : clazz.getDeclaredMethods()) {
 	    final String methodName = method.getName();
 	    final String newMethodName = methodName.replaceAll("LongId", "Id");

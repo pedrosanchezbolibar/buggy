@@ -37,6 +37,7 @@ import calypsox.buggy.uti.References;
 import calypsox.buggy.xfer.ATTransfer;
 import calypsox.buggy.xfer.ATTransfers;
 
+// TODO: Auto-generated Javadoc
 /**
  * Parent class for all tests fixtures.
  */
@@ -52,7 +53,7 @@ public class BuggyAT extends BuggyVersion {
     private static final int DEFAULT_CHECK_TIMES = 200;
 
     /**
-     * Inits the Calypso Environment
+     * Inits the Calypso Environment.
      *
      * @throws ConnectException the connect exception
      */
@@ -70,6 +71,36 @@ public class BuggyAT extends BuggyVersion {
      */
     public BuggyAT() {
 	testProperties = new Properties();
+    }
+
+    /**
+     * Apply action to message.
+     *
+     * @param message  the message
+     * @param action   the action
+     * @param userName the user name
+     * @return true, if successful
+     * @throws CalypsoServiceException    the calypso service exception
+     * @throws CloneNotSupportedException the clone not supported exception
+     */
+    public boolean applyActionToMessage(final ATMessage message, final String action, final String userName)
+	    throws CalypsoServiceException, CloneNotSupportedException {
+	return new ATMessages().applyActionToMessage(message, action, userName);
+    }
+
+    /**
+     * Apply action to trade.
+     *
+     * @param trade    the trade
+     * @param action   the action
+     * @param userName the user name
+     * @return true, if successful
+     * @throws CalypsoServiceException    the calypso service exception
+     * @throws CloneNotSupportedException the clone not supported exception
+     */
+    public boolean applyActionToTrade(final ATTrade trade, final String action, final String userName)
+	    throws CalypsoServiceException, CloneNotSupportedException {
+	return new ATTrades().applyActionToTrade(trade, action, userName);
     }
 
     /**
@@ -142,6 +173,30 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Gets the messages by event types.
+     *
+     * @param trade    the trade
+     * @param msgTypes the msg types
+     * @return the messages by event types
+     * @throws CalypsoServiceException the calypso service exception
+     */
+    public List<ATMessage> getMessagesByEventTypes(final ATTrade trade, final List<String> msgTypes)
+	    throws CalypsoServiceException {
+	return new ATMessages().getMessageByEventTypes(trade, msgTypes);
+    }
+
+    /**
+     * Gets the netting transfers of the trade.
+     *
+     * @param trade the trade
+     * @return the transfers
+     * @throws CalypsoServiceException the calypso service exception
+     */
+    public List<ATTransfer> getNettedTransfers(final ATTrade trade) throws CalypsoServiceException {
+	return new ATTransfers().getNettedTransfers(trade);
+    }
+
+    /**
      * Gets the property.
      *
      * @param key the key
@@ -188,17 +243,6 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Gets the netting transfers of the trade.
-     *
-     * @param trade the trade
-     * @return the transfers
-     * @throws CalypsoServiceException the calypso service exception
-     */
-    public List<ATTransfer> getTransfers(final ATTrade trade) throws CalypsoServiceException {
-	return new ATTransfers().getTransfers(trade);
-    }
-
-    /**
      * Insert CDUF.
      *
      * @param template the template
@@ -224,6 +268,17 @@ public class BuggyAT extends BuggyVersion {
 	    throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 	final Method method = obj.getClass().getMethod(methodName, String.class);
 	return method.invoke(obj, param).toString();
+    }
+
+    /**
+     * Reload.
+     *
+     * @param msg the msg
+     * @return the AT message
+     * @throws CalypsoServiceException the calypso service exception
+     */
+    public ATMessage reload(final ATMessage msg) throws CalypsoServiceException {
+	return new ATMessages().reload(msg);
     }
 
     /**
