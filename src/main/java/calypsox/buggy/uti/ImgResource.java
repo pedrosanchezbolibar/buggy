@@ -22,6 +22,7 @@ public class ImgResource extends ResourceReader {
     /**
      * Gets the image.
      *
+     * @param owner    the owner
      * @param resource the resource
      * @return the image
      * @throws IOException Signals that an I/O exception has occurred.
@@ -33,6 +34,7 @@ public class ImgResource extends ResourceReader {
     /**
      * Gets the image.
      *
+     * @param owner    the owner
      * @param resource the resource
      * @param width    the width
      * @param height   the height

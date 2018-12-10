@@ -31,7 +31,8 @@ import com.calypso.tk.util.VersionMismatchException;
 import calypsox.buggy.uti.CalypsoEnvironment;
 
 /**
- * The Class ATDSConnection.
+ * The Class ATDSConnection. Used to simulate a DSConnection with a different
+ * user
  */
 public class ATDSConnection extends DSConnection {
 
@@ -40,6 +41,8 @@ public class ATDSConnection extends DSConnection {
 
     /**
      * Instantiates a new AATDS connection.
+     *
+     * @param userName the user name
      */
     public ATDSConnection(final String userName) {
 	alternativeUser = userName;

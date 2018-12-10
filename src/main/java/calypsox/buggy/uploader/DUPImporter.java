@@ -8,15 +8,16 @@ import com.calypso.tk.util.DataUploaderUtil;
 import calypsox.buggy.prototype.Prototype;
 
 /**
- * The Class DUPImporter.
+ * Import data in Calypso using the DataUploader
  */
 public class DUPImporter {
 
     /**
-     * Insert a CDUF file using a prototype
+     * Insert a CDUF file using a prototype.
      *
-     * @param owner the owner
-     * @param params the params
+     * @param owner    the owner
+     * @param template the template
+     * @param params   the params
      * @return the DUP ack
      * @throws Exception the exception
      */

@@ -15,7 +15,7 @@ import com.calypso.tk.publish.jaxb.CalypsoTrades;
 import calypsox.buggy.uti.JAXBContextBinder;
 
 /**
- * The Class AATAck.
+ * Bean to encapsulate and process a Data Uploader ack.
  */
 public class DUPAck {
 
@@ -25,10 +25,13 @@ public class DUPAck {
     /** The ack str. */
     private final String ackStr;
 
+    /** The jaxb context. */
     private static JAXBContext jaxbContext;
 
+    /** The unmarshaller. */
     private static Unmarshaller unmarshaller;
 
+    /** The marshaller. */
     private static Marshaller marshaller;
 
     static {
@@ -55,7 +58,7 @@ public class DUPAck {
     /**
      * Instantiates a new AAT ack.
      *
-     * @param ackStr the ack str
+     * @param ack the ack
      */
     public DUPAck(final CalypsoAcknowledgement ack) {
 	ackStr = marshal(ack);
@@ -84,7 +87,7 @@ public class DUPAck {
     /**
      * Unmarshall.
      *
-     * @param ackStr the ack str
+     * @param ack the ack
      * @return the calypso acknowledgement
      */
     protected String marshal(final CalypsoAcknowledgement ack) {

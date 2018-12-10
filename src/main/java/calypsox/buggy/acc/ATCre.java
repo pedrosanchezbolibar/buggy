@@ -18,7 +18,7 @@ import calypsox.buggy.ui.ATAmount;
 import calypsox.buggy.xfer.ATTransfer;
 
 /**
- * The Class ATCre.
+ * Encapsulate and format the information of a BOCre
  */
 public class ATCre {
 

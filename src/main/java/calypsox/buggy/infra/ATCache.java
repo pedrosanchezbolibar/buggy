@@ -5,11 +5,16 @@ import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.service.DSConnection;
 import com.calypso.tk.service.LocalCache;
 
+/**
+ * The Class ATCache.
+ */
 public class ATCache {
+
     /**
-     * Clear the especific cache plus BOCache and LocalCache.
+     * Clear the specific cache plus BOCache and LocalCache.
      *
-     * @throws RemoteException
+     * @param cache the cache
+     * @throws CalypsoServiceException the Calypso service exception
      */
     public void clearCache(final String cache) throws CalypsoServiceException {
 	DSConnection.getDefault().getRemoteAccess().clearCache(cache);
