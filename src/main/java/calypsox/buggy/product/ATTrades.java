@@ -24,8 +24,12 @@ public class ATTrades {
      * @throws CalypsoServiceException the calypso service exception
      */
     public ATTrade getTrade(final DUPAck ack) throws CalypsoServiceException {
+	return createTrade(ack.getTradeId());
+    }
+
+    public ATTrade createTrade(final int tradeId) throws CalypsoServiceException {
 	final DSConnection dscon = CalypsoEnvironment.getInstance().getDSConnection();
-	final Trade trade = dscon.getRemoteTrade().getTrade(ack.getTradeId());
+	final Trade trade = dscon.getRemoteTrade().getTrade(tradeId);
 	return createTrade(trade);
     }
 

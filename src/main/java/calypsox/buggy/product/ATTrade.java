@@ -3,9 +3,7 @@ package calypsox.buggy.product;
 import java.util.List;
 
 import com.calypso.tk.bo.Fee;
-import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.Trade;
-import com.calypso.tk.service.DSConnection;
 
 /**
  * The Class ATTrade.
@@ -25,16 +23,6 @@ public class ATTrade {
 	    throw new IllegalArgumentException("Trade is null");
 	}
 	this.trade = trade;
-    }
-
-    /**
-     * Instantiates a new AT trade.
-     *
-     * @param tradeId the trade id
-     * @throws CalypsoServiceException the calypso service exception
-     */
-    public ATTrade(final int tradeId) throws CalypsoServiceException {
-	trade = DSConnection.getDefault().getRemoteTrade().getTrade(tradeId);
     }
 
     /**

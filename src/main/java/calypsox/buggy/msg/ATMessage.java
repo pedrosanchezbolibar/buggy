@@ -9,6 +9,7 @@ import com.calypso.tk.core.Status;
 import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.product.ATTrade;
+import calypsox.buggy.product.ATTrades;
 import calypsox.buggy.refdata.ATBook;
 import calypsox.buggy.refdata.ATLEContact;
 import calypsox.buggy.refdata.ATLegalEntity;
@@ -52,7 +53,7 @@ public class ATMessage {
     }
 
     public ATTrade getTrade() throws CalypsoServiceException {
-	return new ATTrade(bomessage.getTradeId());
+	return new ATTrades().createTrade(bomessage.getTradeId());
     }
 
     public ATLegalEntity getLegalEntity() {
