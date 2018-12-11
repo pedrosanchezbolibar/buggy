@@ -53,6 +53,7 @@ public class ATScheduledTask {
 
     public void execute() {
 	// TODO: ejecutar la tarea con el ScheduledTaskRunner de calypso
+	// com.calypso.apps.startup.StartQuartzTaskRunner
     }
 
 }
