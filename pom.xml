@@ -119,6 +119,14 @@
 			<scope>system</scope>
 			<systemPath>${calypso.home}/client/lib/calypsoml-core-4.4.3.jar</systemPath>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.calypso</groupId>
+			<artifactId>calypsoml-impl</artifactId>
+			<version>15.2.0.27</version>
+			<scope>system</scope>
+			<systemPath>${calypso.home}/client/lib/calypsoml-impl-15.2.0.27.jar</systemPath>
+		</dependency>
 
 		<dependency>
 			<groupId>com.calypso</groupId>

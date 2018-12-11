@@ -22,6 +22,7 @@ import com.calypso.tk.util.ConnectException;
 
 import calypsox.buggy.acc.ATCre;
 import calypsox.buggy.acc.ATCres;
+import calypsox.buggy.cml.CMLImporter;
 import calypsox.buggy.infra.ATEngines;
 import calypsox.buggy.msg.ATMessage;
 import calypsox.buggy.msg.ATMessages;
@@ -249,8 +250,19 @@ public class BuggyAT extends BuggyVersion {
      * @return the DUP ack
      * @throws Exception the exception
      */
-    public DUPAck insertCDUF(final String template) throws Exception {
+    public DUPAck importCDUF(final String template) throws Exception {
 	return new DUPImporter().insert(this, template, testProperties);
+    }
+
+    /**
+     * Import a trade in CML format.
+     *
+     * @param template the template
+     * @return the list
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public ATTrade importCMLTrade(final String template) throws IOException {
+	return new CMLImporter().importTrade(this, template, testProperties);
     }
 
     /**
@@ -258,16 +270,17 @@ public class BuggyAT extends BuggyVersion {
      *
      * @param obj        the obj
      * @param methodName the method name
-     * @param param      the param
+     * @param params     the params
      * @return the string
      * @throws NoSuchMethodException     the no such method exception
      * @throws IllegalAccessException    the illegal access exception
      * @throws InvocationTargetException the invocation target exception
      */
-    public String invoke(final Object obj, final String methodName, final String param)
+    public String invoke(final Object obj, final String methodName, final List<String> params)
 	    throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	params.toArray(new String[] {});
 	final Method method = obj.getClass().getMethod(methodName, String.class);
-	return method.invoke(obj, param).toString();
+	return method.invoke(obj, params).toString();
     }
 
     /**

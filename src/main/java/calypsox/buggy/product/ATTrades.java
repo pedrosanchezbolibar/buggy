@@ -2,6 +2,8 @@ package calypsox.buggy.product;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
@@ -99,6 +101,21 @@ public class ATTrades {
      */
     public ATTrade getTrade(final DUPAck ack) throws CalypsoServiceException {
 	return createTrade(ack.getTradeId());
+    }
+
+    /**
+     * Creates the trades.
+     *
+     * @param trades the trades
+     * @return the list
+     */
+    public List<ATTrade> createTrades(final List<Trade> trades) {
+	final List<ATTrade> tradeList = new ArrayList<>();
+	for (final Trade trade : trades) {
+	    final ATTrade atTrade = createTrade(trade);
+	    tradeList.add(atTrade);
+	}
+	return tradeList;
     }
 
 }
