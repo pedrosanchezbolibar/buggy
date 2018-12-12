@@ -28,147 +28,168 @@ public class ATMessages {
     /**
      * Apply action to a message.
      *
-     * @param msg the msg
-     * @param action the action
-     * @param userName the username
+     * @param msg
+     *            the msg
+     * @param action
+     *            the action
+     * @param userName
+     *            the username
      * @return true, if successful
-     * @throws CalypsoServiceException the calypso service exception
-     * @throws CloneNotSupportedException the clone not supported exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
      */
     public boolean applyActionToMessage(final ATMessage msg, final String action, final String userName)
-	    throws CalypsoServiceException, CloneNotSupportedException {
-	boolean rst = false;
+            throws CalypsoServiceException, CloneNotSupportedException {
+        boolean rst = false;
 
-	String userNameParam = userName;
-	if (userNameParam == null) {
-	    userNameParam = "calypso_user";
-	}
+        String userNameParam = userName;
+        if (userNameParam == null) {
+            userNameParam = "calypso_user";
+        }
 
-	final ATDSConnection dsconn = new ATDSConnection(userNameParam);
+        final ATDSConnection dsconn = new ATDSConnection(userNameParam);
 
-	final BOMessage clonedMsg = (BOMessage) msg.getBOMessage().clone();
+        final BOMessage clonedMsg = (BOMessage) msg.getBOMessage().clone();
 
-	final StringBuilder errorText = new StringBuilder();
-	if (AccessUtil.isAuthorized(clonedMsg, action, errorText)) {
-	    clonedMsg.setAction(Action.valueOf(action));
-	    clonedMsg.setEnteredUser(userNameParam);
+        final StringBuilder errorText = new StringBuilder();
+        if (AccessUtil.isAuthorized(clonedMsg, action, errorText)) {
+            clonedMsg.setAction(Action.valueOf(action));
+            clonedMsg.setEnteredUser(userNameParam);
 
-	    dsconn.getRemoteBackOffice().save(clonedMsg, 0, null);
+            dsconn.getRemoteBackOffice().save(clonedMsg, 0, null);
 
-	    rst = true;
-	} else {
-	    dsconn.restoreRealConnection();
+            rst = true;
+        } else {
+            dsconn.restoreRealConnection();
 
-	    throw new SecurityException("Action can't be performed with user " + userNameParam);
-	}
+            throw new SecurityException("Action can't be performed with user " + userNameParam);
+        }
 
-	dsconn.restoreRealConnection();
+        dsconn.restoreRealConnection();
 
-	return rst;
+        return rst;
     }
 
     /**
      * Gets the message by event types.
      *
-     * @param trade the trade
-     * @param msgTypes the msg types
+     * @param trade
+     *            the trade
+     * @param msgTypes
+     *            the msg types
      * @return the message by event types
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public List<ATMessage> getMessageByEventTypes(final ATTrade trade, final List<String> msgTypes)
-	    throws CalypsoServiceException {
-	final String where = String.format("trade_id = %d and event_type in ('%s')", trade.getId(),
-		StringUtils.join(msgTypes, "','"));
-	return getMessagesOrdered(where);
+            throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and event_type in ('%s')", trade.getId(),
+                StringUtils.join(msgTypes, "','"));
+        return getMessagesOrdered(where);
     }
 
     /**
      * Gets the trade's message by msg type.
      *
-     * @param trade the trade
-     * @param msgType the msg type
+     * @param trade
+     *            the trade
+     * @param msgType
+     *            the msg type
      * @return the message by msg type
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATMessage getMessageByMsgType(final ATTrade trade, final String msgType) throws CalypsoServiceException {
-	final String where = String.format("trade_id = %d and MESSAGE_TYPE = '%s'", trade.getId(), msgType);
-	return new ATMessage(getFirstMessage(where));
+        final String where = String.format("trade_id = %d and MESSAGE_TYPE = '%s'", trade.getId(), msgType);
+        return new ATMessage(getFirstMessage(where));
     }
 
     /**
      * Gets the message by msg types.
      *
-     * @param trade the trade
-     * @param msgTypes the msg types
+     * @param trade
+     *            the trade
+     * @param msgTypes
+     *            the msg types
      * @return the message by msg types
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public List<ATMessage> getMessageByMsgTypes(final ATTrade trade, final List<String> msgTypes)
-	    throws CalypsoServiceException {
-	final String where = String.format("trade_id = %d and message_type in ('%s')", trade.getId(),
-		StringUtils.join(msgTypes, "','"));
-	return getMessagesOrdered(where);
+            throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and message_type in ('%s')", trade.getId(),
+                StringUtils.join(msgTypes, "','"));
+        return getMessagesOrdered(where);
     }
 
     /**
      * Reload a message from database
      *
-     * @param msg the msg
+     * @param msg
+     *            the msg
      * @return the AT message
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATMessage reload(final ATMessage msg) throws CalypsoServiceException {
-	return new ATMessage(msg.getId());
+        return new ATMessage(msg.getId());
     }
 
     /**
      * Gets the first message.
      *
-     * @param where the where clause
+     * @param where
+     *            the where clause
      * @return the message
-     * @throws CalypsoServiceException the remote exception
+     * @throws CalypsoServiceException
+     *             the remote exception
      */
     private BOMessage getFirstMessage(final String where) throws CalypsoServiceException {
-	final MessageArray messages = DSConnection.getDefault().getRemoteBackOffice().getMessages(where);
-	if (!messages.isEmpty()) {
-	    return messages.get(0);
-	}
-	return null;
+        final MessageArray messages = DSConnection.getDefault().getRemoteBackOffice().getMessages(where);
+        if (!messages.isEmpty()) {
+            return messages.get(0);
+        }
+        return null;
     }
 
     /**
      * Gets the messages sortered.
      *
-     * @param where the where
+     * @param where
+     *            the where
      * @return the messages sortered
-     * @throws CalypsoServiceException the remote exception
+     * @throws CalypsoServiceException
+     *             the remote exception
      */
     private List<ATMessage> getMessagesOrdered(final String where) throws CalypsoServiceException {
 
-	if (!where.isEmpty()) {
-	    final RemoteBackOffice remoteBO = DSConnection.getDefault().getRemoteBackOffice();
-	    final MessageArray array = remoteBO.getMessages(null, where, ORDER_BY);
-	    return toATMessageList(array);
-	} else {
-	    return null;
-	}
+        if (!where.isEmpty()) {
+            final RemoteBackOffice remoteBO = DSConnection.getDefault().getRemoteBackOffice();
+            final MessageArray array = remoteBO.getMessages(null, where, ORDER_BY);
+            return toATMessageList(array);
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     /**
      * To AT message list.
      *
-     * @param array the array
+     * @param array
+     *            the array
      * @return the list
      */
     private List<ATMessage> toATMessageList(final MessageArray array) {
-	final List<ATMessage> result = new ArrayList<>();
+        final List<ATMessage> result = new ArrayList<>();
 
-	final Iterator<BOMessage> iterator = array.iterator();
-	while (iterator.hasNext()) {
-	    final BOMessage msg = iterator.next();
-	    result.add(new ATMessage(msg));
-	}
+        final Iterator<BOMessage> iterator = array.iterator();
+        while (iterator.hasNext()) {
+            final BOMessage msg = iterator.next();
+            result.add(new ATMessage(msg));
+        }
 
-	return result;
+        return result;
     }
 }
