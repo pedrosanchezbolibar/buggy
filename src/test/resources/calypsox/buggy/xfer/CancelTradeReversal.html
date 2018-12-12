@@ -45,7 +45,7 @@
 			<span concordion:echo="#extRef=generateExternalRef()"> </span>  
 			<span concordion:execute="setProperty('EXTERNAL_REFERENCE', #extRef)"> </span>
 			y con contrapartida 
-			<span concordion:execute="setProperty('CPTY', #TEXT)">FINANCIAL_SWIFT</span>.
+			<span concordion:execute="setProperty('CPTY', #TEXT)">NONFINANCIAL_SWIFT_2</span>.
 		</p>
 			
 	
@@ -54,8 +54,9 @@
 		<p>
 			Utilizaremos el template 
 			<span concordion:set="#template">Cash.xml</span>        	
-			para insertar la operación. 
-			<span concordion:execute="#trade=importCMLTrade(#template)"> </span>
+			para  
+			<span concordion:execute="#tradeId=importCMLTrade(#template)">insertar</span>
+			la operación.
 		</p>
 
 		<p>
@@ -67,15 +68,14 @@
 		<p>
 			Comprobamos los datos financieros de la operación en la tabla:
 		</p>
-		<table>
+		<table concordion:execute="#trade=getTrade(#tradeId)">
 			<tr>
 				<th concordion:echo="#trade.id">Trade id</th>
 				<th concordion:assertEquals="#trade.productType">Product Type</th>
 				<th concordion:assertEquals="#trade.status">Status</th>
 				<th concordion:assertEquals="#trade.tradeDate">Trade Date</th>
 				<th concordion:assertEquals="#trade.settleDate">Settle Date</th>
-                <th concordion:assertEquals="#trade.primaryAmount">Primary Amount</th>  
-                <th concordion:assertEquals="#trade.quotingAmount">Quoting Amount</th>  
+                <th concordion:assertEquals="#trade.principalAmount">Primary Amount</th>  
 			</tr>
 			<tr>
 				<td></td>
@@ -83,8 +83,7 @@
 				<td>VERIFIED</td>
 				<td>31/05/16 09:00:00.000 o'clock CEST</td>
 				<td>02/06/2016</td>
-				<td> </td>
-				<td> </td>
+				<td>-1,000,000.00 USD</td>
 			</tr>
 		</table>
 			
@@ -104,7 +103,6 @@
 				<th concordion:echo="#transfer.id">Id</th>
 				<th concordion:assertEquals="#transfer.settlementMethod">Settle Method</th>
 				<th concordion:assertEquals="#transfer.settlementAmount">Amount</th>
-				<th concordion:assertEquals="#transfer.settlementCurrency">Ccy</th>
 				<th concordion:assertEquals="#transfer.eventType">Event Type</th>
 				<th concordion:assertEquals="#transfer.status">Status</th>
 				<th concordion:assertEquals="#transfer.valueDate">Value Date</th>
@@ -113,8 +111,7 @@
 			<tr>
 				<td></td>
 				<td>SWIFT</td>
-				<td>-1000000.0</td>
-				<td>USD</td>
+				<td>-1,000,000.00 USD</td>
 				<td>PAYMENT</td>
 				<td>BACKDATED</td>
 				<td>02/06/2016</td>
@@ -123,8 +120,7 @@
 			<tr>
 				<td></td>
 				<td>SWIFT</td>
-				<td>1048688.89</td>
-				<td>USD</td>
+				<td>1,048,688.89 USD</td>
 				<td>RECEIPT</td>
 				<td>VERIFIED</td>
 				<td>02/06/2022</td>
@@ -148,7 +144,7 @@
 				<th concordion:echo="#msg.id">Id</th>
 				<th concordion:assertEquals="#msg.templateName">Plantilla del mensaje</th>
 				<th concordion:assertEquals="#msg.eventType">Tipo de Evento</th>
-				<th concordion:echo="#msg.transferLongId">Transfer Id</th>
+				<th concordion:echo="#msg.transfer">Transfer</th>
 				<th concordion:assertEquals="#msg.status">Estado</th>
 				<th concordion:assertEquals="#msg.subAction">Sub Action</th>
 				<th concordion:echo="#msg.linkedMessage">Mensaje relacionado</th>

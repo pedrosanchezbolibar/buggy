@@ -77,11 +77,11 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Apply action to message.
      *
-     * @param message  the message
-     * @param action   the action
+     * @param message the message
+     * @param action the action
      * @param userName the user name
      * @return true, if successful
-     * @throws CalypsoServiceException    the calypso service exception
+     * @throws CalypsoServiceException the calypso service exception
      * @throws CloneNotSupportedException the clone not supported exception
      */
     public boolean applyActionToMessage(final ATMessage message, final String action, final String userName)
@@ -92,11 +92,11 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Apply action to trade.
      *
-     * @param trade    the trade
-     * @param action   the action
+     * @param trade the trade
+     * @param action the action
      * @param userName the user name
      * @return true, if successful
-     * @throws CalypsoServiceException    the calypso service exception
+     * @throws CalypsoServiceException the calypso service exception
      * @throws CloneNotSupportedException the clone not supported exception
      */
     public boolean applyActionToTrade(final ATTrade trade, final String action, final String userName)
@@ -107,11 +107,11 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Format swift document.
      *
-     * @param message    the message
+     * @param message the message
      * @param pricingEnv the pricing env
      * @return the AT swift message
      * @throws CalypsoServiceException the calypso service exception
-     * @throws MessageFormatException  the message format exception
+     * @throws MessageFormatException the message format exception
      */
     public ATSwiftMessage formatSwiftDocument(final ATMessage message, final String pricingEnv)
 	    throws CalypsoServiceException, MessageFormatException {
@@ -130,7 +130,7 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Gets the cre amount.
      *
-     * @param cre      the cre
+     * @param cre the cre
      * @param strIndex the str index
      * @return the cre amount
      */
@@ -164,7 +164,7 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Gets the trade's message by msg type.
      *
-     * @param trade   the trade
+     * @param trade the trade
      * @param msgType the msg type
      * @return the message by msg type
      * @throws CalypsoServiceException the calypso service exception
@@ -176,7 +176,7 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Gets the messages by event types.
      *
-     * @param trade    the trade
+     * @param trade the trade
      * @param msgTypes the msg types
      * @return the messages by event types
      * @throws CalypsoServiceException the calypso service exception
@@ -211,8 +211,8 @@ public class BuggyAT extends BuggyVersion {
      * Gets the swift tag.
      *
      * @param atSwiftMessage the at swift message
-     * @param tag            the tag
-     * @param count          the count
+     * @param tag the tag
+     * @param count the count
      * @return the swift tag
      */
     public String getSwiftTag(final ATSwiftMessage atSwiftMessage, final String tag, final int count) {
@@ -244,6 +244,17 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Gets the trade.
+     *
+     * @param tradeId the trade id
+     * @return the trade
+     * @throws CalypsoServiceException the calypso service exception
+     */
+    public ATTrade getTrade(final int tradeId) throws CalypsoServiceException {
+	return new ATTrades().getTrade(tradeId);
+    }
+
+    /**
      * Insert CDUF.
      *
      * @param template the template
@@ -261,19 +272,19 @@ public class BuggyAT extends BuggyVersion {
      * @return the list
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public ATTrade importCMLTrade(final String template) throws IOException {
+    public int importCMLTrade(final String template) throws IOException {
 	return new CMLImporter().importTrade(this, template, testProperties);
     }
 
     /**
      * Invoke.
      *
-     * @param obj        the obj
+     * @param obj the obj
      * @param methodName the method name
-     * @param params     the params
+     * @param params the params
      * @return the string
-     * @throws NoSuchMethodException     the no such method exception
-     * @throws IllegalAccessException    the illegal access exception
+     * @throws NoSuchMethodException the no such method exception
+     * @throws IllegalAccessException the illegal access exception
      * @throws InvocationTargetException the invocation target exception
      */
     public String invoke(final Object obj, final String methodName, final List<String> params)
@@ -297,7 +308,7 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Sets the property.
      *
-     * @param key   the key
+     * @param key the key
      * @param value the value
      */
     public void setProperty(final String key, final String value) {

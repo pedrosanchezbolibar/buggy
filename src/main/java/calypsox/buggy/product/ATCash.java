@@ -203,6 +203,15 @@ public class ATCash extends ATTrade {
     }
 
     /**
+     * Gets the principal amount.
+     *
+     * @return the principal amount
+     */
+    public ATAmount getPrincipalAmount() {
+	return new ATAmount(cash.getCurrency(), cash.getPrincipal());
+    }
+
+    /**
      * Gets the amort type.
      *
      * @return the amort type

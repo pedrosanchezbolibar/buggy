@@ -750,6 +750,15 @@ public class ATTransfer {
     }
 
     /**
+     * Gets the settlement currency.
+     *
+     * @return the settlement currency
+     */
+    public String getSettlementCurrency() {
+	return botransfer.getSettlementCurrency();
+    }
+
+    /**
      * Gets the settlement method.
      *
      * @return the settlement method
@@ -911,4 +920,11 @@ public class ATTransfer {
 	return botransfer.getVersion();
     }
 
+    @Override
+    public String toString() {
+	if (botransfer == null) {
+	    return "";
+	}
+	return botransfer.getDescription();
+    }
 }

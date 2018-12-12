@@ -333,7 +333,7 @@ public class ATMessage {
      * @return the linked id
      * @throws CalypsoServiceException the calypso service exception
      */
-    public ATMessage getLinkedId() throws CalypsoServiceException {
+    public ATMessage getLinkedMessage() throws CalypsoServiceException {
 	return new ATMessage(bomessage.getLinkedLongId());
     }
 
@@ -489,5 +489,18 @@ public class ATMessage {
      */
     public BOMessage getBOMessage() {
 	return bomessage;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	if (bomessage == null) {
+	    return "";
+	}
+	return bomessage.getDescription();
     }
 }

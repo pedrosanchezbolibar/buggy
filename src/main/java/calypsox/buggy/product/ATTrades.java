@@ -24,8 +24,8 @@ public class ATTrades {
     /**
      * Apply action to trade.
      *
-     * @param trade    the trade
-     * @param action   the action
+     * @param trade the trade
+     * @param action the action
      * @param userName the user name
      * @return true, if successful
      * @throws CalypsoServiceException the calypso service exception
@@ -101,6 +101,17 @@ public class ATTrades {
      */
     public ATTrade getTrade(final DUPAck ack) throws CalypsoServiceException {
 	return createTrade(ack.getTradeId());
+    }
+
+    /**
+     * Gets the trade.
+     *
+     * @param tradeId the trade id
+     * @return the trade
+     * @throws CalypsoServiceException the calypso service exception
+     */
+    public ATTrade getTrade(final int tradeId) throws CalypsoServiceException {
+	return createTrade(tradeId);
     }
 
     /**
