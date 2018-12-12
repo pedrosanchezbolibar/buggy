@@ -925,6 +925,6 @@ public class ATTransfer {
 	if (botransfer == null) {
 	    return "";
 	}
-	return botransfer.getDescription();
+	return botransfer.toString();
     }
 }

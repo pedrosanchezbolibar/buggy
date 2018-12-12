@@ -1,11 +1,17 @@
 package calypsox.buggy.msg;
 
 import com.calypso.tk.bo.BOMessage;
+import com.calypso.tk.bo.MessageFormatException;
+import com.calypso.tk.bo.SWIFTFormatterUtil;
+import com.calypso.tk.bo.document.AdviceDocument;
+import com.calypso.tk.bo.swift.SWIFTFormatter;
+import com.calypso.tk.bo.swift.SwiftMessage;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.Status;
+import com.calypso.tk.marketdata.PricingEnv;
 import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.product.ATTrade;
@@ -493,7 +499,7 @@ public class ATMessage {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
@@ -501,6 +507,42 @@ public class ATMessage {
 	if (bomessage == null) {
 	    return "";
 	}
-	return bomessage.getDescription();
+	return bomessage.toString();
+    }
+
+    /**
+     * Format swift document.
+     *
+     * @param message the message
+     * @param pricingEnv the pricing env
+     * @return the AT swift message
+     * @throws CalypsoServiceException the calypso service exception
+     * @throws MessageFormatException the message format exception
+     */
+    public ATSwiftMessage formatSwiftDocument(final String pricingEnv)
+	    throws CalypsoServiceException, MessageFormatException {
+	return new ATSwiftMessage(generateSwiftDocument(pricingEnv));
+    }
+
+    /**
+     * Generate swift document.
+     *
+     * @param boMessage the bo message
+     * @param pricingEnvName the pricing env name
+     * @return the swift message
+     * @throws CalypsoServiceException the calypso service exception
+     * @throws MessageFormatException the message format exception
+     */
+    private SwiftMessage generateSwiftDocument(final String pricingEnvName)
+	    throws CalypsoServiceException, MessageFormatException {
+	final SWIFTFormatter swiftFormatter = SWIFTFormatterUtil.findSWIFTFormatter(bomessage);
+	final PricingEnv pricingEnv = DSConnection.getDefault().getRemoteMarketData().getPricingEnv(pricingEnvName);
+	final AdviceDocument doc = swiftFormatter.generate(pricingEnv, bomessage, true, DSConnection.getDefault());
+	final StringBuffer output = doc.getDocument();
+	SwiftMessage.stripExtraInfo(output);
+
+	final SwiftMessage result = new SwiftMessage();
+	result.parseSwiftText(output.toString(), false);
+	return result;
     }
 }

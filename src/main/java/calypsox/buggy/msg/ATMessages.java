@@ -7,14 +7,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.calypso.tk.bo.BOMessage;
-import com.calypso.tk.bo.MessageFormatException;
-import com.calypso.tk.bo.SWIFTFormatterUtil;
-import com.calypso.tk.bo.document.AdviceDocument;
-import com.calypso.tk.bo.swift.SWIFTFormatter;
-import com.calypso.tk.bo.swift.SwiftMessage;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
-import com.calypso.tk.marketdata.PricingEnv;
 import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
 import com.calypso.tk.service.RemoteBackOffice;
@@ -34,11 +28,11 @@ public class ATMessages {
     /**
      * Apply action to a message.
      *
-     * @param msg      the msg
-     * @param action   the action
+     * @param msg the msg
+     * @param action the action
      * @param userName the username
      * @return true, if successful
-     * @throws CalypsoServiceException    the calypso service exception
+     * @throws CalypsoServiceException the calypso service exception
      * @throws CloneNotSupportedException the clone not supported exception
      */
     public boolean applyActionToMessage(final ATMessage msg, final String action, final String userName)
@@ -74,23 +68,9 @@ public class ATMessages {
     }
 
     /**
-     * Format swift document.
-     *
-     * @param message    the message
-     * @param pricingEnv the pricing env
-     * @return the AT swift message
-     * @throws CalypsoServiceException the calypso service exception
-     * @throws MessageFormatException  the message format exception
-     */
-    public ATSwiftMessage formatSwiftDocument(final ATMessage message, final String pricingEnv)
-	    throws CalypsoServiceException, MessageFormatException {
-	return new ATSwiftMessage(generateSwiftDocument(message.getBOMessage(), pricingEnv));
-    }
-
-    /**
      * Gets the message by event types.
      *
-     * @param trade    the trade
+     * @param trade the trade
      * @param msgTypes the msg types
      * @return the message by event types
      * @throws CalypsoServiceException the calypso service exception
@@ -105,7 +85,7 @@ public class ATMessages {
     /**
      * Gets the trade's message by msg type.
      *
-     * @param trade   the trade
+     * @param trade the trade
      * @param msgType the msg type
      * @return the message by msg type
      * @throws CalypsoServiceException the calypso service exception
@@ -118,7 +98,7 @@ public class ATMessages {
     /**
      * Gets the message by msg types.
      *
-     * @param trade    the trade
+     * @param trade the trade
      * @param msgTypes the msg types
      * @return the message by msg types
      * @throws CalypsoServiceException the calypso service exception
@@ -139,28 +119,6 @@ public class ATMessages {
      */
     public ATMessage reload(final ATMessage msg) throws CalypsoServiceException {
 	return new ATMessage(msg.getId());
-    }
-
-    /**
-     * Generate swift document.
-     *
-     * @param boMessage      the bo message
-     * @param pricingEnvName the pricing env name
-     * @return the swift message
-     * @throws CalypsoServiceException the calypso service exception
-     * @throws MessageFormatException  the message format exception
-     */
-    private SwiftMessage generateSwiftDocument(final BOMessage boMessage, final String pricingEnvName)
-	    throws CalypsoServiceException, MessageFormatException {
-	final SWIFTFormatter swiftFormatter = SWIFTFormatterUtil.findSWIFTFormatter(boMessage);
-	final PricingEnv pricingEnv = DSConnection.getDefault().getRemoteMarketData().getPricingEnv(pricingEnvName);
-	final AdviceDocument doc = swiftFormatter.generate(pricingEnv, boMessage, true, DSConnection.getDefault());
-	final StringBuffer output = doc.getDocument();
-	SwiftMessage.stripExtraInfo(output);
-
-	final SwiftMessage result = new SwiftMessage();
-	result.parseSwiftText(output.toString(), false);
-	return result;
     }
 
     /**

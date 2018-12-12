@@ -116,12 +116,10 @@
 		</table>
 		<p>
 			Se comprueba que el mensaje tiene los códigos BIC de la contrapartida y el agente informados:
-			<span concordion:execute="#swiftMessage=formatSwiftDocument(#msg, #pricingEnv)"></span>
+			<span concordion:execute="#swiftMessage=#msg.formatSwiftDocument(#pricingEnv)"></span>
 		</p>
 		
-		<span style="visibility: hidden;" concordion:set="#method">getTag</span>
-	    
-	    <table>
+		<table>
 	        <tr>
 	            <th>Descripción</th>
 	            <th>TAG</th>

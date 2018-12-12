@@ -28,20 +28,23 @@ public class ATCre {
     /**
      * Instantiates a new AT cre.
      *
-     * @param bocre the bocre
+     * @param bocre
+     *            the bocre
      */
     public ATCre(final BOCre bocre) {
-	this.bocre = bocre;
+        this.bocre = bocre;
     }
 
     /**
      * Instantiates a new AT cre.
      *
-     * @param linkedId the linked id
-     * @throws CalypsoServiceException the calypso service exception
+     * @param linkedId
+     *            the linked id
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATCre(final long linkedId) throws CalypsoServiceException {
-	bocre = DSConnection.getDefault().getRemoteBackOffice().getBOCre(linkedId);
+        bocre = DSConnection.getDefault().getRemoteBackOffice().getBOCre(linkedId);
     }
 
     /**
@@ -50,7 +53,7 @@ public class ATCre {
      * @return the accounting book
      */
     public AccountingBook getAccountingBook() {
-	return BOCache.getAccountingBook(DSConnection.getDefault(), bocre.getAccountingBookId());
+        return BOCache.getAccountingBook(DSConnection.getDefault(), bocre.getAccountingBookId());
     }
 
     /**
@@ -59,52 +62,58 @@ public class ATCre {
      * @return the accounting book name
      */
     public String getAccountingBookName() {
-	return bocre.getAccountingBookName();
+        return bocre.getAccountingBookName();
     }
 
     /**
      * Gets the accounting rule id.
      *
      * @return the accounting rule id
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public AccountingRule getAccountingRuleId() throws CalypsoServiceException {
-	final int id = bocre.getAccountingRuleId();
-	return DSConnection.getDefault().getRemoteAccounting().getAccountingRule(id);
+        final int id = bocre.getAccountingRuleId();
+        return DSConnection.getDefault().getRemoteAccounting().getAccountingRule(id);
     }
 
     /**
      * Gets the AT trade.
      *
-     * @param id the id
+     * @param id
+     *            the id
      * @return the AT trade
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     private ATTrade getATTrade(final int id) throws CalypsoServiceException {
-	final Trade trade = DSConnection.getDefault().getRemoteTrade().getTrade(id);
-	return new ATTrade(trade);
+        final Trade trade = DSConnection.getDefault().getRemoteTrade().getTrade(id);
+        return new ATTrade(trade);
     }
 
     /**
      * Gets the AT transfer.
      *
-     * @param id the id
+     * @param id
+     *            the id
      * @return the AT transfer
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     private ATTransfer getATTransfer(final long id) throws CalypsoServiceException {
-	final BOTransfer xfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(id);
-	return new ATTransfer(xfer);
+        final BOTransfer xfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(id);
+        return new ATTransfer(xfer);
     }
 
     /**
      * Gets the attribute.
      *
-     * @param name the name
+     * @param name
+     *            the name
      * @return the attribute
      */
     public String getAttribute(final String name) {
-	return bocre.getAttributeValue(name);
+        return bocre.getAttributeValue(name);
     }
 
     /**
@@ -113,7 +122,7 @@ public class ATCre {
      * @return the book id
      */
     public Book getBookId() {
-	return BOCache.getBook(DSConnection.getDefault(), bocre.getBookId());
+        return BOCache.getBook(DSConnection.getDefault(), bocre.getBookId());
     }
 
     /**
@@ -122,17 +131,30 @@ public class ATCre {
      * @return the booking date
      */
     public JDate getBookingDate() {
-	return bocre.getBookingDate();
+        return bocre.getBookingDate();
     }
 
     /**
      * Gets the cre amount.
      *
-     * @param index the index
+     * @param index
+     *            the index
+     * @return the cre amount
+     */
+    public ATAmount getCreAmount(final String strIndex) {
+        final int index = Integer.parseInt(strIndex);
+        return getCreAmount(index);
+    }
+
+    /**
+     * Gets the cre amount.
+     *
+     * @param index
+     *            the index
      * @return the cre amount
      */
     public ATAmount getCreAmount(final int index) {
-	return new ATAmount(bocre.getCurrency(index), bocre.getAmount(index));
+        return new ATAmount(bocre.getCurrency(index), bocre.getAmount(index));
     }
 
     /**
@@ -141,7 +163,7 @@ public class ATCre {
      * @return the creation date
      */
     public JDatetime getCreationDate() {
-	return bocre.getCreationDate();
+        return bocre.getCreationDate();
     }
 
     /**
@@ -150,7 +172,7 @@ public class ATCre {
      * @return the cre type
      */
     public String getCreType() {
-	return bocre.getCreType();
+        return bocre.getCreType();
     }
 
     /**
@@ -159,7 +181,7 @@ public class ATCre {
      * @return the description
      */
     public String getDescription() {
-	return bocre.getDescription();
+        return bocre.getDescription();
     }
 
     /**
@@ -168,18 +190,19 @@ public class ATCre {
      * @return the effective date
      */
     public JDate getEffectiveDate() {
-	return bocre.getEffectiveDate();
+        return bocre.getEffectiveDate();
     }
 
     /**
      * Gets the event config id.
      *
      * @return the event config id
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public AccountingEventConfig getEventConfigId() throws CalypsoServiceException {
-	final int id = bocre.getEventConfigId();
-	return DSConnection.getDefault().getRemoteAccounting().getEventConfig(id);
+        final int id = bocre.getEventConfigId();
+        return DSConnection.getDefault().getRemoteAccounting().getEventConfig(id);
     }
 
     /**
@@ -188,7 +211,7 @@ public class ATCre {
      * @return the event type
      */
     public String getEventType() {
-	return bocre.getEventType();
+        return bocre.getEventType();
     }
 
     /**
@@ -197,7 +220,7 @@ public class ATCre {
      * @return the hedge id
      */
     public int getHedgeId() {
-	return bocre.getHedgeId();
+        return bocre.getHedgeId();
     }
 
     /**
@@ -206,27 +229,29 @@ public class ATCre {
      * @return the id
      */
     public long getId() {
-	return bocre.getId();
+        return bocre.getId();
     }
 
     /**
      * Gets the linked id.
      *
      * @return the linked id
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATCre getLinkedId() throws CalypsoServiceException {
-	return new ATCre(bocre.getLinkedId());
+        return new ATCre(bocre.getLinkedId());
     }
 
     /**
      * Gets the linked trade id.
      *
      * @return the linked trade id
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATTrade getLinkedTradeId() throws CalypsoServiceException {
-	return getATTrade(bocre.getLinkedTradeId());
+        return getATTrade(bocre.getLinkedTradeId());
     }
 
     /**
@@ -235,17 +260,18 @@ public class ATCre {
      * @return the matching process
      */
     public boolean getMatchingProcess() {
-	return bocre.getMatchingProcess();
+        return bocre.getMatchingProcess();
     }
 
     /**
      * Gets the netted transfer.
      *
      * @return the netted transfer
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATTransfer getNettedTransfer() throws CalypsoServiceException {
-	return getATTransfer(bocre.getNettedTransferLongId());
+        return getATTransfer(bocre.getNettedTransferLongId());
     }
 
     /**
@@ -254,7 +280,7 @@ public class ATCre {
      * @return the original event type
      */
     public String getOriginalEventType() {
-	return bocre.getOriginalEventType();
+        return bocre.getOriginalEventType();
     }
 
     /**
@@ -263,7 +289,7 @@ public class ATCre {
      * @return the posting comment
      */
     public String getPostingComment() {
-	return bocre.getPostingComment();
+        return bocre.getPostingComment();
     }
 
     /**
@@ -272,7 +298,7 @@ public class ATCre {
      * @return the posting type
      */
     public String getPostingType() {
-	return bocre.getPostingType();
+        return bocre.getPostingType();
     }
 
     /**
@@ -281,7 +307,7 @@ public class ATCre {
      * @return the sent date
      */
     public JDatetime getSentDate() {
-	return bocre.getSentDate();
+        return bocre.getSentDate();
     }
 
     /**
@@ -290,7 +316,7 @@ public class ATCre {
      * @return the sent status
      */
     public String getSentStatus() {
-	return bocre.getSentStatus();
+        return bocre.getSentStatus();
     }
 
     /**
@@ -299,7 +325,7 @@ public class ATCre {
      * @return the settlement date
      */
     public JDate getSettlementDate() {
-	return bocre.getSettlementDate();
+        return bocre.getSettlementDate();
     }
 
     /**
@@ -308,7 +334,7 @@ public class ATCre {
      * @return the status
      */
     public String getStatus() {
-	return bocre.getStatus();
+        return bocre.getStatus();
     }
 
     /**
@@ -317,17 +343,18 @@ public class ATCre {
      * @return the sub id
      */
     public long getSubId() {
-	return bocre.getSubId();
+        return bocre.getSubId();
     }
 
     /**
      * Gets the trade.
      *
      * @return the trade
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATTrade getTrade() throws CalypsoServiceException {
-	return getATTrade(bocre.getTradeId());
+        return getATTrade(bocre.getTradeId());
     }
 
     /**
@@ -336,7 +363,7 @@ public class ATCre {
      * @return the trade date
      */
     public JDate getTradeDate() {
-	return bocre.getTradeDate();
+        return bocre.getTradeDate();
     }
 
     /**
@@ -345,18 +372,19 @@ public class ATCre {
      * @return the trade version
      */
     public int getTradeVersion() {
-	return bocre.getTradeVersion();
+        return bocre.getTradeVersion();
     }
 
     /**
      * Gets the transfer.
      *
      * @return the transfer
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATTransfer getTransfer() throws CalypsoServiceException {
-	final long id = bocre.getTransferLongId();
-	return getATTransfer(id);
+        final long id = bocre.getTransferLongId();
+        return getATTransfer(id);
     }
 
     /**
@@ -365,7 +393,7 @@ public class ATCre {
      * @return the update time
      */
     public JDatetime getUpdateTime() {
-	return bocre.getUpdateTime();
+        return bocre.getUpdateTime();
     }
 
     /**
@@ -374,7 +402,7 @@ public class ATCre {
      * @return the version
      */
     public int getVersion() {
-	return bocre.getVersion();
+        return bocre.getVersion();
     }
 
     /**
@@ -383,6 +411,6 @@ public class ATCre {
      * @return the xfer version
      */
     public int getXferVersion() {
-	return bocre.getXferVersion();
+        return bocre.getXferVersion();
     }
 }

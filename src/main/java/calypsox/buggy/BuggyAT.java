@@ -14,9 +14,6 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
-import com.calypso.tk.bo.MessageFormatException;
-import com.calypso.tk.bo.swift.SwiftFieldMessage;
-import com.calypso.tk.bo.swift.SwiftMessage;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.util.ConnectException;
 
@@ -26,10 +23,8 @@ import calypsox.buggy.cml.CMLImporter;
 import calypsox.buggy.infra.ATEngines;
 import calypsox.buggy.msg.ATMessage;
 import calypsox.buggy.msg.ATMessages;
-import calypsox.buggy.msg.ATSwiftMessage;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
-import calypsox.buggy.ui.ATAmount;
 import calypsox.buggy.uploader.DUPAck;
 import calypsox.buggy.uploader.DUPImporter;
 import calypsox.buggy.uti.CalypsoEnvironment;
@@ -38,7 +33,6 @@ import calypsox.buggy.uti.References;
 import calypsox.buggy.xfer.ATTransfer;
 import calypsox.buggy.xfer.ATTransfers;
 
-// TODO: Auto-generated Javadoc
 /**
  * Parent class for all tests fixtures.
  */
@@ -105,38 +99,12 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Format swift document.
-     *
-     * @param message the message
-     * @param pricingEnv the pricing env
-     * @return the AT swift message
-     * @throws CalypsoServiceException the calypso service exception
-     * @throws MessageFormatException the message format exception
-     */
-    public ATSwiftMessage formatSwiftDocument(final ATMessage message, final String pricingEnv)
-	    throws CalypsoServiceException, MessageFormatException {
-	return new ATMessages().formatSwiftDocument(message, pricingEnv);
-    }
-
-    /**
      * Generate external ref.
      *
      * @return the string
      */
     public String generateExternalRef() {
 	return new References().generateExternalRef();
-    }
-
-    /**
-     * Gets the cre amount.
-     *
-     * @param cre the cre
-     * @param strIndex the str index
-     * @return the cre amount
-     */
-    public ATAmount getCreAmount(final ATCre cre, final String strIndex) {
-	final int index = Integer.parseInt(strIndex);
-	return cre.getCreAmount(index);
     }
 
     /**
@@ -205,31 +173,6 @@ public class BuggyAT extends BuggyVersion {
      */
     public String getProperty(final String key) {
 	return testProperties.getProperty(key);
-    }
-
-    /**
-     * Gets the swift tag.
-     *
-     * @param atSwiftMessage the at swift message
-     * @param tag the tag
-     * @param count the count
-     * @return the swift tag
-     */
-    public String getSwiftTag(final ATSwiftMessage atSwiftMessage, final String tag, final int count) {
-	int found = 0;
-
-	final SwiftMessage swiftMessage = atSwiftMessage.getSwiftMessage();
-	if (swiftMessage != null) {
-	    for (final SwiftFieldMessage field : swiftMessage.getFields()) {
-		if ((":" + tag + ":").equals(field.getTAG())) {
-		    found++;
-		    if (found == count) {
-			return field.getValue().replace("\r\n", " \\ ");
-		    }
-		}
-	    }
-	}
-	return "";
     }
 
     /**
@@ -325,4 +268,5 @@ public class BuggyAT extends BuggyVersion {
     public int waitForEngine(final String engine) throws InterruptedException {
 	return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
     }
+
 }

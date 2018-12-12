@@ -163,30 +163,32 @@
  		<p>
  			El texto del mensaje MT210, es copia de:
         </p>
- 		<span concordion:execute="#message=formatSwiftDocument(#msg, #pricingEnv)"> </span>
+ 		<span concordion:execute="#message=#msg.formatSwiftDocument(#pricingEnv)"> </span>
 	        
 	    <pre>    
-			<span concordion:echo="#message"> </span>
+<span concordion:echo="#message.text"> </span>
 	    </pre>
 	
 		<p>
-	        Que debe contener las siguientes etiquetas:
-	    </p>
-	    
-	    <table concordion:verify-rows="#tag : getTagsInMsg(#message)">
+			Se comprueba que el mensaje tiene los códigos BIC de la contrapartida y el agente informados:
+			<span concordion:execute="#swiftMessage=#msg.formatSwiftDocument(#pricingEnv)"></span>
+		</p>
+		
+		<table>
 	        <tr>
 	            <th>Descripción</th>
-	            <th concordion:assertEquals="#tag">TAG</th>
+	            <th>TAG</th>
+	            <th>Value</th>
 	        </tr>
-	        <tr><td>Transaction Reference Number</td>                   <td>20</td></tr>
-	        <tr><td>Account Identification</td>							<td>25</td></tr>
-			<tr><td>Value Date</td>   									<td>30</td></tr>
-	        <tr><td>Related Reference</td>								<td>21</td></tr>
-	        <tr><td>Currency Code, Amount</td>                       	<td>32B</td></tr>
-	        <tr><td>Ordering Institution</td>                        	<td>52A</td></tr>
-	        <tr><td>Intermediary</td>                        			<td>56A</td></tr>
+	        <tr><td>Transaction Reference Number</td>	<td concordion:set="#tag">20</td><td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
+	        <tr><td>Account Identification</td>		 	<td concordion:set="#tag">25</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">10936152</td></tr>
+			<tr><td>Value Date</td>   					<td concordion:set="#tag">30</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">220602</td></tr>
+	        <tr><td>Related Reference</td>				<td concordion:set="#tag">21</td><td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
+	        <tr><td>Currency Code, Amount</td>          <td concordion:set="#tag">32B</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">USD1048688,89</td></tr>
+	        <tr><td>Ordering Institution</td>           <td concordion:set="#tag">50F</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">/DE40700700100190464800</td></tr>
+	        <tr><td>Intermediary</td>                   <td concordion:set="#tag">56A</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">BKTRUS30XXX</td></tr>
 	    </table>	
-
+	    
 		<p>
 			Accedemos a Calypso con un usuario de UCLI (grupos: <span concordion:set="#group1">bocash_msg</span>
 			/<span concordion:set="#group2">md_fx</span>) 
