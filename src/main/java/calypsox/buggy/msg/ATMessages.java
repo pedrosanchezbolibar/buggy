@@ -7,14 +7,11 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.calypso.tk.bo.BOMessage;
-import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
-import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
 import com.calypso.tk.service.RemoteBackOffice;
 import com.calypso.tk.util.MessageArray;
 
-import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.product.ATTrade;
 
 /**
@@ -24,53 +21,6 @@ public class ATMessages {
 
     /** The Constant ORDER_BY. */
     private static final String ORDER_BY = "MESSAGE_TYPE , EVENT_TYPE , TEMPLATE_NAME , ADDRESS_METHOD , MESSAGE_ID ";;
-
-    /**
-     * Apply action to a message.
-     *
-     * @param msg
-     *            the msg
-     * @param action
-     *            the action
-     * @param userName
-     *            the username
-     * @return true, if successful
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     * @throws CloneNotSupportedException
-     *             the clone not supported exception
-     */
-    public boolean applyActionToMessage(final ATMessage msg, final String action, final String userName)
-            throws CalypsoServiceException, CloneNotSupportedException {
-        boolean rst = false;
-
-        String userNameParam = userName;
-        if (userNameParam == null) {
-            userNameParam = "calypso_user";
-        }
-
-        final ATDSConnection dsconn = new ATDSConnection(userNameParam);
-
-        final BOMessage clonedMsg = (BOMessage) msg.getBOMessage().clone();
-
-        final StringBuilder errorText = new StringBuilder();
-        if (AccessUtil.isAuthorized(clonedMsg, action, errorText)) {
-            clonedMsg.setAction(Action.valueOf(action));
-            clonedMsg.setEnteredUser(userNameParam);
-
-            dsconn.getRemoteBackOffice().save(clonedMsg, 0, null);
-
-            rst = true;
-        } else {
-            dsconn.restoreRealConnection();
-
-            throw new SecurityException("Action can't be performed with user " + userNameParam);
-        }
-
-        dsconn.restoreRealConnection();
-
-        return rst;
-    }
 
     /**
      * Gets the message by event types.
@@ -122,19 +72,6 @@ public class ATMessages {
         final String where = String.format("trade_id = %d and message_type in ('%s')", trade.getId(),
                 StringUtils.join(msgTypes, "','"));
         return getMessagesOrdered(where);
-    }
-
-    /**
-     * Reload a message from database
-     *
-     * @param msg
-     *            the msg
-     * @return the AT message
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    public ATMessage reload(final ATMessage msg) throws CalypsoServiceException {
-        return new ATMessage(msg.getId());
     }
 
     /**

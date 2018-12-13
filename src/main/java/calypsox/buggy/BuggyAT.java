@@ -50,12 +50,13 @@ public class BuggyAT extends BuggyVersion {
     /**
      * Inits the Calypso Environment.
      *
-     * @throws ConnectException the connect exception
+     * @throws ConnectException
+     *             the connect exception
      */
     @BeforeClass
     public static void init() throws ConnectException {
-	CalypsoEnvironment.getInstance().connect();
-	CalypsoEnvironment.getInstance().insertFullTestDataSet();
+        CalypsoEnvironment.getInstance().connect();
+        CalypsoEnvironment.getInstance().insertFullTestDataSet();
     }
 
     /** The test properties. */
@@ -65,37 +66,7 @@ public class BuggyAT extends BuggyVersion {
      * Instantiates a new buggy AT.
      */
     public BuggyAT() {
-	testProperties = new Properties();
-    }
-
-    /**
-     * Apply action to message.
-     *
-     * @param message the message
-     * @param action the action
-     * @param userName the user name
-     * @return true, if successful
-     * @throws CalypsoServiceException the calypso service exception
-     * @throws CloneNotSupportedException the clone not supported exception
-     */
-    public boolean applyActionToMessage(final ATMessage message, final String action, final String userName)
-	    throws CalypsoServiceException, CloneNotSupportedException {
-	return new ATMessages().applyActionToMessage(message, action, userName);
-    }
-
-    /**
-     * Apply action to trade.
-     *
-     * @param trade the trade
-     * @param action the action
-     * @param userName the user name
-     * @return true, if successful
-     * @throws CalypsoServiceException the calypso service exception
-     * @throws CloneNotSupportedException the clone not supported exception
-     */
-    public boolean applyActionToTrade(final ATTrade trade, final String action, final String userName)
-	    throws CalypsoServiceException, CloneNotSupportedException {
-	return new ATTrades().applyActionToTrade(trade, action, userName);
+        testProperties = new Properties();
     }
 
     /**
@@ -104,169 +75,189 @@ public class BuggyAT extends BuggyVersion {
      * @return the string
      */
     public String generateExternalRef() {
-	return new References().generateExternalRef();
+        return new References().generateExternalRef();
     }
 
     /**
      * Gets the cres.
      *
-     * @param trade the trade
+     * @param trade
+     *            the trade
      * @return the cres
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public List<ATCre> getCres(final ATTrade trade) throws CalypsoServiceException {
-	return new ATCres().getCres(trade);
+        return new ATCres().getCres(trade);
     }
 
     /**
      * Gets the image.
      *
-     * @param resource the resource
+     * @param resource
+     *            the resource
      * @return the image
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public String getImage(final String resource) throws IOException {
-	return new ImgResource().getImage(this, resource);
+        return new ImgResource().getImage(this, resource);
     }
 
     /**
      * Gets the trade's message by msg type.
      *
-     * @param trade the trade
-     * @param msgType the msg type
+     * @param trade
+     *            the trade
+     * @param msgType
+     *            the msg type
      * @return the message by msg type
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATMessage getMessageByMsgType(final ATTrade trade, final String msgType) throws CalypsoServiceException {
-	return new ATMessages().getMessageByMsgType(trade, msgType);
+        return new ATMessages().getMessageByMsgType(trade, msgType);
     }
 
     /**
      * Gets the messages by event types.
      *
-     * @param trade the trade
-     * @param msgTypes the msg types
+     * @param trade
+     *            the trade
+     * @param msgTypes
+     *            the msg types
      * @return the messages by event types
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public List<ATMessage> getMessagesByEventTypes(final ATTrade trade, final List<String> msgTypes)
-	    throws CalypsoServiceException {
-	return new ATMessages().getMessageByEventTypes(trade, msgTypes);
+            throws CalypsoServiceException {
+        return new ATMessages().getMessageByEventTypes(trade, msgTypes);
     }
 
     /**
      * Gets the netting transfers of the trade.
      *
-     * @param trade the trade
+     * @param trade
+     *            the trade
      * @return the transfers
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public List<ATTransfer> getNettedTransfers(final ATTrade trade) throws CalypsoServiceException {
-	return new ATTransfers().getNettedTransfers(trade);
+        return new ATTransfers().getNettedTransfers(trade);
     }
 
     /**
      * Gets the property.
      *
-     * @param key the key
+     * @param key
+     *            the key
      * @return the property
      */
     public String getProperty(final String key) {
-	return testProperties.getProperty(key);
+        return testProperties.getProperty(key);
     }
 
     /**
      * Gets the trade indicated in the DataUploader ack.
      *
-     * @param ack the ack
+     * @param ack
+     *            the ack
      * @return the trade
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATTrade getTrade(final DUPAck ack) throws CalypsoServiceException {
-	return new ATTrades().getTrade(ack);
+        return new ATTrades().getTrade(ack);
     }
 
     /**
      * Gets the trade.
      *
-     * @param tradeId the trade id
+     * @param tradeId
+     *            the trade id
      * @return the trade
-     * @throws CalypsoServiceException the calypso service exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATTrade getTrade(final int tradeId) throws CalypsoServiceException {
-	return new ATTrades().getTrade(tradeId);
+        return new ATTrades().getTrade(tradeId);
     }
 
     /**
      * Insert CDUF.
      *
-     * @param template the template
+     * @param template
+     *            the template
      * @return the DUP ack
-     * @throws Exception the exception
+     * @throws Exception
+     *             the exception
      */
     public DUPAck importCDUF(final String template) throws Exception {
-	return new DUPImporter().insert(this, template, testProperties);
+        return new DUPImporter().insert(this, template, testProperties);
     }
 
     /**
      * Import a trade in CML format.
      *
-     * @param template the template
+     * @param template
+     *            the template
      * @return the list
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public int importCMLTrade(final String template) throws IOException {
-	return new CMLImporter().importTrade(this, template, testProperties);
+        return new CMLImporter().importTrade(this, template, testProperties);
     }
 
     /**
      * Invoke.
      *
-     * @param obj the obj
-     * @param methodName the method name
-     * @param params the params
+     * @param obj
+     *            the obj
+     * @param methodName
+     *            the method name
+     * @param params
+     *            the params
      * @return the string
-     * @throws NoSuchMethodException the no such method exception
-     * @throws IllegalAccessException the illegal access exception
-     * @throws InvocationTargetException the invocation target exception
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
      */
     public String invoke(final Object obj, final String methodName, final List<String> params)
-	    throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-	params.toArray(new String[] {});
-	final Method method = obj.getClass().getMethod(methodName, String.class);
-	return method.invoke(obj, params).toString();
-    }
-
-    /**
-     * Reload.
-     *
-     * @param msg the msg
-     * @return the AT message
-     * @throws CalypsoServiceException the calypso service exception
-     */
-    public ATMessage reload(final ATMessage msg) throws CalypsoServiceException {
-	return new ATMessages().reload(msg);
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        params.toArray(new String[] {});
+        final Method method = obj.getClass().getMethod(methodName, String.class);
+        return method.invoke(obj, params).toString();
     }
 
     /**
      * Sets the property.
      *
-     * @param key the key
-     * @param value the value
+     * @param key
+     *            the key
+     * @param value
+     *            the value
      */
     public void setProperty(final String key, final String value) {
-	testProperties.setProperty(key, value);
+        testProperties.setProperty(key, value);
     }
 
     /**
      * Wait for engine.
      *
-     * @param engine the engine
+     * @param engine
+     *            the engine
      * @return the int
-     * @throws InterruptedException the interrupted exception
+     * @throws InterruptedException
+     *             the interrupted exception
      */
     public int waitForEngine(final String engine) throws InterruptedException {
-	return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
+        return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
     }
 
 }
