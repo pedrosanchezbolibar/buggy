@@ -186,6 +186,10 @@ public class BuggyAT extends BuggyVersion {
         return new ATTrades().getTrade(tradeId);
     }
 
+    public List<ATTrade> getTrades(final String extRef) throws CalypsoServiceException {
+        return new ATTrades().getTrades(extRef);
+    }
+
     /**
      * Gets the user name.
      *

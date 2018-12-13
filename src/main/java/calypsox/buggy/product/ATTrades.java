@@ -9,6 +9,7 @@ import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.Log;
 import com.calypso.tk.core.Trade;
 import com.calypso.tk.service.DSConnection;
+import com.calypso.tk.util.TradeArray;
 
 import calypsox.buggy.uploader.DUPAck;
 import calypsox.buggy.uti.CalypsoEnvironment;
@@ -54,6 +55,23 @@ public class ATTrades {
     }
 
     /**
+     * Creates the trades.
+     *
+     * @param tradeArray
+     *            the trades
+     * @return the list
+     */
+    public List<ATTrade> createTrades(final TradeArray tradeArray) {
+        final List<ATTrade> tradeList = new ArrayList<>();
+        for (int i = 0; i < tradeArray.size(); i++) {
+            final Trade trade = tradeArray.get(i);
+            final ATTrade atTrade = createTrade(trade);
+            tradeList.add(atTrade);
+        }
+        return tradeList;
+    }
+
+    /**
      * Gets the trade.
      *
      * @param ack
@@ -80,19 +98,18 @@ public class ATTrades {
     }
 
     /**
-     * Creates the trades.
+     * Gets the trades.
      *
-     * @param trades
-     *            the trades
-     * @return the list
+     * @param extRef
+     *            the ext ref
+     * @return the trades
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
-    public List<ATTrade> createTrades(final List<Trade> trades) {
-        final List<ATTrade> tradeList = new ArrayList<>();
-        for (final Trade trade : trades) {
-            final ATTrade atTrade = createTrade(trade);
-            tradeList.add(atTrade);
-        }
-        return tradeList;
+    public List<ATTrade> getTrades(final String extRef) throws CalypsoServiceException {
+        final DSConnection dscon = CalypsoEnvironment.getInstance().getDSConnection();
+        final TradeArray tradeArray = dscon.getRemoteTrade().getTradesByExternalRef(extRef);
+        return createTrades(tradeArray);
     }
 
 }
