@@ -45,7 +45,7 @@ public class ATTrade {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public boolean applyActionToTrade(final String action, final String userName) throws CalypsoServiceException {
+    public boolean applyAction(final String action, final String userName) throws CalypsoServiceException {
         boolean rst = false;
 
         String userNameParam = userName;

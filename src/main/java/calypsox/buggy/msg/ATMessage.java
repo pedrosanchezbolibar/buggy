@@ -72,7 +72,7 @@ public class ATMessage {
      * @throws CloneNotSupportedException
      *             the clone not supported exception
      */
-    public boolean applyActionToMessage(final String action, final String userName)
+    public boolean applyAction(final String action, final String userName)
             throws CalypsoServiceException, CloneNotSupportedException {
         boolean rst = false;
 

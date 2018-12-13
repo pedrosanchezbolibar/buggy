@@ -3,11 +3,16 @@ package calypsox.buggy.xfer;
 import java.util.List;
 
 import com.calypso.tk.bo.BOTransfer;
+import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
+import com.calypso.tk.core.Status;
+import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
+import com.calypso.tk.service.RemoteBackOffice;
 
+import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.refdata.ATBook;
 import calypsox.buggy.refdata.ATLegalEntity;
 import calypsox.buggy.ui.ATAmount;
@@ -17,20 +22,91 @@ import calypsox.buggy.ui.ATAmount;
  */
 public class ATTransfer {
 
+    /** The Constant XFER_ASSIGNED. */
+    private static final String XFER_ASSIGNED = "Xfer Assigned";
+
+    /** The Constant ASSIGNED. */
+    private static final String ASSIGNED = "Assigned";
+
     /** The botransfer. */
     private final BOTransfer botransfer;
 
     /**
      * Instantiates a new AT transfer.
      *
-     * @param boTransfer the bo transfer
+     * @param boTransfer
+     *            the bo transfer
      */
     public ATTransfer(final BOTransfer boTransfer) {
-	botransfer = boTransfer;
+        botransfer = boTransfer;
     }
 
     public ATTransfer(final long transferLongId) throws CalypsoServiceException {
-	botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(transferLongId);
+        botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(transferLongId);
+    }
+
+    /**
+     * Apply action to transfer.
+     *
+     * @param transfer
+     *            the transfer
+     * @param action
+     *            the action
+     * @param username
+     *            the username
+     * @return true, if successful
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public boolean applyAction(final String action, final String username)
+            throws CloneNotSupportedException, CalypsoServiceException {
+        final ATDSConnection dsCon = new ATDSConnection(username);
+
+        final RemoteBackOffice remoteBo = dsCon.getRemoteBackOffice();
+
+        boolean rst = false;
+        if (botransfer != null) {
+
+            final BOTransfer clonedTransfer = (BOTransfer) botransfer.clone();
+
+            if (AccessUtil.isAuthorized(clonedTransfer, action)) {
+
+                if (Action.S_ASSIGN.equals(action)) {
+                    final BOTransfer newTransfer = (BOTransfer) clonedTransfer.clone();
+
+                    clonedTransfer.setAttribute("PayerStatus", ASSIGNED);
+                    clonedTransfer.setAttribute("ReceiverStatus", ASSIGNED);
+                    clonedTransfer.setExternalSDStatus(ASSIGNED);
+                    clonedTransfer.setInternalSDStatus(ASSIGNED);
+
+                    newTransfer.setAction(Action.NEW);
+                    newTransfer.setStatus(Status.S_NONE);
+                    newTransfer.setParentLongId(clonedTransfer.getLongId());
+                    newTransfer.setEnteredUser(username);
+
+                    newTransfer.setLongId(0);
+                    newTransfer.setAttribute("PayerStatus", XFER_ASSIGNED);
+                    newTransfer.setAttribute("ReceiverStatus", XFER_ASSIGNED);
+                    newTransfer.setExternalSDStatus(XFER_ASSIGNED);
+                    newTransfer.setInternalSDStatus(XFER_ASSIGNED);
+                    newTransfer.setAttribute("BusinessReason", Action.S_ASSIGN);
+
+                    remoteBo.save(newTransfer, 0, null);
+                }
+                clonedTransfer.setAction(Action.valueOf(action));
+                clonedTransfer.setEnteredUser(username);
+                remoteBo.save(clonedTransfer, 0, null);
+                rst = true;
+            } else {
+                dsCon.restoreRealConnection();
+                throw new SecurityException("Action " + action + " can't be performed with user " + username
+                        + " on transfer " + clonedTransfer.getLongId());
+            }
+        }
+        dsCon.restoreRealConnection();
+        return rst;
     }
 
     /**
@@ -39,21 +115,22 @@ public class ATTransfer {
      * @return the action
      */
     public String getAction() {
-	return botransfer.getAction().toString();
+        return botransfer.getAction().toString();
     }
 
     /**
      * Gets the attribute.
      *
-     * @param attribute the attribute
+     * @param attribute
+     *            the attribute
      * @return the attribute
      */
     public String getAttribute(final String attribute) {
-	final Object value = botransfer.getAttributesMap().get(attribute);
-	if (value == null) {
-	    return "null";
-	}
-	return value.toString();
+        final Object value = botransfer.getAttributesMap().get(attribute);
+        if (value == null) {
+            return "null";
+        }
+        return value.toString();
     }
 
     /**
@@ -62,7 +139,7 @@ public class ATTransfer {
      * @return the attribute removed
      */
     public boolean getAttributeRemoved() {
-	return botransfer.getAttributeRemoved();
+        return botransfer.getAttributeRemoved();
     }
 
     /**
@@ -71,7 +148,7 @@ public class ATTransfer {
      * @return the available B
      */
     public boolean getAvailableB() {
-	return botransfer.getAvailableB();
+        return botransfer.getAvailableB();
     }
 
     /**
@@ -80,7 +157,7 @@ public class ATTransfer {
      * @return the available date
      */
     public JDate getAvailableDate() {
-	return botransfer.getAvailableDate();
+        return botransfer.getAvailableDate();
     }
 
     /**
@@ -89,7 +166,7 @@ public class ATTransfer {
      * @return the book
      */
     public ATBook getBook() {
-	return new ATBook(botransfer.getBookId());
+        return new ATBook(botransfer.getBookId());
     }
 
     /**
@@ -98,7 +175,7 @@ public class ATTransfer {
      * @return the booking date
      */
     public JDate getBookingDate() {
-	return botransfer.getBookingDate();
+        return botransfer.getBookingDate();
     }
 
     /**
@@ -107,7 +184,7 @@ public class ATTransfer {
      * @return the BO transfer
      */
     public BOTransfer getBOTransfer() {
-	return botransfer;
+        return botransfer;
     }
 
     /**
@@ -116,7 +193,7 @@ public class ATTransfer {
      * @return the bundle id
      */
     public int getBundleId() {
-	return botransfer.getBundleId();
+        return botransfer.getBundleId();
     }
 
     /**
@@ -125,7 +202,7 @@ public class ATTransfer {
      * @return the business reason
      */
     public String getBusinessReason() {
-	return botransfer.getBusinessReason();
+        return botransfer.getBusinessReason();
     }
 
     /**
@@ -134,7 +211,7 @@ public class ATTransfer {
      * @return the callable date
      */
     public JDate getCallableDate() {
-	return botransfer.getCallableDate();
+        return botransfer.getCallableDate();
     }
 
     /**
@@ -143,7 +220,7 @@ public class ATTransfer {
      * @return the cash account number
      */
     public int getCashAccountNumber() {
-	return botransfer.getCashAccountNumber();
+        return botransfer.getCashAccountNumber();
     }
 
     /**
@@ -152,7 +229,7 @@ public class ATTransfer {
      * @return the cash transfer
      */
     public BOTransfer getCashTransfer() {
-	return botransfer.getCashTransfer();
+        return botransfer.getCashTransfer();
     }
 
     /**
@@ -161,7 +238,7 @@ public class ATTransfer {
      * @return the delivery method
      */
     public String getDeliveryMethod() {
-	return botransfer.getDeliveryMethod();
+        return botransfer.getDeliveryMethod();
     }
 
     /**
@@ -170,7 +247,7 @@ public class ATTransfer {
      * @return the delivery type
      */
     public String getDeliveryType() {
-	return botransfer.getDeliveryType();
+        return botransfer.getDeliveryType();
     }
 
     /**
@@ -179,7 +256,7 @@ public class ATTransfer {
      * @return the description
      */
     public String getDescription() {
-	return botransfer.getDescription();
+        return botransfer.getDescription();
     }
 
     /**
@@ -188,7 +265,7 @@ public class ATTransfer {
      * @return the end date
      */
     public JDate getEndDate() {
-	return botransfer.getEndDate();
+        return botransfer.getEndDate();
     }
 
     /**
@@ -197,7 +274,7 @@ public class ATTransfer {
      * @return the entered date
      */
     public JDatetime getEnteredDate() {
-	return botransfer.getEnteredDate();
+        return botransfer.getEnteredDate();
     }
 
     /**
@@ -206,7 +283,7 @@ public class ATTransfer {
      * @return the entered user
      */
     public String getEnteredUser() {
-	return botransfer.getEnteredUser();
+        return botransfer.getEnteredUser();
     }
 
     /**
@@ -215,7 +292,7 @@ public class ATTransfer {
      * @return the event code
      */
     public int getEventCode() {
-	return botransfer.getEventCode();
+        return botransfer.getEventCode();
     }
 
     /**
@@ -224,7 +301,7 @@ public class ATTransfer {
      * @return the event type
      */
     public String getEventType() {
-	return botransfer.getEventType();
+        return botransfer.getEventType();
     }
 
     /**
@@ -233,7 +310,7 @@ public class ATTransfer {
      * @return the external agent
      */
     public ATLegalEntity getExternalAgent() {
-	return new ATLegalEntity(botransfer.getExternalAgentId());
+        return new ATLegalEntity(botransfer.getExternalAgentId());
     }
 
     /**
@@ -242,7 +319,7 @@ public class ATTransfer {
      * @return the external cash sd id
      */
     public int getExternalCashSdId() {
-	return botransfer.getExternalCashSdId();
+        return botransfer.getExternalCashSdId();
     }
 
     /**
@@ -251,7 +328,7 @@ public class ATTransfer {
      * @return the external legal entity
      */
     public ATLegalEntity getExternalLegalEntity() {
-	return new ATLegalEntity(botransfer.getExternalLegalEntityId());
+        return new ATLegalEntity(botransfer.getExternalLegalEntityId());
     }
 
     /**
@@ -260,7 +337,7 @@ public class ATTransfer {
      * @return the external role
      */
     public String getExternalRole() {
-	return botransfer.getExternalRole();
+        return botransfer.getExternalRole();
     }
 
     /**
@@ -269,7 +346,7 @@ public class ATTransfer {
      * @return the external SD status
      */
     public String getExternalSDStatus() {
-	return botransfer.getExternalSDStatus();
+        return botransfer.getExternalSDStatus();
     }
 
     /**
@@ -278,7 +355,7 @@ public class ATTransfer {
      * @return the external settle delivery id
      */
     public int getExternalSettleDeliveryId() {
-	return botransfer.getExternalSettleDeliveryId();
+        return botransfer.getExternalSettleDeliveryId();
     }
 
     /**
@@ -287,7 +364,7 @@ public class ATTransfer {
      * @return the ext SDI version
      */
     public int getExtSDIVersion() {
-	return botransfer.getExtSDIVersion();
+        return botransfer.getExtSDIVersion();
     }
 
     /**
@@ -296,7 +373,7 @@ public class ATTransfer {
      * @return the full description
      */
     public String getFullDescription() {
-	return botransfer.getFullDescription();
+        return botransfer.getFullDescription();
     }
 
     /**
@@ -305,7 +382,7 @@ public class ATTransfer {
      * @return the GL account number
      */
     public int getGLAccountNumber() {
-	return botransfer.getGLAccountNumber();
+        return botransfer.getGLAccountNumber();
     }
 
     /**
@@ -314,7 +391,7 @@ public class ATTransfer {
      * @return the inits the settle date
      */
     public JDate getInitSettleDate() {
-	return botransfer.getInitSettleDate();
+        return botransfer.getInitSettleDate();
     }
 
     /**
@@ -323,7 +400,7 @@ public class ATTransfer {
      * @return the internal agent
      */
     public ATLegalEntity getInternalAgent() {
-	return new ATLegalEntity(botransfer.getInternalAgentId());
+        return new ATLegalEntity(botransfer.getInternalAgentId());
     }
 
     /**
@@ -332,7 +409,7 @@ public class ATTransfer {
      * @return the internal cash agent id
      */
     public int getInternalCashAgentId() {
-	return botransfer.getInternalCashAgentId();
+        return botransfer.getInternalCashAgentId();
     }
 
     /**
@@ -341,7 +418,7 @@ public class ATTransfer {
      * @return the internal cash sd id
      */
     public int getInternalCashSdId() {
-	return botransfer.getInternalCashSdId();
+        return botransfer.getInternalCashSdId();
     }
 
     /**
@@ -350,7 +427,7 @@ public class ATTransfer {
      * @return the internal legal entity
      */
     public ATLegalEntity getInternalLegalEntity() {
-	return new ATLegalEntity(botransfer.getInternalLegalEntityId());
+        return new ATLegalEntity(botransfer.getInternalLegalEntityId());
     }
 
     /**
@@ -359,7 +436,7 @@ public class ATTransfer {
      * @return the internal role
      */
     public String getInternalRole() {
-	return botransfer.getInternalRole();
+        return botransfer.getInternalRole();
     }
 
     /**
@@ -368,7 +445,7 @@ public class ATTransfer {
      * @return the internal SD status
      */
     public String getInternalSDStatus() {
-	return botransfer.getInternalSDStatus();
+        return botransfer.getInternalSDStatus();
     }
 
     /**
@@ -377,7 +454,7 @@ public class ATTransfer {
      * @return the internal settle delivery id
      */
     public int getInternalSettleDeliveryId() {
-	return botransfer.getInternalSettleDeliveryId();
+        return botransfer.getInternalSettleDeliveryId();
     }
 
     /**
@@ -386,7 +463,7 @@ public class ATTransfer {
      * @return the int SDI version
      */
     public int getIntSDIVersion() {
-	return botransfer.getIntSDIVersion();
+        return botransfer.getIntSDIVersion();
     }
 
     /**
@@ -395,7 +472,7 @@ public class ATTransfer {
      * @return the checks if is fixed B
      */
     public boolean getIsFixedB() {
-	return botransfer.getIsFixedB();
+        return botransfer.getIsFixedB();
     }
 
     /**
@@ -404,7 +481,7 @@ public class ATTransfer {
      * @return the checks if is known B
      */
     public boolean getIsKnownB() {
-	return botransfer.getIsKnownB();
+        return botransfer.getIsKnownB();
     }
 
     /**
@@ -413,7 +490,7 @@ public class ATTransfer {
      * @return the checks if is return B
      */
     public boolean getIsReturnB() {
-	return botransfer.getIsReturnB();
+        return botransfer.getIsReturnB();
     }
 
     /**
@@ -422,7 +499,7 @@ public class ATTransfer {
      * @return the kickoff action
      */
     public String getKickoffAction() {
-	return botransfer.getKickoffAction().toString();
+        return botransfer.getKickoffAction().toString();
     }
 
     /**
@@ -431,7 +508,7 @@ public class ATTransfer {
      * @return the linked long id
      */
     public long getLinkedLongId() {
-	return botransfer.getLinkedLongId();
+        return botransfer.getLinkedLongId();
     }
 
     /**
@@ -440,7 +517,7 @@ public class ATTransfer {
      * @return the manual cash SD id
      */
     public int getManualCashSDId() {
-	return botransfer.getManualCashSDId();
+        return botransfer.getManualCashSDId();
     }
 
     /**
@@ -449,7 +526,7 @@ public class ATTransfer {
      * @return the manual SD id
      */
     public int getManualSDId() {
-	return botransfer.getManualSDId();
+        return botransfer.getManualSDId();
     }
 
     /**
@@ -458,7 +535,7 @@ public class ATTransfer {
      * @return the netted trade id
      */
     public int getNettedTradeId() {
-	return botransfer.getNettedTradeId();
+        return botransfer.getNettedTradeId();
     }
 
     /**
@@ -467,7 +544,7 @@ public class ATTransfer {
      * @return the netted transfer
      */
     public boolean getNettedTransfer() {
-	return botransfer.getNettedTransfer();
+        return botransfer.getNettedTransfer();
     }
 
     /**
@@ -476,7 +553,7 @@ public class ATTransfer {
      * @return the netted transfer long id
      */
     public long getNettedTransferLongId() {
-	return botransfer.getNettedTransferLongId();
+        return botransfer.getNettedTransferLongId();
     }
 
     /**
@@ -485,7 +562,7 @@ public class ATTransfer {
      * @return the netted transfers
      */
     public List<ATTransfer> getNettedTransfers() {
-	return ATTransfers.toATTransferList(botransfer.getNettedTransfers());
+        return ATTransfers.toATTransferList(botransfer.getNettedTransfers());
     }
 
     /**
@@ -494,7 +571,7 @@ public class ATTransfer {
      * @return the netting group
      */
     public int getNettingGroup() {
-	return botransfer.getNettingGroup();
+        return botransfer.getNettingGroup();
     }
 
     /**
@@ -503,7 +580,7 @@ public class ATTransfer {
      * @return the netting type
      */
     public String getNettingType() {
-	return botransfer.getNettingType();
+        return botransfer.getNettingType();
     }
 
     /**
@@ -512,7 +589,7 @@ public class ATTransfer {
      * @return the nominal amount
      */
     public ATAmount getNominalAmount() {
-	return new ATAmount(botransfer.getTradeCurrency(), botransfer.getNominalAmount());
+        return new ATAmount(botransfer.getTradeCurrency(), botransfer.getNominalAmount());
     }
 
     /**
@@ -521,7 +598,7 @@ public class ATTransfer {
      * @return the old version
      */
     public int getOldVersion() {
-	return botransfer.getOldVersion();
+        return botransfer.getOldVersion();
     }
 
     /**
@@ -530,7 +607,7 @@ public class ATTransfer {
      * @return the orderer processing org
      */
     public ATLegalEntity getOrdererProcessingOrg() {
-	return new ATLegalEntity(botransfer.getOrdererProcessingOrg());
+        return new ATLegalEntity(botransfer.getOrdererProcessingOrg());
     }
 
     /**
@@ -539,7 +616,7 @@ public class ATTransfer {
      * @return the original action
      */
     public String getOriginalAction() {
-	return botransfer.getOriginalAction().toString();
+        return botransfer.getOriginalAction().toString();
     }
 
     /**
@@ -548,7 +625,7 @@ public class ATTransfer {
      * @return the original cpty
      */
     public ATLegalEntity getOriginalCpty() {
-	return new ATLegalEntity(botransfer.getOriginalCptyId());
+        return new ATLegalEntity(botransfer.getOriginalCptyId());
     }
 
     /**
@@ -557,7 +634,7 @@ public class ATTransfer {
      * @return the other amount
      */
     public double getOtherAmount() {
-	return botransfer.getOtherAmount();
+        return botransfer.getOtherAmount();
     }
 
     /**
@@ -566,7 +643,7 @@ public class ATTransfer {
      * @return the pair off from
      */
     public String getPairOffFrom() {
-	return botransfer.getPairOffFrom();
+        return botransfer.getPairOffFrom();
     }
 
     /**
@@ -575,7 +652,7 @@ public class ATTransfer {
      * @return the pair off to
      */
     public String getPairOffTo() {
-	return botransfer.getPairOffTo();
+        return botransfer.getPairOffTo();
     }
 
     /**
@@ -584,7 +661,7 @@ public class ATTransfer {
      * @return the parent long id
      */
     public long getParentLongId() {
-	return botransfer.getParentLongId();
+        return botransfer.getParentLongId();
     }
 
     /**
@@ -593,7 +670,7 @@ public class ATTransfer {
      * @return the payer SD id
      */
     public int getPayerSDId() {
-	return botransfer.getPayerSDId();
+        return botransfer.getPayerSDId();
     }
 
     /**
@@ -602,7 +679,7 @@ public class ATTransfer {
      * @return the payer SD status
      */
     public String getPayerSDStatus() {
-	return botransfer.getPayerSDStatus();
+        return botransfer.getPayerSDStatus();
     }
 
     /**
@@ -611,7 +688,7 @@ public class ATTransfer {
      * @return the pay receive
      */
     public String getPayReceive() {
-	return botransfer.getPayReceive();
+        return botransfer.getPayReceive();
     }
 
     /**
@@ -620,7 +697,7 @@ public class ATTransfer {
      * @return the pay receive type
      */
     public String getPayReceiveType() {
-	return botransfer.getPayReceiveType();
+        return botransfer.getPayReceiveType();
     }
 
     /**
@@ -629,7 +706,7 @@ public class ATTransfer {
      * @return the pay receive type with reverse
      */
     public String getPayReceiveTypeWithReverse() {
-	return botransfer.getPayReceiveTypeWithReverse();
+        return botransfer.getPayReceiveTypeWithReverse();
     }
 
     /**
@@ -638,7 +715,7 @@ public class ATTransfer {
      * @return the position aggregation id
      */
     public int getPositionAggregationId() {
-	return botransfer.getPositionAggregationId();
+        return botransfer.getPositionAggregationId();
     }
 
     /**
@@ -647,7 +724,7 @@ public class ATTransfer {
      * @return the processing org
      */
     public ATLegalEntity getProcessingOrg() {
-	return new ATLegalEntity(botransfer.getProcessingOrg());
+        return new ATLegalEntity(botransfer.getProcessingOrg());
     }
 
     /**
@@ -656,7 +733,7 @@ public class ATTransfer {
      * @return the product family
      */
     public String getProductFamily() {
-	return botransfer.getProductFamily();
+        return botransfer.getProductFamily();
     }
 
     /**
@@ -665,7 +742,7 @@ public class ATTransfer {
      * @return the product id
      */
     public int getProductId() {
-	return botransfer.getProductId();
+        return botransfer.getProductId();
     }
 
     /**
@@ -674,7 +751,7 @@ public class ATTransfer {
      * @return the product type
      */
     public String getProductType() {
-	return botransfer.getProductType();
+        return botransfer.getProductType();
     }
 
     /**
@@ -683,7 +760,7 @@ public class ATTransfer {
      * @return the projected amount
      */
     public double getProjectedAmount() {
-	return botransfer.getProjectedAmount();
+        return botransfer.getProjectedAmount();
     }
 
     /**
@@ -692,7 +769,7 @@ public class ATTransfer {
      * @return the real cash amount
      */
     public double getRealCashAmount() {
-	return botransfer.getRealCashAmount();
+        return botransfer.getRealCashAmount();
     }
 
     /**
@@ -701,7 +778,7 @@ public class ATTransfer {
      * @return the real settlement amount
      */
     public ATAmount getRealSettlementAmount() {
-	return new ATAmount(botransfer.getSettlementCurrency(), botransfer.getRealSettlementAmount());
+        return new ATAmount(botransfer.getSettlementCurrency(), botransfer.getRealSettlementAmount());
     }
 
     /**
@@ -710,7 +787,7 @@ public class ATTransfer {
      * @return the receiver SD id
      */
     public int getReceiverSDId() {
-	return botransfer.getReceiverSDId();
+        return botransfer.getReceiverSDId();
     }
 
     /**
@@ -719,7 +796,7 @@ public class ATTransfer {
      * @return the receiver SD status
      */
     public String getReceiverSDStatus() {
-	return botransfer.getReceiverSDStatus();
+        return botransfer.getReceiverSDStatus();
     }
 
     /**
@@ -728,7 +805,7 @@ public class ATTransfer {
      * @return the SDI value date
      */
     public JDate getSDIValueDate() {
-	return botransfer.getSDIValueDate();
+        return botransfer.getSDIValueDate();
     }
 
     /**
@@ -737,7 +814,7 @@ public class ATTransfer {
      * @return the settle date
      */
     public JDate getSettleDate() {
-	return botransfer.getSettleDate();
+        return botransfer.getSettleDate();
     }
 
     /**
@@ -746,7 +823,7 @@ public class ATTransfer {
      * @return the settlement amount
      */
     public ATAmount getSettlementAmount() {
-	return new ATAmount(botransfer.getSettlementCurrency(), botransfer.getSettlementAmount());
+        return new ATAmount(botransfer.getSettlementCurrency(), botransfer.getSettlementAmount());
     }
 
     /**
@@ -755,7 +832,7 @@ public class ATTransfer {
      * @return the settlement currency
      */
     public String getSettlementCurrency() {
-	return botransfer.getSettlementCurrency();
+        return botransfer.getSettlementCurrency();
     }
 
     /**
@@ -764,7 +841,7 @@ public class ATTransfer {
      * @return the settlement method
      */
     public String getSettlementMethod() {
-	return botransfer.getSettlementMethod();
+        return botransfer.getSettlementMethod();
     }
 
     /**
@@ -773,7 +850,7 @@ public class ATTransfer {
      * @return the s id
      */
     public long getId() {
-	return botransfer.getLongId();
+        return botransfer.getLongId();
     }
 
     /**
@@ -782,7 +859,7 @@ public class ATTransfer {
      * @return the sign
      */
     public double getSign() {
-	return botransfer.getSign();
+        return botransfer.getSign();
     }
 
     /**
@@ -791,7 +868,7 @@ public class ATTransfer {
      * @return the split key
      */
     public String getSplitKey() {
-	return botransfer.getSplitKey();
+        return botransfer.getSplitKey();
     }
 
     /**
@@ -800,7 +877,7 @@ public class ATTransfer {
      * @return the split reason from
      */
     public String getSplitReasonFrom() {
-	return botransfer.getSplitReasonFrom();
+        return botransfer.getSplitReasonFrom();
     }
 
     /**
@@ -809,7 +886,7 @@ public class ATTransfer {
      * @return the split reason to
      */
     public String getSplitReasonTo() {
-	return botransfer.getSplitReasonTo();
+        return botransfer.getSplitReasonTo();
     }
 
     /**
@@ -818,7 +895,7 @@ public class ATTransfer {
      * @return the status
      */
     public String getStatus() {
-	return botransfer.getStatus().toString();
+        return botransfer.getStatus().toString();
     }
 
     /**
@@ -827,7 +904,7 @@ public class ATTransfer {
      * @return the trade currency
      */
     public String getTradeCurrency() {
-	return botransfer.getTradeCurrency();
+        return botransfer.getTradeCurrency();
     }
 
     /**
@@ -836,7 +913,7 @@ public class ATTransfer {
      * @return the trade date
      */
     public JDate getTradeDate() {
-	return botransfer.getTradeDate();
+        return botransfer.getTradeDate();
     }
 
     /**
@@ -845,7 +922,7 @@ public class ATTransfer {
      * @return the trade id
      */
     public int getTradeId() {
-	return botransfer.getTradeId();
+        return botransfer.getTradeId();
     }
 
     /**
@@ -854,7 +931,7 @@ public class ATTransfer {
      * @return the trade transfers
      */
     public List<ATTransfer> getTradeTransfers() {
-	return ATTransfers.toATTransferList(botransfer.getTradeTransfers());
+        return ATTransfers.toATTransferList(botransfer.getTradeTransfers());
     }
 
     /**
@@ -863,7 +940,7 @@ public class ATTransfer {
      * @return the trade version
      */
     public int getTradeVersion() {
-	return botransfer.getTradeVersion();
+        return botransfer.getTradeVersion();
     }
 
     /**
@@ -872,7 +949,7 @@ public class ATTransfer {
      * @return the transfer type
      */
     public String getTransferType() {
-	return botransfer.getTransferType();
+        return botransfer.getTransferType();
     }
 
     /**
@@ -881,7 +958,7 @@ public class ATTransfer {
      * @return the unavailability quantity
      */
     public double getUnavailabilityQuantity() {
-	return botransfer.getUnavailabilityQuantity();
+        return botransfer.getUnavailabilityQuantity();
     }
 
     /**
@@ -890,7 +967,7 @@ public class ATTransfer {
      * @return the underlying transfer
      */
     public ATTransfer getUnderlyingTransfer() {
-	return new ATTransfer(botransfer.getUnderlyingTransfer());
+        return new ATTransfer(botransfer.getUnderlyingTransfer());
     }
 
     /**
@@ -899,7 +976,7 @@ public class ATTransfer {
      * @return the underlying transfers
      */
     public List<ATTransfer> getUnderlyingTransfers() {
-	return ATTransfers.toATTransferList(botransfer.getUnderlyingTransfers());
+        return ATTransfers.toATTransferList(botransfer.getUnderlyingTransfers());
     }
 
     /**
@@ -908,7 +985,7 @@ public class ATTransfer {
      * @return the value date
      */
     public JDate getValueDate() {
-	return botransfer.getValueDate();
+        return botransfer.getValueDate();
     }
 
     /**
@@ -917,14 +994,14 @@ public class ATTransfer {
      * @return the version
      */
     public int getVersion() {
-	return botransfer.getVersion();
+        return botransfer.getVersion();
     }
 
     @Override
     public String toString() {
-	if (botransfer == null) {
-	    return "";
-	}
-	return botransfer.toString();
+        if (botransfer == null) {
+            return "";
+        }
+        return botransfer.toString();
     }
 }
