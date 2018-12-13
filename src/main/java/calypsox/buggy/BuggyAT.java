@@ -25,6 +25,7 @@ import calypsox.buggy.msg.ATMessage;
 import calypsox.buggy.msg.ATMessages;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
+import calypsox.buggy.refdata.ATUsers;
 import calypsox.buggy.uploader.DUPAck;
 import calypsox.buggy.uploader.DUPImporter;
 import calypsox.buggy.uti.CalypsoEnvironment;
@@ -183,6 +184,19 @@ public class BuggyAT extends BuggyVersion {
      */
     public ATTrade getTrade(final int tradeId) throws CalypsoServiceException {
         return new ATTrades().getTrade(tradeId);
+    }
+
+    /**
+     * Gets the user name.
+     *
+     * @param groups
+     *            the groups
+     * @return the user name
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public String getUserName(final List<String> groups) throws CalypsoServiceException {
+        return new ATUsers().getUserName(groups);
     }
 
     /**
