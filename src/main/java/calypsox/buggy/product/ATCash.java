@@ -24,7 +24,7 @@ import calypsox.buggy.ui.ATAmount;
 /**
  * The Class ATCash.
  */
-public class ATCash extends ATTrade {
+public class ATCash extends ATTSimpleMM {
 
     /** The product cash. */
     private final Cash cash;
@@ -32,11 +32,12 @@ public class ATCash extends ATTrade {
     /**
      * Instantiates a new atcash.
      *
-     * @param trade the trade
+     * @param trade
+     *            the trade
      */
     public ATCash(final Trade trade) {
-	super(trade);
-	cash = (Cash) trade.getProduct();
+        super(trade);
+        cash = (Cash) trade.getProduct();
     }
 
     /**
@@ -46,7 +47,7 @@ public class ATCash extends ATTrade {
      */
     @SuppressWarnings("unchecked")
     public List<String> getPaymentHolidays() {
-	return cash.getPaymentHolidays();
+        return cash.getPaymentHolidays();
     }
 
     /**
@@ -55,7 +56,7 @@ public class ATCash extends ATTrade {
      * @return the roll over B
      */
     public boolean getRollOverB() {
-	return cash.getRollOverB();
+        return cash.getRollOverB();
     }
 
     /**
@@ -64,7 +65,7 @@ public class ATCash extends ATTrade {
      * @return the payment frequency
      */
     public Frequency getPaymentFrequency() {
-	return cash.getPaymentFrequency();
+        return cash.getPaymentFrequency();
     }
 
     /**
@@ -73,7 +74,7 @@ public class ATCash extends ATTrade {
      * @return the compound frequency
      */
     public Frequency getCompoundFrequency() {
-	return cash.getCompoundFrequency();
+        return cash.getCompoundFrequency();
     }
 
     /**
@@ -82,7 +83,7 @@ public class ATCash extends ATTrade {
      * @return the amort rate
      */
     public double getAmortRate() {
-	return cash.getAmortRate();
+        return cash.getAmortRate();
     }
 
     /**
@@ -91,7 +92,7 @@ public class ATCash extends ATTrade {
      * @return the amort frequency
      */
     public Frequency getAmortFrequency() {
-	return cash.getAmortFrequency();
+        return cash.getAmortFrequency();
     }
 
     /**
@@ -100,7 +101,7 @@ public class ATCash extends ATTrade {
      * @return the date roll
      */
     public DateRoll getDateRoll() {
-	return cash.getDateRoll();
+        return cash.getDateRoll();
     }
 
     /**
@@ -109,7 +110,7 @@ public class ATCash extends ATTrade {
      * @return the interest rule
      */
     public PeriodRule getInterestRule() {
-	return cash.getInterestRule();
+        return cash.getInterestRule();
     }
 
     /**
@@ -118,7 +119,7 @@ public class ATCash extends ATTrade {
      * @return the stub rule
      */
     public StubRule getStubRule() {
-	return cash.getStubRule();
+        return cash.getStubRule();
     }
 
     /**
@@ -127,7 +128,7 @@ public class ATCash extends ATTrade {
      * @return the start stub date
      */
     public JDate getStartStubDate() {
-	return cash.getStartStubDate();
+        return cash.getStartStubDate();
     }
 
     /**
@@ -136,7 +137,7 @@ public class ATCash extends ATTrade {
      * @return the end stub date
      */
     public JDate getEndStubDate() {
-	return cash.getEndStubDate();
+        return cash.getEndStubDate();
     }
 
     /**
@@ -145,7 +146,7 @@ public class ATCash extends ATTrade {
      * @return the rolling day
      */
     public int getRollingDay() {
-	return cash.getRollingDay();
+        return cash.getRollingDay();
     }
 
     /**
@@ -154,7 +155,7 @@ public class ATCash extends ATTrade {
      * @return the linked id
      */
     public int getLinkedId() {
-	return cash.getLinkedId();
+        return cash.getLinkedId();
     }
 
     /**
@@ -163,7 +164,7 @@ public class ATCash extends ATTrade {
      * @return the roll over amount
      */
     public double getRollOverAmount() {
-	return cash.getRollOverAmount();
+        return cash.getRollOverAmount();
     }
 
     /**
@@ -172,7 +173,7 @@ public class ATCash extends ATTrade {
      * @return the capitalize int B
      */
     public boolean getCapitalizeIntB() {
-	return cash.getCapitalizeIntB();
+        return cash.getCapitalizeIntB();
     }
 
     /**
@@ -181,7 +182,7 @@ public class ATCash extends ATTrade {
      * @return the roll over date
      */
     public JDate getRollOverDate() {
-	return cash.getRollOverDate();
+        return cash.getRollOverDate();
     }
 
     /**
@@ -190,7 +191,7 @@ public class ATCash extends ATTrade {
      * @return the amortizing B
      */
     public boolean getAmortizingB() {
-	return cash.getAmortizingB();
+        return cash.getAmortizingB();
     }
 
     /**
@@ -199,16 +200,7 @@ public class ATCash extends ATTrade {
      * @return the amort amount
      */
     public ATAmount getAmortAmount() {
-	return new ATAmount(cash.getCurrency(), cash.getAmortAmount());
-    }
-
-    /**
-     * Gets the principal amount.
-     *
-     * @return the principal amount
-     */
-    public ATAmount getPrincipalAmount() {
-	return new ATAmount(cash.getCurrency(), cash.getPrincipal());
+        return new ATAmount(cash.getCurrency(), cash.getAmortAmount());
     }
 
     /**
@@ -217,7 +209,7 @@ public class ATCash extends ATTrade {
      * @return the amort type
      */
     public String getAmortType() {
-	return cash.getAmortType();
+        return cash.getAmortType();
     }
 
     /**
@@ -226,7 +218,7 @@ public class ATCash extends ATTrade {
      * @return the principal actual B
      */
     public boolean getPrincipalActualB() {
-	return cash.getPrincipalActualB();
+        return cash.getPrincipalActualB();
     }
 
     /**
@@ -235,7 +227,7 @@ public class ATCash extends ATTrade {
      * @return the pmt offset
      */
     public int getPmtOffset() {
-	return cash.getPmtOffset();
+        return cash.getPmtOffset();
     }
 
     /**
@@ -244,7 +236,7 @@ public class ATCash extends ATTrade {
      * @return the pmt offset bus day B
      */
     public boolean getPmtOffsetBusDayB() {
-	return cash.getPmtOffsetBusDayB();
+        return cash.getPmtOffsetBusDayB();
     }
 
     /**
@@ -253,7 +245,7 @@ public class ATCash extends ATTrade {
      * @return the use custom reset offset B
      */
     public boolean getUseCustomResetOffsetB() {
-	return cash.getUseCustomResetOffsetB();
+        return cash.getUseCustomResetOffsetB();
     }
 
     /**
@@ -262,7 +254,7 @@ public class ATCash extends ATTrade {
      * @return the reset offset bus day B
      */
     public boolean getResetOffsetBusDayB() {
-	return cash.getResetOffsetBusDayB();
+        return cash.getResetOffsetBusDayB();
     }
 
     /**
@@ -271,7 +263,7 @@ public class ATCash extends ATTrade {
      * @return the reset offset
      */
     public int getResetOffset() {
-	return cash.getResetOffset();
+        return cash.getResetOffset();
     }
 
     /**
@@ -281,7 +273,7 @@ public class ATCash extends ATTrade {
      */
     @SuppressWarnings("unchecked")
     public List<String> getResetHolidays() {
-	return cash.getResetHolidays();
+        return cash.getResetHolidays();
     }
 
     /**
@@ -290,7 +282,7 @@ public class ATCash extends ATTrade {
      * @return the coupon period date rule
      */
     public DateRule getCouponPeriodDateRule() {
-	return cash.getCouponPeriodDateRule();
+        return cash.getCouponPeriodDateRule();
     }
 
     /**
@@ -299,8 +291,8 @@ public class ATCash extends ATTrade {
      * @return the amort schedule
      */
     public Vector getAmortSchedule() {
-	// TODO: check the rigth return type
-	return cash.getAmortSchedule();
+        // TODO: check the rigth return type
+        return cash.getAmortSchedule();
     }
 
     /**
@@ -309,7 +301,7 @@ public class ATCash extends ATTrade {
      * @return the compounding method
      */
     public String getCompoundingMethod() {
-	return cash.getCompoundingMethod();
+        return cash.getCompoundingMethod();
     }
 
     /**
@@ -318,7 +310,7 @@ public class ATCash extends ATTrade {
      * @return the cf generation locks
      */
     public long getCfGenerationLocks() {
-	return cash.getCfGenerationLocks();
+        return cash.getCfGenerationLocks();
     }
 
     /**
@@ -327,7 +319,7 @@ public class ATCash extends ATTrade {
      * @return the cf custom changes
      */
     public long getCfCustomChanges() {
-	return cash.getCfCustomChanges();
+        return cash.getCfCustomChanges();
     }
 
     /**
@@ -336,7 +328,7 @@ public class ATCash extends ATTrade {
      * @return the amort day count
      */
     public DayCount getAmortDayCount() {
-	return cash.getAmortDayCount();
+        return cash.getAmortDayCount();
     }
 
     /**
@@ -345,7 +337,7 @@ public class ATCash extends ATTrade {
      * @return the first stub custom idx B
      */
     public boolean getFirstStubCustomIdxB() {
-	return cash.getFirstStubCustomIdxB();
+        return cash.getFirstStubCustomIdxB();
     }
 
     /**
@@ -354,7 +346,7 @@ public class ATCash extends ATTrade {
      * @return the first stub idx tenor 1
      */
     public Tenor getFirstStubIdxTenor1() {
-	return cash.getFirstStubIdxTenor1();
+        return cash.getFirstStubIdxTenor1();
     }
 
     /**
@@ -363,7 +355,7 @@ public class ATCash extends ATTrade {
      * @return the first stub idx tenor 2
      */
     public Tenor getFirstStubIdxTenor2() {
-	return cash.getFirstStubIdxTenor2();
+        return cash.getFirstStubIdxTenor2();
     }
 
     /**
@@ -372,7 +364,7 @@ public class ATCash extends ATTrade {
      * @return the last stub custom idx B
      */
     public boolean getLastStubCustomIdxB() {
-	return cash.getLastStubCustomIdxB();
+        return cash.getLastStubCustomIdxB();
     }
 
     /**
@@ -381,7 +373,7 @@ public class ATCash extends ATTrade {
      * @return the last stub idx tenor 1
      */
     public Tenor getLastStubIdxTenor1() {
-	return cash.getLastStubIdxTenor1();
+        return cash.getLastStubIdxTenor1();
     }
 
     /**
@@ -390,7 +382,7 @@ public class ATCash extends ATTrade {
      * @return the last stub idx tenor 2
      */
     public Tenor getLastStubIdxTenor2() {
-	return cash.getLastStubIdxTenor2();
+        return cash.getLastStubIdxTenor2();
     }
 
     /**
@@ -399,8 +391,8 @@ public class ATCash extends ATTrade {
      * @return the termination dates
      */
     public Vector getTerminationDates() {
-	// TODO: check the rigth return type
-	return cash.getTerminationDates();
+        // TODO: check the rigth return type
+        return cash.getTerminationDates();
     }
 
     /**
@@ -409,7 +401,7 @@ public class ATCash extends ATTrade {
      * @return the mandatory termination B
      */
     public boolean getMandatoryTerminationB() {
-	return cash.getMandatoryTerminationB();
+        return cash.getMandatoryTerminationB();
     }
 
     /**
@@ -418,7 +410,7 @@ public class ATCash extends ATTrade {
      * @return the reset date rule
      */
     public DateRule getResetDateRule() {
-	return cash.getResetDateRule();
+        return cash.getResetDateRule();
     }
 
     /**
@@ -427,7 +419,7 @@ public class ATCash extends ATTrade {
      * @return the pmt date rule
      */
     public DateRule getPmtDateRule() {
-	return cash.getPmtDateRule();
+        return cash.getPmtDateRule();
     }
 
     /**
@@ -436,7 +428,7 @@ public class ATCash extends ATTrade {
      * @return the pmt date rule int
      */
     public DateRule getPmtDateRuleInt() {
-	return cash.getPmtDateRuleInt();
+        return cash.getPmtDateRuleInt();
     }
 
     /**
@@ -445,7 +437,7 @@ public class ATCash extends ATTrade {
      * @return the coupon date rule
      */
     public DateRule getCouponDateRule() {
-	return cash.getCouponDateRule();
+        return cash.getCouponDateRule();
     }
 
     /**
@@ -454,7 +446,7 @@ public class ATCash extends ATTrade {
      * @return the index factor
      */
     public double getIndexFactor() {
-	return cash.getIndexFactor();
+        return cash.getIndexFactor();
     }
 
     /**
@@ -463,7 +455,7 @@ public class ATCash extends ATTrade {
      * @return the cap strike
      */
     public double getCapStrike() {
-	return cash.getCapStrike();
+        return cash.getCapStrike();
     }
 
     /**
@@ -472,7 +464,7 @@ public class ATCash extends ATTrade {
      * @return the floor strike
      */
     public double getFloorStrike() {
-	return cash.getFloorStrike();
+        return cash.getFloorStrike();
     }
 
     /**
@@ -481,7 +473,7 @@ public class ATCash extends ATTrade {
      * @return the option type
      */
     public String getOptionType() {
-	return cash.getOptionType();
+        return cash.getOptionType();
     }
 
     /**
@@ -490,7 +482,7 @@ public class ATCash extends ATTrade {
      * @return the floater B
      */
     public boolean getFloaterB() {
-	return cash.getFloaterB();
+        return cash.getFloaterB();
     }
 
     /**
@@ -499,7 +491,7 @@ public class ATCash extends ATTrade {
      * @return the withholding tax rate
      */
     public double getWithholdingTaxRate() {
-	return cash.getWithholdingTaxRate();
+        return cash.getWithholdingTaxRate();
     }
 
     /**
@@ -508,7 +500,7 @@ public class ATCash extends ATTrade {
      * @return the averaging reset B
      */
     public boolean getAveragingResetB() {
-	return cash.getAveragingResetB();
+        return cash.getAveragingResetB();
     }
 
     /**
@@ -517,7 +509,7 @@ public class ATCash extends ATTrade {
      * @return the averaging reset method
      */
     public String getAveragingResetMethod() {
-	return cash.getAveragingResetMethod();
+        return cash.getAveragingResetMethod();
     }
 
     /**
@@ -526,7 +518,7 @@ public class ATCash extends ATTrade {
      * @return the sample frequency
      */
     public Frequency getSampleFrequency() {
-	return cash.getSampleFrequency();
+        return cash.getSampleFrequency();
     }
 
     /**
@@ -535,7 +527,7 @@ public class ATCash extends ATTrade {
      * @return the sample period start offset
      */
     public int getSamplePeriodStartOffset() {
-	return cash.getSamplePeriodStartOffset();
+        return cash.getSamplePeriodStartOffset();
     }
 
     /**
@@ -544,7 +536,7 @@ public class ATCash extends ATTrade {
      * @return the sample period rule
      */
     public String getSamplePeriodRule() {
-	return cash.getSamplePeriodRule();
+        return cash.getSamplePeriodRule();
     }
 
     /**
@@ -553,7 +545,7 @@ public class ATCash extends ATTrade {
      * @return the sample day of week
      */
     public int getSampleDayOfWeek() {
-	return cash.getSampleDayOfWeek();
+        return cash.getSampleDayOfWeek();
     }
 
     /**
@@ -562,7 +554,7 @@ public class ATCash extends ATTrade {
      * @return the reset timing
      */
     public String getResetTiming() {
-	return cash.getResetTiming();
+        return cash.getResetTiming();
     }
 
     /**
@@ -571,7 +563,7 @@ public class ATCash extends ATTrade {
      * @return the discount method
      */
     public int getDiscountMethod() {
-	return cash.getDiscountMethod();
+        return cash.getDiscountMethod();
     }
 
     /**
@@ -580,7 +572,7 @@ public class ATCash extends ATTrade {
      * @return the discount method as string
      */
     public String getDiscountMethodAsString() {
-	return cash.getDiscountMethodAsString();
+        return cash.getDiscountMethodAsString();
     }
 
     /**
@@ -589,7 +581,7 @@ public class ATCash extends ATTrade {
      * @return the payment timing end per B
      */
     public boolean getPaymentTimingEndPerB() {
-	return cash.getPaymentTimingEndPerB();
+        return cash.getPaymentTimingEndPerB();
     }
 
     /**
@@ -598,7 +590,7 @@ public class ATCash extends ATTrade {
      * @return the crystallization days
      */
     public int getCrystallizationDays() {
-	return cash.getCrystallizationDays();
+        return cash.getCrystallizationDays();
     }
 
     /**
@@ -607,7 +599,7 @@ public class ATCash extends ATTrade {
      * @return the interp style
      */
     public InterpStyle getInterpStyle() {
-	return cash.getInterpStyle();
+        return cash.getInterpStyle();
     }
 
     /**
@@ -616,7 +608,7 @@ public class ATCash extends ATTrade {
      * @return the reset range
      */
     public String getResetRange() {
-	return cash.getResetRange();
+        return cash.getResetRange();
     }
 
     /**
@@ -625,7 +617,7 @@ public class ATCash extends ATTrade {
      * @return the spread calc mtd
      */
     public String getSpreadCalcMtd() {
-	return cash.getSpreadCalcMtd();
+        return cash.getSpreadCalcMtd();
     }
 
     /**
@@ -634,7 +626,7 @@ public class ATCash extends ATTrade {
      * @return the rate factor rounding method
      */
     public RoundingMethod getRateFactorRoundingMethod() {
-	return cash.getRateFactorRoundingMethod();
+        return cash.getRateFactorRoundingMethod();
     }
 
     /**
@@ -643,7 +635,7 @@ public class ATCash extends ATTrade {
      * @return the rate factor rounding dec
      */
     public Integer getRateFactorRoundingDec() {
-	return cash.getRateFactorRoundingDec();
+        return cash.getRateFactorRoundingDec();
     }
 
     /**
@@ -651,8 +643,9 @@ public class ATCash extends ATTrade {
      *
      * @return the description
      */
+    @Override
     public String getDescription() {
-	return cash.getDescription();
+        return cash.getDescription();
     }
 
     /**
@@ -661,7 +654,7 @@ public class ATCash extends ATTrade {
      * @return the custom flows B
      */
     public boolean getCustomFlowsB() {
-	return cash.getCustomFlowsB();
+        return cash.getCustomFlowsB();
     }
 
     /**
@@ -669,8 +662,9 @@ public class ATCash extends ATTrade {
      *
      * @return the sub type
      */
+    @Override
     public String getSubType() {
-	return cash.getSubType();
+        return cash.getSubType();
     }
 
     /**
@@ -679,7 +673,7 @@ public class ATCash extends ATTrade {
      * @return the period rule
      */
     public PeriodRule getPeriodRule() {
-	return cash.getPeriodRule();
+        return cash.getPeriodRule();
     }
 
     /**
@@ -688,7 +682,7 @@ public class ATCash extends ATTrade {
      * @return the custom rolling day B
      */
     public boolean getCustomRollingDayB() {
-	return cash.getCustomRollingDayB();
+        return cash.getCustomRollingDayB();
     }
 
     /**
@@ -697,7 +691,7 @@ public class ATCash extends ATTrade {
      * @return the coupon date roll
      */
     public DateRoll getCouponDateRoll() {
-	return cash.getCouponDateRoll();
+        return cash.getCouponDateRoll();
     }
 
     /**
@@ -706,7 +700,7 @@ public class ATCash extends ATTrade {
      * @return the coupon holidays
      */
     public List<String> getCouponHolidays() {
-	return cash.getCouponHolidays();
+        return cash.getCouponHolidays();
     }
 
     /**
@@ -715,8 +709,8 @@ public class ATCash extends ATTrade {
      * @return the fixed rate schedule
      */
     public Vector getFixedRateSchedule() {
-	// TODO: check the rigth return type
-	return cash.getFixedRateSchedule();
+        // TODO: check the rigth return type
+        return cash.getFixedRateSchedule();
     }
 
     /**
@@ -725,8 +719,8 @@ public class ATCash extends ATTrade {
      * @return the spread schedule
      */
     public Vector getSpreadSchedule() {
-	// TODO: check the rigth return type
-	return cash.getSpreadSchedule();
+        // TODO: check the rigth return type
+        return cash.getSpreadSchedule();
     }
 
     /**
@@ -734,8 +728,9 @@ public class ATCash extends ATTrade {
      *
      * @return the used holidays
      */
+    @Override
     public String[] getUsedHolidays() {
-	return cash.getUsedHolidays();
+        return cash.getUsedHolidays();
     }
 
     /**
@@ -743,8 +738,11 @@ public class ATCash extends ATTrade {
      *
      * @return the flows
      */
+    @Override
     public CashFlowSet getFlows() {
-	return cash.getFlows();
+        // TODO: poner aquí la formula para calcular los flujos sui no están
+        // customizados
+        return cash.getFlows();
     }
 
     /**
@@ -753,8 +751,8 @@ public class ATCash extends ATTrade {
      * @return the specific resets
      */
     public Vector getSpecificResets() {
-	// TODO: check the rigth return type
-	return cash.getSpecificResets();
+        // TODO: check the rigth return type
+        return cash.getSpecificResets();
     }
 
     /**
@@ -763,7 +761,7 @@ public class ATCash extends ATTrade {
      * @return the product id
      */
     public int getProductId() {
-	return cash.getProductId();
+        return cash.getProductId();
     }
 
     /**
@@ -772,7 +770,7 @@ public class ATCash extends ATTrade {
      * @return the manual first reset B
      */
     public boolean getManualFirstResetB() {
-	return cash.getManualFirstResetB();
+        return cash.getManualFirstResetB();
     }
 
     /**
@@ -781,7 +779,7 @@ public class ATCash extends ATTrade {
      * @return the first reset rate
      */
     public double getFirstResetRate() {
-	return cash.getFirstResetRate();
+        return cash.getFirstResetRate();
     }
 
     /**
@@ -790,7 +788,7 @@ public class ATCash extends ATTrade {
      * @return the latest principal amount
      */
     public double getLatestPrincipalAmount() {
-	return cash.getLatestPrincipalAmount();
+        return cash.getLatestPrincipalAmount();
     }
 
     /**
@@ -799,7 +797,7 @@ public class ATCash extends ATTrade {
      * @return the current fixed rate
      */
     public double getCurrentFixedRate() {
-	return cash.getCurrentFixedRate();
+        return cash.getCurrentFixedRate();
     }
 
     /**
@@ -808,8 +806,8 @@ public class ATCash extends ATTrade {
      * @return the event type actions
      */
     public Vector getEventTypeActions() {
-	// TODO: check the rigth return type
-	return cash.getEventTypeActions();
+        // TODO: check the rigth return type
+        return cash.getEventTypeActions();
     }
 
     /**
@@ -818,8 +816,8 @@ public class ATCash extends ATTrade {
      * @return the valid bulk action types
      */
     public Vector getValidBulkActionTypes() {
-	// TODO: check the rigth return type
-	return cash.getValidBulkActionTypes();
+        // TODO: check the rigth return type
+        return cash.getValidBulkActionTypes();
     }
 
     /**
@@ -828,8 +826,8 @@ public class ATCash extends ATTrade {
      * @return the applied action list
      */
     public Vector getAppliedActionList() {
-	// TODO: check the rigth return type
-	return cash.getAppliedActionList();
+        // TODO: check the rigth return type
+        return cash.getAppliedActionList();
     }
 
     /**
@@ -838,8 +836,8 @@ public class ATCash extends ATTrade {
      * @return the applicable event type actions
      */
     public Vector getApplicableEventTypeActions() {
-	// TODO: check the rigth return type
-	return cash.getApplicableEventTypeActions();
+        // TODO: check the rigth return type
+        return cash.getApplicableEventTypeActions();
     }
 
     /**
@@ -848,7 +846,7 @@ public class ATCash extends ATTrade {
      * @return the checks if is collateral only B
      */
     public boolean getIsCollateralOnlyB() {
-	return cash.getIsCollateralOnlyB();
+        return cash.getIsCollateralOnlyB();
     }
 
     /**
@@ -857,8 +855,8 @@ public class ATCash extends ATTrade {
      * @return the collaterals
      */
     public Vector getCollaterals() {
-	// TODO: check the rigth return type
-	return cash.getCollaterals();
+        // TODO: check the rigth return type
+        return cash.getCollaterals();
     }
 
     /**
@@ -867,8 +865,8 @@ public class ATCash extends ATTrade {
      * @return the valid action types
      */
     public Vector getValidActionTypes() {
-	// TODO: check the rigth return type
-	return cash.getValidActionTypes();
+        // TODO: check the rigth return type
+        return cash.getValidActionTypes();
     }
 
     /**
@@ -877,7 +875,7 @@ public class ATCash extends ATTrade {
      * @return the last interest flow
      */
     public CashFlowInterest getLastInterestFlow() {
-	return cash.getLastInterestFlow();
+        return cash.getLastInterestFlow();
     }
 
     /**
@@ -886,8 +884,8 @@ public class ATCash extends ATTrade {
      * @return the reset period dates
      */
     public Vector getResetPeriodDates() {
-	// TODO: check the rigth return type
-	return cash.getResetPeriodDates();
+        // TODO: check the rigth return type
+        return cash.getResetPeriodDates();
     }
 
     /**
@@ -896,7 +894,7 @@ public class ATCash extends ATTrade {
      * @return the direction
      */
     public String getDirection() {
-	return cash.getDirection();
+        return cash.getDirection();
     }
 
     /**
@@ -905,7 +903,7 @@ public class ATCash extends ATTrade {
      * @return the sign
      */
     public int getSign() {
-	return cash.getSign();
+        return cash.getSign();
     }
 
     /**
@@ -914,7 +912,7 @@ public class ATCash extends ATTrade {
      * @return the allocator
      */
     public String getAllocator() {
-	return cash.getAllocator();
+        return cash.getAllocator();
     }
 
     /**
@@ -923,8 +921,8 @@ public class ATCash extends ATTrade {
      * @return the event type actions list
      */
     public Vector getEventTypeActionsList() {
-	// TODO: check the rigth return type
-	return cash.getEventTypeActionsList();
+        // TODO: check the rigth return type
+        return cash.getEventTypeActionsList();
     }
 
     /**
@@ -933,7 +931,7 @@ public class ATCash extends ATTrade {
      * @return the rate type
      */
     public String getRateType() {
-	return cash.getRateType();
+        return cash.getRateType();
     }
 
     /**
@@ -942,7 +940,7 @@ public class ATCash extends ATTrade {
      * @return the reset date roll
      */
     public DateRoll getResetDateRoll() {
-	return cash.getResetDateRoll();
+        return cash.getResetDateRoll();
     }
 
     /**
@@ -951,7 +949,7 @@ public class ATCash extends ATTrade {
      * @return the index calculator
      */
     public IndexCalculator getIndexCalculator() {
-	return cash.getIndexCalculator();
+        return cash.getIndexCalculator();
     }
 
     /**
@@ -960,7 +958,7 @@ public class ATCash extends ATTrade {
      * @return the funding currency
      */
     public String getFundingCurrency() {
-	return cash.getFundingCurrency();
+        return cash.getFundingCurrency();
     }
 
 }
