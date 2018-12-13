@@ -196,7 +196,7 @@
 			<span concordion:echo="#userName"></span> y aplicamos la acción <span concordion:set="#action">MAN_TO_SEND</span>
 			<span concordion:execute="#boMsg=reload(#boMsg)"> </span>
 			al mensaje MT210 (Id: <span concordion:echo="#boMsg.id"> </span>).
-			(<span concordion:assertTrue="#boMsg = applyActionToMessage(#boMsg, #action, #userName)">OK</span>) 
+			(<span concordion:assertTrue="#boMsg.applyAction(#action, #userName)">OK</span>) 
 		</p>
 		<p>
 			Comprobamos que el mensaje ha viajado al estado 
@@ -226,7 +226,7 @@
 		<p>	
 			Aplicamos la acción <span concordion:set="#action">SEND</span>
 			al mensaje MT210 (Id: <span concordion:echo="#boMsg.id"> </span>). 
-			(<span concordion:assertTrue="applyActionToMsg(#boMsg.longId, #action)">OK</span>)
+			(<span concordion:assertTrue="#boMsg.applyAction(#action)">OK</span>)
 			y comprobamos que el mensaje ha viajado al estado 
 			<span concordion:execute="#boMsg=reloadBOMessage()"> </span>
 			<span concordion:assertEquals="#boMsg.status">SENT</span>.
@@ -333,7 +333,7 @@
 			<!--  >span concordion:set="#action">FO_CANCEL</span-->
 			<span concordion:set="#action">FO_CANCEL</span>
 			cancelamos la operación 
-			(<span concordion:assertEquals="applyActionToTrade(#trade,#action)">OK</span>).
+			(<span concordion:assertEquals="#trade.applyAction(#action)">OK</span>).
 		</p>
 	
 		<p>

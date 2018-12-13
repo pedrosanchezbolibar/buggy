@@ -33,6 +33,19 @@ public class ATTrade {
     }
 
     /**
+     * Apply action.
+     *
+     * @param action
+     *            the action
+     * @return true, if successful
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public boolean applyAction(final String action) throws CalypsoServiceException {
+        return applyAction(action, null);
+    }
+
+    /**
      * Apply action to trade.
      *
      * @param trade
@@ -50,6 +63,7 @@ public class ATTrade {
 
         String userNameParam = userName;
         if (userNameParam == null) {
+            // TODO: calypso_user debe leerse de configuración
             userNameParam = "calypso_user";
         }
 

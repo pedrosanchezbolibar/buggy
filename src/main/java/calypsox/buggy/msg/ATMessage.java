@@ -72,12 +72,32 @@ public class ATMessage {
      * @throws CloneNotSupportedException
      *             the clone not supported exception
      */
+    public boolean applyAction(final String action) throws CalypsoServiceException, CloneNotSupportedException {
+        return applyAction(action, null);
+    }
+
+    /**
+     * Apply action to a message.
+     *
+     * @param msg
+     *            the msg
+     * @param action
+     *            the action
+     * @param userName
+     *            the username
+     * @return true, if successful
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
+     */
     public boolean applyAction(final String action, final String userName)
             throws CalypsoServiceException, CloneNotSupportedException {
         boolean rst = false;
 
         String userNameParam = userName;
         if (userNameParam == null) {
+            // TODO: calypso_user debe leerse de configuración
             userNameParam = "calypso_user";
         }
 
