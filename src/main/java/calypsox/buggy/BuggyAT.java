@@ -102,10 +102,6 @@ public class BuggyAT extends BuggyVersion {
         return new ATHolidays().calculateDateByTenor(tenor, holidays, timeZone);
     }
 
-    public ATJDate today() {
-        return new ATJDate();
-    }
-
     /**
      * Generate external ref.
      *
@@ -351,8 +347,8 @@ public class BuggyAT extends BuggyVersion {
      * @param value
      *            the value
      */
-    public void setProperty(final String key, final String value) {
-        testProperties.setProperty(key, value);
+    public void setProperty(final String key, final Object value) {
+        testProperties.setProperty(key, value.toString());
     }
 
     /**
@@ -363,8 +359,17 @@ public class BuggyAT extends BuggyVersion {
      * @param value
      *            the value
      */
-    public void setProperty(final String key, final Object value) {
-        testProperties.setProperty(key, value.toString());
+    public void setProperty(final String key, final String value) {
+        testProperties.setProperty(key, value);
+    }
+
+    /**
+     * Today.
+     *
+     * @return the ATJ date
+     */
+    public ATJDate today() {
+        return new ATJDate();
     }
 
     /**

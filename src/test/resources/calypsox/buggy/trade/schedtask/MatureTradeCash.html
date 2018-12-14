@@ -179,15 +179,15 @@
         <h2>Resultado</h2>
         
         <p>Ejecutamos la ScheduledTask <span concordion:set="#stExtRef">MatureTrade_MMSETTLEDATE_MAD</span> con Fecha
-				<span concordion:echo="#dateHoy=getToday()"> </span> 
-	            (<span concordion:assertEquals="executeScheduledTaskWithTF(#stExtRef,#extRef,#dateHoy)">OK</span>).
+				<span concordion:echo="#today=today()"> </span> 
+	            (<span concordion:assertEquals="executeScheduledTaskWithTF(#stExtRef,#extRef,#today)">OK</span>).
 			</p>
 		
 		<p>
 	    	Comprobamos que la operación ha pasado a MATURED:	   
 	   	
 	   	</p>
-	   	 <table concordion:execute="#trade=getTrade(#extRef)">
+	   	 <table concordion:execute="#trade.reload()">
             <tr>
                 <th concordion:echo="#trade.id">Id</th>
 				<th concordion:assertEquals="#trade.status">Status</th>
@@ -195,7 +195,7 @@
                 <th concordion:assertEquals="#trade.counterParty">Counterparty</th>
                 <th concordion:echo="#trade.tradeDate">Trade Date</th>
                 <th concordion:echo="#trade.settleDate">Settle Date</th>     
-                <th concordion:assertEquals="formatAmount(#trade.product.principal)">Notional</th>    
+                <th concordion:assertEquals="#trade.principalAmount">Notional</th>    
             </tr>
             <tr>
                 <td> </td>
@@ -204,7 +204,7 @@
                 <td>RIKSSESTC</td>
                 <td></td>
                 <td></td>
-                <td>15000000.0000</td>
+                <td>15,000,000.00 USD</td>
             </tr>
         </table>
 	</body>

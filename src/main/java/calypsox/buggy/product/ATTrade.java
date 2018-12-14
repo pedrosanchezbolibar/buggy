@@ -23,6 +23,18 @@ public class ATTrade {
     /**
      * Instantiates a new AT trade.
      *
+     * @param tradeId
+     *            the trade id
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATTrade(final long tradeId) throws CalypsoServiceException {
+        trade = DSConnection.getDefault().getRemoteTrade().getTrade((int) tradeId);
+    }
+
+    /**
+     * Instantiates a new AT trade.
+     *
      * @param trade
      *            the trade
      */
@@ -31,18 +43,6 @@ public class ATTrade {
             throw new IllegalArgumentException("Trade is null");
         }
         this.trade = trade;
-    }
-
-    /**
-     * Instantiates a new AT trade.
-     *
-     * @param tradeId
-     *            the trade id
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    public ATTrade(final long tradeId) throws CalypsoServiceException {
-        trade = DSConnection.getDefault().getRemoteTrade().getTrade((int) tradeId);
     }
 
     /**
@@ -326,6 +326,15 @@ public class ATTrade {
     }
 
     /**
+     * Gets the Calypso trade.
+     *
+     * @return the trade
+     */
+    public Trade getTrade() {
+        return trade;
+    }
+
+    /**
      * Gets the trade currency.
      *
      * @return the trade currency
@@ -370,6 +379,18 @@ public class ATTrade {
         return trade.getUpdatedTime();
     }
 
+    /**
+     * Reload.
+     *
+     * @return the AT trade
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATTrade reload() throws CalypsoServiceException {
+        trade = DSConnection.getDefault().getRemoteTrade().getTrade(trade.getId());
+        return this;
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -378,15 +399,6 @@ public class ATTrade {
     @Override
     public String toString() {
         return trade.toString() + " / " + trade.getProduct().getDescription();
-    }
-
-    /**
-     * Gets the Calypso trade.
-     *
-     * @return the trade
-     */
-    public Trade getTrade() {
-        return trade;
     }
 
 }
