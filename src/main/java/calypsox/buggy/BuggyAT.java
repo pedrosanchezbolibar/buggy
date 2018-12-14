@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
 import com.calypso.tk.core.CalypsoServiceException;
+import com.calypso.tk.core.JDate;
 import com.calypso.tk.util.ConnectException;
 
 import calypsox.buggy.acc.ATCre;
@@ -25,7 +26,6 @@ import calypsox.buggy.msg.ATMessage;
 import calypsox.buggy.msg.ATMessages;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
-import calypsox.buggy.refdata.ATHolidays;
 import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.refdata.ATUsers;
 import calypsox.buggy.task.ATTask;
@@ -83,8 +83,8 @@ public class BuggyAT extends BuggyVersion {
      *            the holidays
      * @return the ATJ date
      */
-    public ATJDate calculateDateByTenor(final String tenor, final List<String> holidays) {
-        return new ATHolidays().calculateDateByTenor(tenor, holidays, null);
+    public JDate calculateDateByTenor(final String tenor, final List<String> holidays) {
+        return new ATJDate().calculateDateByTenor(tenor, holidays, null);
     }
 
     /**
@@ -98,8 +98,8 @@ public class BuggyAT extends BuggyVersion {
      *            the time zone
      * @return the ATJ date
      */
-    public ATJDate calculateDateByTenor(final String tenor, final List<String> holidays, final String timeZone) {
-        return new ATHolidays().calculateDateByTenor(tenor, holidays, timeZone);
+    public JDate calculateDateByTenor(final String tenor, final List<String> holidays, final String timeZone) {
+        return new ATJDate().calculateDateByTenor(tenor, holidays, timeZone);
     }
 
     /**
@@ -294,29 +294,6 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Invoke.
-     *
-     * @param obj
-     *            the obj
-     * @param methodName
-     *            the method name
-     * @param params
-     *            the params
-     * @return the string
-     * @throws NoSuchMethodException
-     *             the no such method exception
-     * @throws IllegalAccessException
-     *             the illegal access exception
-     * @throws InvocationTargetException
-     *             the invocation target exception
-     */
-    private String invoke(final Object obj, final String methodName, final Object param)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final Method method = obj.getClass().getMethod(methodName, param.getClass());
-        return String.valueOf(method.invoke(obj, param));
-    }
-
-    /**
      * Repeat the execution of a method in a list of objects
      *
      * @param objects
@@ -368,8 +345,8 @@ public class BuggyAT extends BuggyVersion {
      *
      * @return the ATJ date
      */
-    public ATJDate today() {
-        return new ATJDate();
+    public JDate today() {
+        return JDate.getNow();
     }
 
     /**
@@ -383,6 +360,29 @@ public class BuggyAT extends BuggyVersion {
      */
     public int waitForEngine(final String engine) throws InterruptedException {
         return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
+    }
+
+    /**
+     * Invoke.
+     *
+     * @param obj
+     *            the obj
+     * @param methodName
+     *            the method name
+     * @param params
+     *            the params
+     * @return the string
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     */
+    private String invoke(final Object obj, final String methodName, final Object param)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final Method method = obj.getClass().getMethod(methodName, param.getClass());
+        return String.valueOf(method.invoke(obj, param));
     }
 
 }

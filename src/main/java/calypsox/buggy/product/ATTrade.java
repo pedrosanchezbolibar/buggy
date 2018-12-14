@@ -5,12 +5,12 @@ import java.util.List;
 import com.calypso.tk.bo.Fee;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
+import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.Trade;
 import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.infra.ATDSConnection;
-import calypsox.buggy.refdata.ATJDate;
 
 /**
  * The Class ATTrade.
@@ -312,8 +312,8 @@ public class ATTrade {
      *
      * @return the settle date
      */
-    public ATJDate getSettleDate() {
-        return new ATJDate(trade.getSettleDate());
+    public JDate getSettleDate() {
+        return trade.getSettleDate();
     }
 
     /**

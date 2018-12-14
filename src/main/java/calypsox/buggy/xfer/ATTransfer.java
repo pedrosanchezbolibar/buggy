@@ -5,6 +5,7 @@ import java.util.List;
 import com.calypso.tk.bo.BOTransfer;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
+import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.Status;
 import com.calypso.tk.refdata.AccessUtil;
@@ -13,7 +14,6 @@ import com.calypso.tk.service.RemoteBackOffice;
 
 import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.refdata.ATBook;
-import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.refdata.ATLegalEntity;
 import calypsox.buggy.ui.ATAmount;
 
@@ -43,11 +43,6 @@ public class ATTransfer {
 
     public ATTransfer(final long transferLongId) throws CalypsoServiceException {
         botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(transferLongId);
-    }
-
-    public ATTransfer reload() throws CalypsoServiceException {
-        botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(botransfer.getLongId());
-        return this;
     }
 
     public boolean applyAction(final String action) throws CloneNotSupportedException, CalypsoServiceException {
@@ -169,8 +164,8 @@ public class ATTransfer {
      *
      * @return the available date
      */
-    public ATJDate getAvailableDate() {
-        return new ATJDate(botransfer.getAvailableDate());
+    public JDate getAvailableDate() {
+        return botransfer.getAvailableDate();
     }
 
     /**
@@ -187,8 +182,8 @@ public class ATTransfer {
      *
      * @return the booking date
      */
-    public ATJDate getBookingDate() {
-        return new ATJDate(botransfer.getBookingDate());
+    public JDate getBookingDate() {
+        return botransfer.getBookingDate();
     }
 
     /**
@@ -223,8 +218,8 @@ public class ATTransfer {
      *
      * @return the callable date
      */
-    public ATJDate getCallableDate() {
-        return new ATJDate(botransfer.getCallableDate());
+    public JDate getCallableDate() {
+        return botransfer.getCallableDate();
     }
 
     /**
@@ -277,8 +272,8 @@ public class ATTransfer {
      *
      * @return the end date
      */
-    public ATJDate getEndDate() {
-        return new ATJDate(botransfer.getEndDate());
+    public JDate getEndDate() {
+        return botransfer.getEndDate();
     }
 
     /**
@@ -399,12 +394,21 @@ public class ATTransfer {
     }
 
     /**
+     * Gets the s id.
+     *
+     * @return the s id
+     */
+    public long getId() {
+        return botransfer.getLongId();
+    }
+
+    /**
      * Gets the inits the settle date.
      *
      * @return the inits the settle date
      */
-    public ATJDate getInitSettleDate() {
-        return new ATJDate(botransfer.getInitSettleDate());
+    public JDate getInitSettleDate() {
+        return botransfer.getInitSettleDate();
     }
 
     /**
@@ -817,8 +821,8 @@ public class ATTransfer {
      *
      * @return the SDI value date
      */
-    public ATJDate getSDIValueDate() {
-        return new ATJDate(botransfer.getSDIValueDate());
+    public JDate getSDIValueDate() {
+        return botransfer.getSDIValueDate();
     }
 
     /**
@@ -826,8 +830,8 @@ public class ATTransfer {
      *
      * @return the settle date
      */
-    public ATJDate getSettleDate() {
-        return new ATJDate(botransfer.getSettleDate());
+    public JDate getSettleDate() {
+        return botransfer.getSettleDate();
     }
 
     /**
@@ -855,15 +859,6 @@ public class ATTransfer {
      */
     public String getSettlementMethod() {
         return botransfer.getSettlementMethod();
-    }
-
-    /**
-     * Gets the s id.
-     *
-     * @return the s id
-     */
-    public long getId() {
-        return botransfer.getLongId();
     }
 
     /**
@@ -925,8 +920,8 @@ public class ATTransfer {
      *
      * @return the trade date
      */
-    public ATJDate getTradeDate() {
-        return new ATJDate(botransfer.getTradeDate());
+    public JDate getTradeDate() {
+        return botransfer.getTradeDate();
     }
 
     /**
@@ -997,8 +992,8 @@ public class ATTransfer {
      *
      * @return the value date
      */
-    public ATJDate getValueDate() {
-        return new ATJDate(botransfer.getValueDate());
+    public JDate getValueDate() {
+        return botransfer.getValueDate();
     }
 
     /**
@@ -1008,6 +1003,11 @@ public class ATTransfer {
      */
     public int getVersion() {
         return botransfer.getVersion();
+    }
+
+    public ATTransfer reload() throws CalypsoServiceException {
+        botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(botransfer.getLongId());
+        return this;
     }
 
     @Override

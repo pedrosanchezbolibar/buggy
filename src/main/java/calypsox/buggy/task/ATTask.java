@@ -6,13 +6,13 @@ import java.util.Vector;
 import com.calypso.tk.bo.Task;
 import com.calypso.tk.bo.util.ProcessTaskUtil.ObjectDesc;
 import com.calypso.tk.core.CalypsoServiceException;
+import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.Status;
 import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.refdata.ATBook;
-import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.refdata.ATLegalEntity;
 
 /**
@@ -308,8 +308,8 @@ public class ATTask {
      *
      * @return the object date
      */
-    public ATJDate getObjectDate() {
-        return new ATJDate(task.getObjectDate());
+    public JDate getObjectDate() {
+        return task.getObjectDate();
     }
 
     /**

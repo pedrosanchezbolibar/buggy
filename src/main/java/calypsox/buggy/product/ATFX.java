@@ -10,6 +10,7 @@ import com.calypso.tk.core.CallInfo;
 import com.calypso.tk.core.CashFlowSet;
 import com.calypso.tk.core.CreditContingencyInfo;
 import com.calypso.tk.core.DisplayValue;
+import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.ProductCustomData;
 import com.calypso.tk.core.Trade;
@@ -18,7 +19,6 @@ import com.calypso.tk.refdata.CurrencyPair;
 import com.calypso.tk.refdata.PreciousMetalForm;
 import com.calypso.tk.refdata.RateIndex;
 
-import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.ui.ATAmount;
 
 /**
@@ -41,6 +41,80 @@ public class ATFX extends ATTrade {
     }
 
     /**
+     * Gets the all flows.
+     *
+     * @return the all flows
+     */
+    public CashFlowSet getAllFlows() {
+        return fx.getAllFlows();
+    }
+
+    /**
+     * Gets the allocator.
+     *
+     * @return the allocator
+     */
+    public String getAllocator() {
+        return fx.getAllocator();
+    }
+
+    /**
+     * Gets the associated quote names.
+     *
+     * @return the associated quote names
+     */
+    public Vector getAssociatedQuoteNames() {
+        return fx.getAssociatedQuoteNames();
+    }
+
+    /**
+     * Gets the auth name.
+     *
+     * @return the auth name
+     */
+    public String getAuthName() {
+        return fx.getAuthName();
+    }
+
+    /**
+     * Gets the call info.
+     *
+     * @return the call info
+     */
+    public CallInfo getCallInfo() {
+        return fx.getCallInfo();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see calypsox.buggy.product.ATTrade#getComment()
+     */
+    @Override
+    public String getComment() {
+        return fx.getComment();
+    }
+
+    /**
+     * Gets the credit contingency info.
+     *
+     * @return the credit contingency info
+     */
+    public CreditContingencyInfo getCreditContingencyInfo() {
+        return fx.getCreditContingencyInfo();
+    }
+
+    /**
+     * Gets the currencies.
+     *
+     * @return the currencies
+     */
+    @SuppressWarnings("unchecked")
+    public Collection<String> getCurrencies() {
+        return fx.getCurrencies();
+    }
+
+    /**
      * Gets the currency.
      *
      * @return the currency
@@ -59,166 +133,12 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the precious metal form.
+     * Gets the custom data.
      *
-     * @return the precious metal form
+     * @return the custom data
      */
-    public PreciousMetalForm getPreciousMetalForm() {
-        return fx.getPreciousMetalForm();
-    }
-
-    /**
-     * Gets the principal currency.
-     *
-     * @return the principal currency
-     */
-    public String getPrincipalCurrency() {
-        return fx.getPrincipalCurrency();
-    }
-
-    /**
-     * Gets the quoting currency.
-     *
-     * @return the quoting currency
-     */
-    public String getQuotingCurrency() {
-        return fx.getQuotingCurrency();
-    }
-
-    /**
-     * Gets the principal amount.
-     *
-     * @return the principal amount
-     */
-    public ATAmount getPrincipalAmount() {
-        return new ATAmount(fx.getPrincipalCurrency(), fx.getPrincipal());
-    }
-
-    /**
-     * Gets the principal amount.
-     *
-     * @return the principal amount
-     */
-    public ATAmount getPrimaryAmount() {
-        return new ATAmount(fx.getPrincipalCurrency(), fx.getPrimaryAmount(trade).get());
-    }
-
-    /**
-     * Gets the quoting amount.
-     *
-     * @return the quoting amount
-     */
-    public ATAmount getQuotingAmount() {
-        return new ATAmount(fx.getQuotingCurrency(), fx.getQuoteAmount(trade).get());
-    }
-
-    /**
-     * Gets the description.
-     *
-     * @return the description
-     */
-    public String getDescription() {
-        return fx.getDescription();
-    }
-
-    /**
-     * Gets the quote name.
-     *
-     * @return the quote name
-     */
-    public String getQuoteName() {
-        return fx.getQuoteName();
-    }
-
-    /**
-     * Gets the primary currency.
-     *
-     * @return the primary currency
-     */
-    public String getPrimaryCurrency() {
-        return fx.getPrimaryCurrency();
-    }
-
-    /**
-     * Gets the sub type.
-     *
-     * @return the sub type
-     */
-    public String getSubType() {
-        return fx.getSubType();
-    }
-
-    /**
-     * Gets the used holidays.
-     *
-     * @return the used holidays
-     */
-    public String[] getUsedHolidays() {
-        return fx.getUsedHolidays();
-    }
-
-    /**
-     * Gets the price display value.
-     *
-     * @return the price display value
-     */
-    public DisplayValue getPriceDisplayValue() {
-        return fx.getPriceDisplayValue();
-    }
-
-    /**
-     * Gets the quote type.
-     *
-     * @return the quote type
-     */
-    public String getQuoteType() {
-        return fx.getQuoteType();
-    }
-
-    /**
-     * Gets the allocator.
-     *
-     * @return the allocator
-     */
-    public String getAllocator() {
-        return fx.getAllocator();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see calypsox.buggy.product.ATTrade#getComment()
-     */
-    @Override
-    public String getComment() {
-        return fx.getComment();
-    }
-
-    /**
-     * Gets the name.
-     *
-     * @return the name
-     */
-    public String getName() {
-        return fx.getName();
-    }
-
-    /**
-     * Gets the type.
-     *
-     * @return the type
-     */
-    public String getType() {
-        return fx.getType();
-    }
-
-    /**
-     * Gets the final payment maturity date.
-     *
-     * @return the final payment maturity date
-     */
-    public ATJDate getFinalPaymentMaturityDate() {
-        return new ATJDate(fx.getFinalPaymentMaturityDate());
+    public ProductCustomData getCustomData() {
+        return fx.getCustomData();
     }
 
     /**
@@ -231,6 +151,15 @@ public class ATFX extends ATTrade {
     }
 
     /**
+     * Gets the custom flows B.
+     *
+     * @return the custom flows B
+     */
+    public boolean getCustomFlowsB() {
+        return fx.getCustomFlowsB();
+    }
+
+    /**
      * Gets the custom quote name.
      *
      * @return the custom quote name
@@ -240,12 +169,39 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the auth name.
+     * Gets the custom sub type.
      *
-     * @return the auth name
+     * @return the custom sub type
      */
-    public String getAuthName() {
-        return fx.getAuthName();
+    public String getCustomSubType() {
+        return fx.getCustomSubType();
+    }
+
+    /**
+     * Gets the description.
+     *
+     * @return the description
+     */
+    public String getDescription() {
+        return fx.getDescription();
+    }
+
+    /**
+     * Gets the down barrier type.
+     *
+     * @return the down barrier type
+     */
+    public String getDownBarrierType() {
+        return fx.getDownBarrierType();
+    }
+
+    /**
+     * Gets the down barrier value.
+     *
+     * @return the down barrier value
+     */
+    public double getDownBarrierValue() {
+        return fx.getDownBarrierValue();
     }
 
     /**
@@ -258,12 +214,84 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the x prod config id.
+     * Gets the entity id.
      *
-     * @return the x prod config id
+     * @return the entity id
      */
-    public int getXProdConfigId() {
-        return fx.getXProdConfigId();
+    public int getEntityId() {
+        return fx.getEntityId();
+    }
+
+    /**
+     * Gets the entity type.
+     *
+     * @return the entity type
+     */
+    public String getEntityType() {
+        return fx.getEntityType();
+    }
+
+    /**
+     * Gets the exercised date.
+     *
+     * @return the exercised date
+     */
+    public JDate getExercisedDate() {
+        return fx.getExercisedDate();
+    }
+
+    /**
+     * Gets the exercised datetime.
+     *
+     * @return the exercised datetime
+     */
+    public JDatetime getExercisedDatetime() {
+        return fx.getExercisedDatetime();
+    }
+
+    /**
+     * Gets the exercise type.
+     *
+     * @return the exercise type
+     */
+    public String getExerciseType() {
+        return fx.getExerciseType();
+    }
+
+    /**
+     * Gets the exotic financial legs.
+     *
+     * @return the exotic financial legs
+     */
+    public Vector getExoticFinancialLegs() {
+        return fx.getExoticFinancialLegs();
+    }
+
+    /**
+     * Gets the exp date.
+     *
+     * @return the exp date
+     */
+    public JDate getExpDate() {
+        return fx.getExpDate();
+    }
+
+    /**
+     * Gets the expiry time.
+     *
+     * @return the expiry time
+     */
+    public int getExpiryTime() {
+        return fx.getExpiryTime();
+    }
+
+    /**
+     * Gets the expiry time zone.
+     *
+     * @return the expiry time zone
+     */
+    public TimeZone getExpiryTimeZone() {
+        return fx.getExpiryTimeZone();
     }
 
     /**
@@ -276,66 +304,48 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the pricer override key.
+     * Gets the extended types.
      *
-     * @return the pricer override key
+     * @return the extended types
      */
-    public String getPricerOverrideKey() {
-        return fx.getPricerOverrideKey();
+    public Vector getExtendedTypes() {
+        return fx.getExtendedTypes();
     }
 
     /**
-     * Gets the mdi override key.
+     * Gets the final payment maturity date.
      *
-     * @return the mdi override key
+     * @return the final payment maturity date
      */
-    public String getMdiOverrideKey() {
-        return fx.getMdiOverrideKey();
+    public JDate getFinalPaymentMaturityDate() {
+        return fx.getFinalPaymentMaturityDate();
     }
 
     /**
-     * Gets the market place id.
+     * Gets the first barrier type.
      *
-     * @return the market place id
+     * @return the first barrier type
      */
-    public int getMarketPlaceId() {
-        return fx.getMarketPlaceId();
+    public String getFirstBarrierType() {
+        return fx.getFirstBarrierType();
     }
 
     /**
-     * Gets the sec codes.
+     * Gets the first barrier value.
      *
-     * @return the sec codes
+     * @return the first barrier value
      */
-    public Map getSecCodes() {
-        return fx.getSecCodes();
+    public double getFirstBarrierValue() {
+        return fx.getFirstBarrierValue();
     }
 
     /**
-     * Gets the custom flows B.
+     * Gets the first barrier way.
      *
-     * @return the custom flows B
+     * @return the first barrier way
      */
-    public boolean getCustomFlowsB() {
-        return fx.getCustomFlowsB();
-    }
-
-    /**
-     * Gets the schedule.
-     *
-     * @return the schedule
-     */
-    public List getSchedule() {
-        return fx.getSchedule();
-    }
-
-    /**
-     * Gets the maturity date.
-     *
-     * @return the maturity date
-     */
-    public ATJDate getMaturityDate() {
-        return new ATJDate(fx.getMaturityDate());
+    public String getFirstBarrierWay() {
+        return fx.getFirstBarrierWay();
     }
 
     /**
@@ -348,12 +358,174 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the spot days.
+     * Gets the holidays.
      *
-     * @return the spot days
+     * @return the holidays
      */
-    public int getSpotDays() {
-        return fx.getSpotDays();
+    public Vector getHolidays() {
+        return fx.getHolidays();
+    }
+
+    /**
+     * Gets the checks if is exotic.
+     *
+     * @return the checks if is exotic
+     */
+    public boolean getIsExotic() {
+        return fx.getIsExotic();
+    }
+
+    /**
+     * Gets the issuer ids.
+     *
+     * @return the issuer ids
+     */
+    public Vector getIssuerIds() {
+        return fx.getIssuerIds();
+    }
+
+    /**
+     * Gets the market place id.
+     *
+     * @return the market place id
+     */
+    public int getMarketPlaceId() {
+        return fx.getMarketPlaceId();
+    }
+
+    /**
+     * Gets the maturity date.
+     *
+     * @return the maturity date
+     */
+    public JDate getMaturityDate() {
+        return fx.getMaturityDate();
+    }
+
+    /**
+     * Gets the mdi override key.
+     *
+     * @return the mdi override key
+     */
+    public String getMdiOverrideKey() {
+        return fx.getMdiOverrideKey();
+    }
+
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    public String getName() {
+        return fx.getName();
+    }
+
+    /**
+     * Gets the precious metal form.
+     *
+     * @return the precious metal form
+     */
+    public PreciousMetalForm getPreciousMetalForm() {
+        return fx.getPreciousMetalForm();
+    }
+
+    /**
+     * Gets the price display value.
+     *
+     * @return the price display value
+     */
+    public DisplayValue getPriceDisplayValue() {
+        return fx.getPriceDisplayValue();
+    }
+
+    /**
+     * Gets the pricer override key.
+     *
+     * @return the pricer override key
+     */
+    public String getPricerOverrideKey() {
+        return fx.getPricerOverrideKey();
+    }
+
+    /**
+     * Gets the principal amount.
+     *
+     * @return the principal amount
+     */
+    public ATAmount getPrimaryAmount() {
+        return new ATAmount(fx.getPrincipalCurrency(), fx.getPrimaryAmount(trade).get());
+    }
+
+    /**
+     * Gets the primary currency.
+     *
+     * @return the primary currency
+     */
+    public String getPrimaryCurrency() {
+        return fx.getPrimaryCurrency();
+    }
+
+    /**
+     * Gets the principal amount.
+     *
+     * @return the principal amount
+     */
+    public ATAmount getPrincipalAmount() {
+        return new ATAmount(fx.getPrincipalCurrency(), fx.getPrincipal());
+    }
+
+    /**
+     * Gets the principal currency.
+     *
+     * @return the principal currency
+     */
+    public String getPrincipalCurrency() {
+        return fx.getPrincipalCurrency();
+    }
+
+    /**
+     * Gets the put call.
+     *
+     * @return the put call
+     */
+    public int getPutCall() {
+        return fx.getPutCall();
+    }
+
+    /**
+     * Gets the quote name.
+     *
+     * @return the quote name
+     */
+    public String getQuoteName() {
+        return fx.getQuoteName();
+    }
+
+    /**
+     * Gets the quote type.
+     *
+     * @return the quote type
+     */
+    public String getQuoteType() {
+        return fx.getQuoteType();
+    }
+
+    /**
+     * Gets the quoting amount.
+     *
+     * @return the quoting amount
+     */
+    public ATAmount getQuotingAmount() {
+        return new ATAmount(fx.getQuotingCurrency(), fx.getQuoteAmount(trade).get());
+    }
+
+    /**
+     * Gets the quoting currency.
+     *
+     * @return the quoting currency
+     */
+    public String getQuotingCurrency() {
+        return fx.getQuotingCurrency();
     }
 
     /**
@@ -385,22 +557,93 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the currencies.
+     * Gets the rebate.
      *
-     * @return the currencies
+     * @return the rebate
      */
-    @SuppressWarnings("unchecked")
-    public Collection<String> getCurrencies() {
-        return fx.getCurrencies();
+    public double getRebate() {
+        return fx.getRebate();
     }
 
     /**
-     * Gets the custom data.
+     * Gets the reference entities.
      *
-     * @return the custom data
+     * @return the reference entities
      */
-    public ProductCustomData getCustomData() {
-        return fx.getCustomData();
+    public Vector getReferenceEntities() {
+        return fx.getReferenceEntities();
+    }
+
+    /**
+     * Gets the schedule.
+     *
+     * @return the schedule
+     */
+    public List getSchedule() {
+        return fx.getSchedule();
+    }
+
+    /**
+     * Gets the sec codes.
+     *
+     * @return the sec codes
+     */
+    public Map getSecCodes() {
+        return fx.getSecCodes();
+    }
+
+    /**
+     * Gets the second barrier type.
+     *
+     * @return the second barrier type
+     */
+    public String getSecondBarrierType() {
+        return fx.getSecondBarrierType();
+    }
+
+    /**
+     * Gets the second barrier value.
+     *
+     * @return the second barrier value
+     */
+    public double getSecondBarrierValue() {
+        return fx.getSecondBarrierValue();
+    }
+
+    /**
+     * Gets the second barrier way.
+     *
+     * @return the second barrier way
+     */
+    public String getSecondBarrierWay() {
+        return fx.getSecondBarrierWay();
+    }
+
+    /**
+     * Gets the spot days.
+     *
+     * @return the spot days
+     */
+    public int getSpotDays() {
+        return fx.getSpotDays();
+    }
+
+    /**
+     * Gets the strike.
+     *
+     * @return the strike
+     */
+    public double getStrike() {
+        return fx.getStrike();
+    }
+
+    /**
+     * Gets the sub type.
+     *
+     * @return the sub type
+     */
+    public String getSubType() {
+        return fx.getSubType();
     }
 
     /**
@@ -413,30 +656,21 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the extended types.
+     * Gets the supported credit event protocol types.
      *
-     * @return the extended types
+     * @return the supported credit event protocol types
      */
-    public Vector getExtendedTypes() {
-        return fx.getExtendedTypes();
+    public List getSupportedCreditEventProtocolTypes() {
+        return fx.getSupportedCreditEventProtocolTypes();
     }
 
     /**
-     * Gets the custom sub type.
+     * Gets the type.
      *
-     * @return the custom sub type
+     * @return the type
      */
-    public String getCustomSubType() {
-        return fx.getCustomSubType();
-    }
-
-    /**
-     * Gets the holidays.
-     *
-     * @return the holidays
-     */
-    public Vector getHolidays() {
-        return fx.getHolidays();
+    public String getType() {
+        return fx.getType();
     }
 
     /**
@@ -458,111 +692,12 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the all flows.
+     * Gets the up barrier type.
      *
-     * @return the all flows
+     * @return the up barrier type
      */
-    public CashFlowSet getAllFlows() {
-        return fx.getAllFlows();
-    }
-
-    /**
-     * Gets the associated quote names.
-     *
-     * @return the associated quote names
-     */
-    public Vector getAssociatedQuoteNames() {
-        return fx.getAssociatedQuoteNames();
-    }
-
-    /**
-     * Gets the entity id.
-     *
-     * @return the entity id
-     */
-    public int getEntityId() {
-        return fx.getEntityId();
-    }
-
-    /**
-     * Gets the entity type.
-     *
-     * @return the entity type
-     */
-    public String getEntityType() {
-        return fx.getEntityType();
-    }
-
-    /**
-     * Gets the call info.
-     *
-     * @return the call info
-     */
-    public CallInfo getCallInfo() {
-        return fx.getCallInfo();
-    }
-
-    /**
-     * Gets the credit contingency info.
-     *
-     * @return the credit contingency info
-     */
-    public CreditContingencyInfo getCreditContingencyInfo() {
-        return fx.getCreditContingencyInfo();
-    }
-
-    /**
-     * Gets the issuer ids.
-     *
-     * @return the issuer ids
-     */
-    public Vector getIssuerIds() {
-        return fx.getIssuerIds();
-    }
-
-    /**
-     * Gets the reference entities.
-     *
-     * @return the reference entities
-     */
-    public Vector getReferenceEntities() {
-        return fx.getReferenceEntities();
-    }
-
-    /**
-     * Gets the supported credit event protocol types.
-     *
-     * @return the supported credit event protocol types
-     */
-    public List getSupportedCreditEventProtocolTypes() {
-        return fx.getSupportedCreditEventProtocolTypes();
-    }
-
-    /**
-     * Gets the exercised date.
-     *
-     * @return the exercised date
-     */
-    public ATJDate getExercisedDate() {
-        return new ATJDate(fx.getExercisedDate());
-    }
-
-    /**
-     * Gets the exercised datetime.
-     *
-     * @return the exercised datetime
-     */
-    public JDatetime getExercisedDatetime() {
-        return fx.getExercisedDatetime();
-    }
-
-    /**
-     * Gets the strike.
-     *
-     * @return the strike
-     */
-    public double getStrike() {
-        return fx.getStrike();
+    public String getUpBarrierType() {
+        return fx.getUpBarrierType();
     }
 
     /**
@@ -575,165 +710,12 @@ public class ATFX extends ATTrade {
     }
 
     /**
-     * Gets the down barrier value.
+     * Gets the used holidays.
      *
-     * @return the down barrier value
+     * @return the used holidays
      */
-    public double getDownBarrierValue() {
-        return fx.getDownBarrierValue();
-    }
-
-    /**
-     * Gets the up barrier type.
-     *
-     * @return the up barrier type
-     */
-    public String getUpBarrierType() {
-        return fx.getUpBarrierType();
-    }
-
-    /**
-     * Gets the down barrier type.
-     *
-     * @return the down barrier type
-     */
-    public String getDownBarrierType() {
-        return fx.getDownBarrierType();
-    }
-
-    /**
-     * Gets the first barrier value.
-     *
-     * @return the first barrier value
-     */
-    public double getFirstBarrierValue() {
-        return fx.getFirstBarrierValue();
-    }
-
-    /**
-     * Gets the second barrier value.
-     *
-     * @return the second barrier value
-     */
-    public double getSecondBarrierValue() {
-        return fx.getSecondBarrierValue();
-    }
-
-    /**
-     * Gets the first barrier type.
-     *
-     * @return the first barrier type
-     */
-    public String getFirstBarrierType() {
-        return fx.getFirstBarrierType();
-    }
-
-    /**
-     * Gets the second barrier type.
-     *
-     * @return the second barrier type
-     */
-    public String getSecondBarrierType() {
-        return fx.getSecondBarrierType();
-    }
-
-    /**
-     * Gets the first barrier way.
-     *
-     * @return the first barrier way
-     */
-    public String getFirstBarrierWay() {
-        return fx.getFirstBarrierWay();
-    }
-
-    /**
-     * Gets the second barrier way.
-     *
-     * @return the second barrier way
-     */
-    public String getSecondBarrierWay() {
-        return fx.getSecondBarrierWay();
-    }
-
-    /**
-     * Gets the rebate.
-     *
-     * @return the rebate
-     */
-    public double getRebate() {
-        return fx.getRebate();
-    }
-
-    /**
-     * Gets the exp date.
-     *
-     * @return the exp date
-     */
-    public ATJDate getExpDate() {
-        return new ATJDate(fx.getExpDate());
-    }
-
-    /**
-     * Gets the expiry time.
-     *
-     * @return the expiry time
-     */
-    public int getExpiryTime() {
-        return fx.getExpiryTime();
-    }
-
-    /**
-     * Gets the expiry time zone.
-     *
-     * @return the expiry time zone
-     */
-    public TimeZone getExpiryTimeZone() {
-        return fx.getExpiryTimeZone();
-    }
-
-    /**
-     * Gets the put call.
-     *
-     * @return the put call
-     */
-    public int getPutCall() {
-        return fx.getPutCall();
-    }
-
-    /**
-     * Gets the exercise type.
-     *
-     * @return the exercise type
-     */
-    public String getExerciseType() {
-        return fx.getExerciseType();
-    }
-
-    /**
-     * Gets the checks if is exotic.
-     *
-     * @return the checks if is exotic
-     */
-    public boolean getIsExotic() {
-        return fx.getIsExotic();
-    }
-
-    /**
-     * Gets the exotic financial legs.
-     *
-     * @return the exotic financial legs
-     */
-    public Vector getExoticFinancialLegs() {
-        return fx.getExoticFinancialLegs();
-    }
-
-    /**
-     * Gets the x prod config name.
-     *
-     * @return the x prod config name
-     */
-    public String getXProdConfigName() {
-        return fx.getXProdConfigName();
+    public String[] getUsedHolidays() {
+        return fx.getUsedHolidays();
     }
 
     /**
@@ -743,6 +725,24 @@ public class ATFX extends ATTrade {
      */
     public boolean getUsePostProcessor() {
         return fx.getUsePostProcessor();
+    }
+
+    /**
+     * Gets the x prod config id.
+     *
+     * @return the x prod config id
+     */
+    public int getXProdConfigId() {
+        return fx.getXProdConfigId();
+    }
+
+    /**
+     * Gets the x prod config name.
+     *
+     * @return the x prod config name
+     */
+    public String getXProdConfigName() {
+        return fx.getXProdConfigName();
     }
 
 }

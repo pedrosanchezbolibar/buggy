@@ -5,12 +5,12 @@ import java.util.Map;
 import com.calypso.tk.core.Accretion;
 import com.calypso.tk.core.CashFlowSet;
 import com.calypso.tk.core.DayCount;
+import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.RoundingMethod;
 import com.calypso.tk.core.Trade;
 import com.calypso.tk.product.SimpleMM;
 import com.calypso.tk.refdata.RateIndex;
 
-import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.ui.ATAmount;
 
 /**
@@ -33,39 +33,12 @@ public class ATTSimpleMM extends ATTrade {
     }
 
     /**
-     * Gets the product class.
+     * Gets the accretion.
      *
-     * @return the product class
+     * @return the accretion
      */
-    public String getProductClass() {
-        return simplemm.getProductClass();
-    }
-
-    /**
-     * Gets the sub type.
-     *
-     * @return the sub type
-     */
-    public String getSubType() {
-        return simplemm.getSubType();
-    }
-
-    /**
-     * Gets the start date.
-     *
-     * @return the start date
-     */
-    public ATJDate getStartDate() {
-        return new ATJDate(simplemm.getStartDate());
-    }
-
-    /**
-     * Gets the end date.
-     *
-     * @return the end date
-     */
-    public ATJDate getEndDate() {
-        return new ATJDate(simplemm.getEndDate());
+    public Accretion getAccretion() {
+        return simplemm.getAccretion();
     }
 
     /**
@@ -78,48 +51,39 @@ public class ATTSimpleMM extends ATTrade {
     }
 
     /**
-     * Gets the principal amount.
+     * Gets the default rounding.
      *
-     * @return the principal amount
+     * @return the default rounding
      */
-    public ATAmount getPrincipalAmount() {
-        return new ATAmount(simplemm.getCurrency(), simplemm.getPrincipal());
+    public String getDefaultRounding() {
+        return simplemm.getDefaultRounding();
     }
 
     /**
-     * Gets the fixed rate B.
+     * Gets the description.
      *
-     * @return the fixed rate B
+     * @return the description
      */
-    public boolean getFixedRateB() {
-        return simplemm.getFixedRateB();
+    public String getDescription() {
+        return simplemm.getDescription();
     }
 
     /**
-     * Gets the fixed rate.
+     * Gets the discount B.
      *
-     * @return the fixed rate
+     * @return the discount B
      */
-    public double getFixedRate() {
-        return simplemm.getFixedRate();
+    public boolean getDiscountB() {
+        return simplemm.getDiscountB();
     }
 
     /**
-     * Gets the rate index.
+     * Gets the end date.
      *
-     * @return the rate index
+     * @return the end date
      */
-    public RateIndex getRateIndex() {
-        return simplemm.getRateIndex();
-    }
-
-    /**
-     * Gets the spread.
-     *
-     * @return the spread
-     */
-    public double getSpread() {
-        return simplemm.getSpread();
+    public JDate getEndDate() {
+        return simplemm.getEndDate();
     }
 
     /**
@@ -132,12 +96,30 @@ public class ATTSimpleMM extends ATTrade {
     }
 
     /**
-     * Gets the discount B.
+     * Gets the fixed rate.
      *
-     * @return the discount B
+     * @return the fixed rate
      */
-    public boolean getDiscountB() {
-        return simplemm.getDiscountB();
+    public double getFixedRate() {
+        return simplemm.getFixedRate();
+    }
+
+    /**
+     * Gets the fixed rate B.
+     *
+     * @return the fixed rate B
+     */
+    public boolean getFixedRateB() {
+        return simplemm.getFixedRateB();
+    }
+
+    /**
+     * Gets the flows.
+     *
+     * @return the flows
+     */
+    public CashFlowSet getFlows() {
+        return simplemm.getFlows();
     }
 
     /**
@@ -163,35 +145,8 @@ public class ATTSimpleMM extends ATTrade {
      *
      * @return the maturity date
      */
-    public ATJDate getMaturityDate() {
-        return new ATJDate(simplemm.getMaturityDate());
-    }
-
-    /**
-     * Gets the description.
-     *
-     * @return the description
-     */
-    public String getDescription() {
-        return simplemm.getDescription();
-    }
-
-    /**
-     * Gets the flows.
-     *
-     * @return the flows
-     */
-    public CashFlowSet getFlows() {
-        return simplemm.getFlows();
-    }
-
-    /**
-     * Gets the open term B.
-     *
-     * @return the open term B
-     */
-    public boolean getOpenTermB() {
-        return simplemm.getOpenTermB();
+    public JDate getMaturityDate() {
+        return simplemm.getMaturityDate();
     }
 
     /**
@@ -204,12 +159,49 @@ public class ATTSimpleMM extends ATTrade {
     }
 
     /**
-     * Gets the used holidays.
+     * Gets the open term B.
      *
-     * @return the used holidays
+     * @return the open term B
      */
-    public String[] getUsedHolidays() {
-        return simplemm.getUsedHolidays();
+    public boolean getOpenTermB() {
+        return simplemm.getOpenTermB();
+    }
+
+    /**
+     * Gets the params.
+     *
+     * @return the params
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getParams() {
+        return simplemm.getParams();
+    }
+
+    /**
+     * Gets the principal amount.
+     *
+     * @return the principal amount
+     */
+    public ATAmount getPrincipalAmount() {
+        return new ATAmount(simplemm.getCurrency(), simplemm.getPrincipal());
+    }
+
+    /**
+     * Gets the product class.
+     *
+     * @return the product class
+     */
+    public String getProductClass() {
+        return simplemm.getProductClass();
+    }
+
+    /**
+     * Gets the rate index.
+     *
+     * @return the rate index
+     */
+    public RateIndex getRateIndex() {
+        return simplemm.getRateIndex();
     }
 
     /**
@@ -222,15 +214,6 @@ public class ATTSimpleMM extends ATTrade {
     }
 
     /**
-     * Gets the default rounding.
-     *
-     * @return the default rounding
-     */
-    public String getDefaultRounding() {
-        return simplemm.getDefaultRounding();
-    }
-
-    /**
      * Gets the sales margin.
      *
      * @return the sales margin
@@ -240,22 +223,39 @@ public class ATTSimpleMM extends ATTrade {
     }
 
     /**
-     * Gets the accretion.
+     * Gets the spread.
      *
-     * @return the accretion
+     * @return the spread
      */
-    public Accretion getAccretion() {
-        return simplemm.getAccretion();
+    public double getSpread() {
+        return simplemm.getSpread();
     }
 
     /**
-     * Gets the params.
+     * Gets the start date.
      *
-     * @return the params
+     * @return the start date
      */
-    @SuppressWarnings("unchecked")
-    public Map<String, String> getParams() {
-        return simplemm.getParams();
+    public JDate getStartDate() {
+        return simplemm.getStartDate();
+    }
+
+    /**
+     * Gets the sub type.
+     *
+     * @return the sub type
+     */
+    public String getSubType() {
+        return simplemm.getSubType();
+    }
+
+    /**
+     * Gets the used holidays.
+     *
+     * @return the used holidays
+     */
+    public String[] getUsedHolidays() {
+        return simplemm.getUsedHolidays();
     }
 
 }

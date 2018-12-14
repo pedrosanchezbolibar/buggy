@@ -2,7 +2,6 @@ package calypsox.buggy.uti;
 
 import java.lang.reflect.Method;
 
-import com.calypso.tk.core.JDate;
 import com.calypso.tk.product.Cash;
 
 public class WarpCalypoClass {
@@ -21,9 +20,10 @@ public class WarpCalypoClass {
                 if (!SKIP_METHOD.contains(method.getName())) {
 
                     final Class<?> returnType = method.getReturnType();
-                    if (returnType == JDate.class) {
-                        System.out.println(generateGetAT(method, "ATJDate"));
-                    } else if ("getBookId".equals(methodName)) {
+                    // if (returnType == JDate.class) {
+                    // System.out.println(generateGetAT(method, "ATJDate"));
+                    // } elses
+                    if ("getBookId".equals(methodName)) {
                         System.out.println(generateGetAT(method, "ATBook"));
                     } else if ("getTransferId".equals(methodName)) {
                         System.out.println(generateGetAT(method, "ATTransfer"));

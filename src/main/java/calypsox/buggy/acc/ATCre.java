@@ -6,6 +6,7 @@ import com.calypso.tk.bo.BOTransfer;
 import com.calypso.tk.core.AccountingBook;
 import com.calypso.tk.core.Book;
 import com.calypso.tk.core.CalypsoServiceException;
+import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.Trade;
 import com.calypso.tk.refdata.AccountingEventConfig;
@@ -13,7 +14,6 @@ import com.calypso.tk.refdata.AccountingRule;
 import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.product.ATTrade;
-import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.ui.ATAmount;
 import calypsox.buggy.xfer.ATTransfer;
 
@@ -78,34 +78,6 @@ public class ATCre {
     }
 
     /**
-     * Gets the AT trade.
-     *
-     * @param id
-     *            the id
-     * @return the AT trade
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    private ATTrade getATTrade(final int id) throws CalypsoServiceException {
-        final Trade trade = DSConnection.getDefault().getRemoteTrade().getTrade(id);
-        return new ATTrade(trade);
-    }
-
-    /**
-     * Gets the AT transfer.
-     *
-     * @param id
-     *            the id
-     * @return the AT transfer
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    private ATTransfer getATTransfer(final long id) throws CalypsoServiceException {
-        final BOTransfer xfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(id);
-        return new ATTransfer(xfer);
-    }
-
-    /**
      * Gets the attribute.
      *
      * @param name
@@ -130,8 +102,19 @@ public class ATCre {
      *
      * @return the booking date
      */
-    public ATJDate getBookingDate() {
-        return new ATJDate(bocre.getBookingDate());
+    public JDate getBookingDate() {
+        return bocre.getBookingDate();
+    }
+
+    /**
+     * Gets the cre amount.
+     *
+     * @param index
+     *            the index
+     * @return the cre amount
+     */
+    public ATAmount getCreAmount(final int index) {
+        return new ATAmount(bocre.getCurrency(index), bocre.getAmount(index));
     }
 
     /**
@@ -144,17 +127,6 @@ public class ATCre {
     public ATAmount getCreAmount(final String strIndex) {
         final int index = Integer.parseInt(strIndex);
         return getCreAmount(index);
-    }
-
-    /**
-     * Gets the cre amount.
-     *
-     * @param index
-     *            the index
-     * @return the cre amount
-     */
-    public ATAmount getCreAmount(final int index) {
-        return new ATAmount(bocre.getCurrency(index), bocre.getAmount(index));
     }
 
     /**
@@ -189,8 +161,8 @@ public class ATCre {
      *
      * @return the effective date
      */
-    public ATJDate getEffectiveDate() {
-        return new ATJDate(bocre.getEffectiveDate());
+    public JDate getEffectiveDate() {
+        return bocre.getEffectiveDate();
     }
 
     /**
@@ -324,8 +296,8 @@ public class ATCre {
      *
      * @return the settlement date
      */
-    public ATJDate getSettlementDate() {
-        return new ATJDate(bocre.getSettlementDate());
+    public JDate getSettlementDate() {
+        return bocre.getSettlementDate();
     }
 
     /**
@@ -362,8 +334,8 @@ public class ATCre {
      *
      * @return the trade date
      */
-    public ATJDate getTradeDate() {
-        return new ATJDate(bocre.getTradeDate());
+    public JDate getTradeDate() {
+        return bocre.getTradeDate();
     }
 
     /**
@@ -412,5 +384,33 @@ public class ATCre {
      */
     public int getXferVersion() {
         return bocre.getXferVersion();
+    }
+
+    /**
+     * Gets the AT trade.
+     *
+     * @param id
+     *            the id
+     * @return the AT trade
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    private ATTrade getATTrade(final int id) throws CalypsoServiceException {
+        final Trade trade = DSConnection.getDefault().getRemoteTrade().getTrade(id);
+        return new ATTrade(trade);
+    }
+
+    /**
+     * Gets the AT transfer.
+     *
+     * @param id
+     *            the id
+     * @return the AT transfer
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    private ATTransfer getATTransfer(final long id) throws CalypsoServiceException {
+        final BOTransfer xfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(id);
+        return new ATTransfer(xfer);
     }
 }
