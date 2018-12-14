@@ -2,11 +2,11 @@ package calypsox.buggy.uti;
 
 import java.lang.reflect.Method;
 
-import com.calypso.tk.product.SimpleMM;
+import com.calypso.tk.bo.Task;
 
 public class WarpCalypoClass {
 
-    public static final Class<?> clazz = SimpleMM.class;
+    public static final Class<?> clazz = Task.class;
 
     private static final String SKIP_METHOD = "getKey getClass getSourceTable getSourceClass getLockId getClassName getAllocatedLongSeed";
 

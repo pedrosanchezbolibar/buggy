@@ -11,6 +11,7 @@ import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.infra.ATDSConnection;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class ATTrade.
  */
@@ -33,6 +34,18 @@ public class ATTrade {
     }
 
     /**
+     * Instantiates a new AT trade.
+     *
+     * @param tradeId
+     *            the trade id
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATTrade(final long tradeId) throws CalypsoServiceException {
+        trade = DSConnection.getDefault().getRemoteTrade().getTrade((int) tradeId);
+    }
+
+    /**
      * Apply action.
      *
      * @param action
@@ -48,8 +61,6 @@ public class ATTrade {
     /**
      * Apply action to trade.
      *
-     * @param trade
-     *            the trade
      * @param action
      *            the action
      * @param userName

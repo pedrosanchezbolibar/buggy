@@ -26,6 +26,8 @@ import calypsox.buggy.msg.ATMessages;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
 import calypsox.buggy.refdata.ATUsers;
+import calypsox.buggy.task.ATTask;
+import calypsox.buggy.task.ATTasks;
 import calypsox.buggy.uploader.DUPAck;
 import calypsox.buggy.uploader.DUPImporter;
 import calypsox.buggy.uti.CalypsoEnvironment;
@@ -158,6 +160,22 @@ public class BuggyAT extends BuggyVersion {
      */
     public String getProperty(final String key) {
         return testProperties.getProperty(key);
+    }
+
+    /**
+     * Gets the tasks by event type.
+     *
+     * @param trade
+     *            the trade
+     * @param eventTypes
+     *            the event types
+     * @return the tasks by event type
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getTasksByEventType(final ATTrade trade, final List<String> eventTypes)
+            throws CalypsoServiceException {
+        return new ATTasks().getTasksByEventType(trade, eventTypes);
     }
 
     /**
