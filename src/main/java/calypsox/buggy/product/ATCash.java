@@ -787,8 +787,8 @@ public class ATCash extends ATTSimpleMM {
      *
      * @return the latest principal amount
      */
-    public double getLatestPrincipalAmount() {
-        return cash.getLatestPrincipalAmount();
+    public ATAmount getLatestPrincipalAmount() {
+        return new ATAmount(cash.getCurrency(), cash.getLatestPrincipalAmount());
     }
 
     /**

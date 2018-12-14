@@ -1,0 +1,211 @@
+<html 
+	xmlns:concordion="http://www.concordion.org/2007/concordion" 
+	xmlns:ext="urn:concordion-extensions:2010">
+	
+	<head>
+		<title>Mature Terminated Trades</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8"/> 
+		<script>
+	            function showMessage(elementId) {
+		            var x = document.getElementById(elementId);
+		            if (x.style.display === "none") {
+		                x.style.display = "block";
+		            } else {
+		                x.style.display = "none";
+		            }
+	            }
+	    </script>
+	</head>
+
+	<body>
+	
+		<h1>Mature Terminated Trades</h1>
+	
+			
+		<h2>Descripción</h2>
+	
+		<p>
+			La Scheduled Task MatureTrade_MMSETTLEDATE_MAD se encarga de pasar al estado MATURED todos los trades que se encuentren en el estado VERIFIED del 
+			Product Type Cash cuya MaturityDate sea menor o igual a - 1W.
+		</p>
+		
+		<P>
+			Para que se puede aplicar la acción Mature en el Workflow, todas las transfers deben estar en estado SETTLED, CANCELED o SPLIT,
+			en caso contrario no se podrá aplicar la acción y el trade permanecerá en estado VERIFIED debido a la workflow rule CheckCustomMature.
+		</P>
+
+	    <h2>Datos de referencia</h2>
+	      <p>
+	        Insertamos una operación de tipo Cash utilizando el template 
+	        <span concordion:set="template">Depo_USD_NEW.xml</span>,
+	        utilizando la acción <span concordion:execute="setProperty('ACTION', #TEXT)">NEW</span>
+	        y la contrapartida <span concordion:execute="setProperty('CPTY', #TEXT)">RIKSSESTC</span>.
+	        La fecha de START_DATE será <span concordion:set="#tenor">-1Y</span>
+	        <span concordion:execute="#tenorDate=calculateDateByTenor(#tenor,{'USD'})"> </span> 
+			(<span concordion:execute="setProperty('START_DATE',#tenorDate)"> </span>
+			<span concordion:echo="#tenorDate"> </span>) 
+			y la fecha de MATURITY_DATE será <span concordion:set="#tenor">-2W</span> 
+			<span concordion:execute="#tenorDate=calculateDateByTenor(#tenor,{'USD'})"> </span> 
+			(<span concordion:execute="setProperty('MATURITY_DATE',#tenorDate)"> </span>
+			<span concordion:echo="#tenorDate"> </span>).
+	    </p>
+	    <p>
+            La External Reference de la operación será
+	        <span concordion:execute="#extRef=generateExternalRef()"> </span>  
+			<span concordion:echo="#extRef"> </span>.
+	    </p>
+
+        <h2>Proceso de prueba</h2>
+        
+        <p concordion:execute="#ack=importCDUF(#template)">Insertamos la operación.</p>
+        
+<button onclick="showMessage('ack')">Mostrar Ack completo</button>	
+<pre concordion:echo="#ack" id="ack" style="display:none"> </pre>	
+	   
+		<p>
+	   		La Operación insertada es:
+	   	</p>
+	   	<p>
+	   		<span style="visibility: hidden;" concordion:set="#img" >DepoUSD_STMature.png</span>
+        	<span ext:embed="getImage(#img)"> </span>
+    	</p>
+   
+		 <p>
+	    	Comprobamos que la operacion llega al estado VERIFIED:	   
+	   	
+	   	</p>
+	   	 <table concordion:execute="#trade=getTrade(#ack)">
+            <tr>
+                <th concordion:echo="#trade.id">Id</th>
+				<th concordion:assertEquals="#trade.status">Status</th>
+                <th concordion:assertEquals="#trade.productType">Product type</th>
+                <th concordion:assertEquals="#trade.counterParty">Counterparty</th>
+                <th concordion:echo="#trade.tradeDate">Trade Date</th>
+                <th concordion:echo="#trade.settleDate">Settle Date</th>     
+                <th concordion:assertEquals="#trade.principalAmount">Notional</th>    
+            </tr>
+            <tr>
+                <td> </td>
+                <td>VERIFIED</td>
+                <td>Cash</td>
+                <td>RIKSSESTC</td>
+                <td></td>
+                <td></td>
+                <td>15000000.00 USD</td>
+            </tr>
+        </table>
+        
+        <p>
+	           Esperamos hasta que Calypso genera los Transfers de la operación comprobando que 
+	           el  <span concordion:set="#engine">TransferEngine</span> 
+	           no tenga eventos pendientes	(<span concordion:echo="waitForEngine(#engine)"> </span> eventos pendientes).
+		</p>     
+	    
+	   	<h3>Comprobamos los Transfers</h3>
+	
+		<table concordion:verifyRows="#xfer : getNettedTransfers(#trade)">
+			<tr>
+				<th concordion:echo="#xfer.id">Id</th>
+				<th concordion:assertEquals="#xfer.status">Status</th>
+				<th concordion:assertEquals="#xfer.transferType">Tipo</th>
+				<th concordion:assertEquals="#xfer.settlementAmount">Cantidad</th>
+				<th concordion:echo="#xfer.valueDate">Fecha valor</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td>BACKDATED</td>
+				<td>NONE</td>
+				<td>15000000.0000</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>BACKDATED</td>
+				<td>NONE</td>
+				<td>-15000729.1700</td>
+				<td></td>
+			</tr>
+		</table>
+			
+<pre>quique</pre>			
+			
+		<p>
+		    Aplicamos la acción <span concordion:set="#action">MANUAL_SETTLE</span>
+			al transfer que está en estado BACKDATED <span concordion:execute="applyActionToTransfers(#extRef, 'BACKDATED',#action, #userName)"> </span>
+			
+		</p>
+		<p>
+		    Y aplicamos la acción <span concordion:set="#action">AUTHORIZE</span>
+			al transfer para que llegue al estado SETTLED.<span concordion:execute="applyActionToTransfers(#extRef, 'PENDING_DATE',#action, #userName)"> </span> 
+		</p>
+	 	
+         <p>
+	           Esperamos hasta que Calypso genera los Transfers de la operación comprobando que 
+	           el  <span concordion:set="#engine">TransferEngine</span> 
+	           no tenga eventos pendientes	(<span concordion:echo="waitForEngine(#engine)"> </span> eventos pendientes).
+			</p>  
+			   
+         <p>
+         		Comprobamos que las Transfers estén en estado SETTLED:
+		</p>
+			<table concordion:verifyRows="#xfer : getTradeNettedXfers(#extRef)">
+				<tr>
+					<th concordion:echo="#xfer.longId">Id</th>
+					<th concordion:assertEquals="#xfer.status">Status</th>
+					<th concordion:assertEquals="#xfer.transferType">Tipo</th>
+					<th concordion:assertEquals="formatAmount(#xfer.settlementAmount)">Cantidad</th>
+					<th concordion:assertEquals="#xfer.settlementCurrency">Divisa</th>
+					<th concordion:echo="#xfer.valueDate">Fecha valor</th>
+					
+				</tr>
+				<tr>
+					<td></td>
+					<td>SETTLED</td>
+					<td>NONE</td>
+					<td>15000000.0000</td>
+					<td>USD</td>
+					<td></td>	
+				</tr>
+				<tr>
+					<td></td>
+					<td>SETTLED</td>
+					<td>NONE</td>
+					<td>-15000729.1700</td>
+					<td>USD</td>
+					<td></td>	
+				</tr>
+			</table>
+		
+        <h2>Resultado</h2>
+        
+        <p>Ejecutamos la ScheduledTask <span concordion:set="#stExtRef">MatureTrade_MMSETTLEDATE_MAD</span> con Fecha
+				<span concordion:echo="#dateHoy=getToday()"> </span> 
+	            (<span concordion:assertEquals="executeScheduledTaskWithTF(#stExtRef,#extRef,#dateHoy)">OK</span>).
+			</p>
+		
+		<p>
+	    	Comprobamos que la operación ha pasado a MATURED:	   
+	   	
+	   	</p>
+	   	 <table concordion:execute="#trade=getTrade(#extRef)">
+            <tr>
+                <th concordion:echo="#trade.id">Id</th>
+				<th concordion:assertEquals="#trade.status">Status</th>
+                <th concordion:assertEquals="#trade.productType">Product type</th>
+                <th concordion:assertEquals="#trade.counterParty">Counterparty</th>
+                <th concordion:echo="#trade.tradeDate">Trade Date</th>
+                <th concordion:echo="#trade.settleDate">Settle Date</th>     
+                <th concordion:assertEquals="formatAmount(#trade.product.principal)">Notional</th>    
+            </tr>
+            <tr>
+                <td> </td>
+                <td>MATURED</td>
+                <td>Cash</td>
+                <td>RIKSSESTC</td>
+                <td></td>
+                <td></td>
+                <td>15000000.0000</td>
+            </tr>
+        </table>
+	</body>
+</html>
