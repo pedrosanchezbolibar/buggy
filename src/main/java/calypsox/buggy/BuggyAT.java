@@ -25,6 +25,8 @@ import calypsox.buggy.msg.ATMessage;
 import calypsox.buggy.msg.ATMessages;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
+import calypsox.buggy.refdata.ATHolidays;
+import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.refdata.ATUsers;
 import calypsox.buggy.task.ATTask;
 import calypsox.buggy.task.ATTasks;
@@ -70,6 +72,14 @@ public class BuggyAT extends BuggyVersion {
      */
     public BuggyAT() {
         testProperties = new Properties();
+    }
+
+    public ATJDate calculateDateByTenor(final String tenor, final List<String> holidays) {
+        return new ATHolidays().calculateDateByTenor(tenor, holidays, null);
+    }
+
+    public ATJDate calculateDateByTenor(final String tenor, final List<String> holidays, final String timeZone) {
+        return new ATHolidays().calculateDateByTenor(tenor, holidays, timeZone);
     }
 
     /**
