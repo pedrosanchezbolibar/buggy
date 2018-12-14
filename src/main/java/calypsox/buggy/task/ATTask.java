@@ -105,7 +105,11 @@ public class ATTask {
      * @return the comment
      */
     public String getComment() {
-        return task.getComment();
+        String comment = task.getComment();
+        if (comment == null) {
+            comment = "";
+        }
+        return comment;
     }
 
     /**
@@ -444,20 +448,11 @@ public class ATTask {
     }
 
     /**
-     * Gets the status.
-     *
-     * @return the status
-     */
-    public int getStatus() {
-        return task.getStatus();
-    }
-
-    /**
      * Gets the status as string.
      *
      * @return the status as string
      */
-    public String getStatusAsString() {
+    public String getStatus() {
         return task.getStatusAsString();
     }
 

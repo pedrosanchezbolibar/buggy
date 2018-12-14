@@ -415,7 +415,7 @@
 		
 		<p>
 			Comprobamos que el mensaje MT210 (Id <span concordion:echo="#msg.id"> </span>)
-			<span concordion:execute="#msg=reload()"> </span>
+			<span concordion:execute="#msg.reload()"> </span>
 			ha viajado al estado <span concordion:assertEquals="#msg.status">REPLACED</span>
 			y se ha generado un nuevo mensage MT292 con eventType MAN_CHOICE_RECEIPT. 
 		</p>
@@ -450,14 +450,14 @@
 		
 		</table>
 
-<pre>Quique</pre>			
+	
 	
 		<p>
 			Mostramos el mensaje <span concordion:set="#templateNameBis">MT292</span> con eventType <span concordion:set="#eventType">MAN_CHOICE_RECEIPT</span>:
-			<span concordion:execute="#messageBis=formatSwiftDocumentByTemplate(#extRef, #templateNameBis, #pricingEnv)"> </span>
+			<span concordion:execute="#swiftMessage=#msg.formatSwiftDocument(#pricingEnv)"> </span>
 	    
 	        <pre>    
-				<span concordion:echo="#messageBis"> </span>
+<span concordion:echo="#swiftMessage.text"> </span>
 	    	</pre>
 		</p>
 		
@@ -465,20 +465,20 @@
 	        Que debe contener las siguientes etiquetas:
 	    </p>
 	    
-	    <table concordion:verify-rows="#tag : getTagsInMsg(#message)">
+		<table>
 	        <tr>
 	            <th>Descripción</th>
-	            <th concordion:assertEquals="#tag">TAG</th>
+	            <th>TAG</th>
+	            <th>Value</th>
 	        </tr>
-	        <tr><td>Transaction Reference Number</td>                   <td>20</td></tr>
-	        <tr><td>Account Identification</td>							<td>25</td></tr>
-			<tr><td>Value Date</td>   									<td>30</td></tr>
-	        <tr><td>Related Reference</td>								<td>21</td></tr>
-	        <tr><td>Currency Code, Amount</td>                       	<td>32B</td></tr>
-	        <tr><td>Ordering Institution</td>                        	<td>52A</td></tr>
-	        <tr><td>Intermediary</td>                        			<td>56A</td></tr>
-	    </table>	
-	
+	        <tr><td>Transaction Reference Number</td>	<td concordion:set="#tag">20</td><td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
+	        <tr><td>Account Identification</td>		 	<td concordion:set="#tag">25</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">10936152</td></tr>
+			<tr><td>Value Date</td>   					<td concordion:set="#tag">30</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">220602</td></tr>
+	        <tr><td>Related Reference</td>				<td concordion:set="#tag">21</td><td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
+	        <tr><td>Currency Code, Amount</td>          <td concordion:set="#tag">32B</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">USD1048688,89</td></tr>
+	        <tr><td>Ordering Institution</td>           <td concordion:set="#tag">50F</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">/DE40700700100190464800</td></tr>
+	        <tr><td>Intermediary</td>                   <td concordion:set="#tag">56A</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">BKTRUS30XXX</td></tr>
+	    </table>
 	
 		<p>
 			Deben aparecer las tareas de la liquidación en MAN_CHOICE (MAN_CHOCIE_PAYMENT) y del Mensaje de 
@@ -486,19 +486,19 @@
 			y comentario '<span concordion:set="#taskComment">Filter
 				_isNotMessageSentSTP rejects Message/[CheckKickOff]</span>':	
 		</p>
-		<table concordion:verifyRows="#task : getTradeTasksByEventType(#extRef, {'MAN_CHOICE_PAYMENT','VERIFIED_RECEIPTMSG'})">
+		<table concordion:verifyRows="#task : getTasksByEventType(#trade, {'MAN_CHOICE_PAYMENT','VERIFIED_RECEIPTMSG'})">
 			<tr>
 				<th concordion:echo="#task.id">Task Id</th>
-				<th concordion:echo="#task.tradeId">Trade Id</th>
+				<th concordion:echo="#task.trade">Trade</th>
 				<th concordion:assertEquals="#task.eventType">Event Type</th>
-				<th concordion:assertEquals="getTaskComment(#task.id)">Task comment</th>
-				<th concordion:assertEquals="#task.statusAsString">Task Status</th>
+				<th concordion:assertEquals="#task.comment">Task comment</th>
+				<th concordion:assertEquals="#task.status">Task Status</th>
 			</tr>
 			<tr>
 				<td></td>
 				<td></td>
 				<td>MAN_CHOICE_PAYMENT</td>
-				<td>(null)</td>
+				<td></td>
 				<td>NEW</td>
 			</tr>
 			<tr>

@@ -377,7 +377,7 @@ public class ATTrade {
      */
     @Override
     public String toString() {
-        return trade.toString() + '/' + trade.getProduct().toString();
+        return trade.toString() + " / " + trade.getProduct().getDescription();
     }
 
     /**
