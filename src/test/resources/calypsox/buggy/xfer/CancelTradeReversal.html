@@ -367,7 +367,7 @@
 			Pago para el 2022 que se queda detenido en estado MAN_CHOCIE.
 		</p>
 
-		<table concordion:verifyRows="#transfer : getNettedXfers(#trade)">
+		<table concordion:verifyRows="#transfer : getNettedTransfers(#trade)">
 			<tr>
 				<th concordion:echo="#transfer.id">Id</th>
 				<th concordion:assertEquals="#transfer.settlementMethod">Settle Method</th>
@@ -380,7 +380,7 @@
 			<tr>
 				<td></td>
 				<td>SWIFT</td>
-				<td>-1000000.0</td>
+				<td>-1,000,000.00 USD</td>
 				<td>PAYMENT</td>
 				<td>CANCELED</td>
 				<td>02/06/2016</td>
@@ -389,7 +389,7 @@
 			<tr>
 				<td></td>
 				<td>SWIFT</td>
-				<td>-1048688.89</td>
+				<td>-1,048,688.89 USD</td>
 				<td>PAYMENT</td>
 				<td>MAN_CHOICE</td>
 				<td>02/06/2022</td>
@@ -398,7 +398,7 @@
 			<tr>
 				<td></td>
 				<td>SWIFT</td>
-				<td>1048688.89</td>
+				<td>1,048,688.89 USD</td>
 				<td>RECEIPT</td>
 				<td>SETTLED</td>
 				<td>02/06/2022</td>
@@ -407,29 +407,27 @@
 			
 		</table>
 
-<pre>Quique</pre>			
-
 		<p>
-			Esperamos 2 segundos para dar tiempo al DataServer a aplicar las acciones correspondientes
-			sobre los mensajes existentes.
-			<span concordion:execute="waitForEngine('MessageEngine')"> </span>			
+			Esperamos a que el MessageEngine procese sus eventos (
+			<span concordion:echo="waitForEngine('MessageEngine')"> </span>
+			eventos pendientes).			
 		</p>
 		
 		<p>
-			Comprobamos que el mensaje MT210 (Id <span concordion:echo="#boMsg.longId"> </span>)
-			<span concordion:execute="#boMsg=reloadBOMessage()"> </span>
-			ha viajado al estado <span concordion:assertEquals="#boMsg.status">REPLACED</span>
+			Comprobamos que el mensaje MT210 (Id <span concordion:echo="#msg.id"> </span>)
+			<span concordion:execute="#msg=reload()"> </span>
+			ha viajado al estado <span concordion:assertEquals="#msg.status">REPLACED</span>
 			y se ha generado un nuevo mensage MT292 con eventType MAN_CHOICE_RECEIPT. 
 		</p>
-		<table concordion:verifyRows="#msg : getMessagesByEventTypes(#extRef, {'VERIFIED_RECEIPT','VERIFIED_PAYMENT','SETTLED_RECEIPT','MAN_CHOICE_RECEIPT'})">
+		<table concordion:verifyRows="#msg : getMessagesByEventTypes(#trade, {'VERIFIED_RECEIPT','VERIFIED_PAYMENT','SETTLED_RECEIPT','MAN_CHOICE_RECEIPT'})">
 			<tr>
-				<th concordion:echo="#msg.longId">Id</th>
+				<th concordion:echo="#msg.id">Id</th>
 				<th concordion:assertEquals="#msg.templateName">Plantilla del mensaje</th>
 				<th concordion:assertEquals="#msg.eventType">Tipo de Evento</th>
-				<th concordion:echo="#msg.transferLongId">Transfer Id</th>
+				<th concordion:echo="#msg.transfer">Transfer Id</th>
 				<th concordion:assertEquals="#msg.status">Estado</th>
 				<th concordion:assertEquals="#msg.subAction">Sub Action</th>	
-				<th concordion:echo="#msg.linkedLongId">Mensaje relacionado</th>			
+				<th concordion:echo="#msg.linkedMessage">Mensaje relacionado</th>			
 			</tr>
 				<tr>
 				<td></td>
@@ -451,6 +449,8 @@
 			</tr>
 		
 		</table>
+
+<pre>Quique</pre>			
 	
 		<p>
 			Mostramos el mensaje <span concordion:set="#templateNameBis">MT292</span> con eventType <span concordion:set="#eventType">MAN_CHOICE_RECEIPT</span>:
