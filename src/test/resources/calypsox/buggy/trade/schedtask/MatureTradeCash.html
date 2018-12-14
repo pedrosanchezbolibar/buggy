@@ -37,7 +37,7 @@
 	    <h2>Datos de referencia</h2>
 	      <p>
 	        Insertamos una operación de tipo Cash utilizando el template 
-	        <span concordion:set="template">Depo_USD_NEW.xml</span>,
+	        <span concordion:set="#template">Depo_USD_NEW.xml</span>,
 	        utilizando la acción <span concordion:execute="setProperty('ACTION', #TEXT)">NEW</span>
 	        y la contrapartida <span concordion:execute="setProperty('CPTY', #TEXT)">RIKSSESTC</span>.
 	        La fecha de START_DATE será <span concordion:set="#tenor">-1Y</span>
