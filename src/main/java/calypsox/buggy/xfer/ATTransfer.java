@@ -5,7 +5,6 @@ import java.util.List;
 import com.calypso.tk.bo.BOTransfer;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
-import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.Status;
 import com.calypso.tk.refdata.AccessUtil;
@@ -14,6 +13,7 @@ import com.calypso.tk.service.RemoteBackOffice;
 
 import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.refdata.ATBook;
+import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.refdata.ATLegalEntity;
 import calypsox.buggy.ui.ATAmount;
 
@@ -169,8 +169,8 @@ public class ATTransfer {
      *
      * @return the available date
      */
-    public JDate getAvailableDate() {
-        return botransfer.getAvailableDate();
+    public ATJDate getAvailableDate() {
+        return new ATJDate(botransfer.getAvailableDate());
     }
 
     /**
@@ -187,8 +187,8 @@ public class ATTransfer {
      *
      * @return the booking date
      */
-    public JDate getBookingDate() {
-        return botransfer.getBookingDate();
+    public ATJDate getBookingDate() {
+        return new ATJDate(botransfer.getBookingDate());
     }
 
     /**
@@ -223,8 +223,8 @@ public class ATTransfer {
      *
      * @return the callable date
      */
-    public JDate getCallableDate() {
-        return botransfer.getCallableDate();
+    public ATJDate getCallableDate() {
+        return new ATJDate(botransfer.getCallableDate());
     }
 
     /**
@@ -277,8 +277,8 @@ public class ATTransfer {
      *
      * @return the end date
      */
-    public JDate getEndDate() {
-        return botransfer.getEndDate();
+    public ATJDate getEndDate() {
+        return new ATJDate(botransfer.getEndDate());
     }
 
     /**
@@ -403,8 +403,8 @@ public class ATTransfer {
      *
      * @return the inits the settle date
      */
-    public JDate getInitSettleDate() {
-        return botransfer.getInitSettleDate();
+    public ATJDate getInitSettleDate() {
+        return new ATJDate(botransfer.getInitSettleDate());
     }
 
     /**
@@ -817,8 +817,8 @@ public class ATTransfer {
      *
      * @return the SDI value date
      */
-    public JDate getSDIValueDate() {
-        return botransfer.getSDIValueDate();
+    public ATJDate getSDIValueDate() {
+        return new ATJDate(botransfer.getSDIValueDate());
     }
 
     /**
@@ -826,8 +826,8 @@ public class ATTransfer {
      *
      * @return the settle date
      */
-    public JDate getSettleDate() {
-        return botransfer.getSettleDate();
+    public ATJDate getSettleDate() {
+        return new ATJDate(botransfer.getSettleDate());
     }
 
     /**
@@ -925,8 +925,8 @@ public class ATTransfer {
      *
      * @return the trade date
      */
-    public JDate getTradeDate() {
-        return botransfer.getTradeDate();
+    public ATJDate getTradeDate() {
+        return new ATJDate(botransfer.getTradeDate());
     }
 
     /**
@@ -997,8 +997,8 @@ public class ATTransfer {
      *
      * @return the value date
      */
-    public JDate getValueDate() {
-        return botransfer.getValueDate();
+    public ATJDate getValueDate() {
+        return new ATJDate(botransfer.getValueDate());
     }
 
     /**

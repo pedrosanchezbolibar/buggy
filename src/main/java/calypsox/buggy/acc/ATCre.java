@@ -6,7 +6,6 @@ import com.calypso.tk.bo.BOTransfer;
 import com.calypso.tk.core.AccountingBook;
 import com.calypso.tk.core.Book;
 import com.calypso.tk.core.CalypsoServiceException;
-import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.Trade;
 import com.calypso.tk.refdata.AccountingEventConfig;
@@ -14,6 +13,7 @@ import com.calypso.tk.refdata.AccountingRule;
 import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.product.ATTrade;
+import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.ui.ATAmount;
 import calypsox.buggy.xfer.ATTransfer;
 
@@ -130,8 +130,8 @@ public class ATCre {
      *
      * @return the booking date
      */
-    public JDate getBookingDate() {
-        return bocre.getBookingDate();
+    public ATJDate getBookingDate() {
+        return new ATJDate(bocre.getBookingDate());
     }
 
     /**
@@ -189,8 +189,8 @@ public class ATCre {
      *
      * @return the effective date
      */
-    public JDate getEffectiveDate() {
-        return bocre.getEffectiveDate();
+    public ATJDate getEffectiveDate() {
+        return new ATJDate(bocre.getEffectiveDate());
     }
 
     /**
@@ -324,8 +324,8 @@ public class ATCre {
      *
      * @return the settlement date
      */
-    public JDate getSettlementDate() {
-        return bocre.getSettlementDate();
+    public ATJDate getSettlementDate() {
+        return new ATJDate(bocre.getSettlementDate());
     }
 
     /**
@@ -362,8 +362,8 @@ public class ATCre {
      *
      * @return the trade date
      */
-    public JDate getTradeDate() {
-        return bocre.getTradeDate();
+    public ATJDate getTradeDate() {
+        return new ATJDate(bocre.getTradeDate());
     }
 
     /**

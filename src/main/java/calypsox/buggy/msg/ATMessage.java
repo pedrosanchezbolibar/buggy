@@ -8,7 +8,6 @@ import com.calypso.tk.bo.swift.SWIFTFormatter;
 import com.calypso.tk.bo.swift.SwiftMessage;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
-import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.Status;
 import com.calypso.tk.marketdata.PricingEnv;
@@ -19,6 +18,7 @@ import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
 import calypsox.buggy.refdata.ATBook;
+import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.refdata.ATLEContact;
 import calypsox.buggy.refdata.ATLegalEntity;
 import calypsox.buggy.xfer.ATTransfer;
@@ -475,8 +475,8 @@ public class ATMessage {
      *
      * @return the settle date
      */
-    public JDate getSettleDate() {
-        return bomessage.getSettleDate();
+    public ATJDate getSettleDate() {
+        return new ATJDate(bomessage.getSettleDate());
     }
 
     /**

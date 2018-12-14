@@ -1,16 +1,16 @@
 package calypsox.buggy.product;
 
-import java.util.Hashtable;
+import java.util.Map;
 
 import com.calypso.tk.core.Accretion;
 import com.calypso.tk.core.CashFlowSet;
 import com.calypso.tk.core.DayCount;
-import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.RoundingMethod;
 import com.calypso.tk.core.Trade;
 import com.calypso.tk.product.SimpleMM;
 import com.calypso.tk.refdata.RateIndex;
 
+import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.ui.ATAmount;
 
 /**
@@ -55,8 +55,8 @@ public class ATTSimpleMM extends ATTrade {
      *
      * @return the start date
      */
-    public JDate getStartDate() {
-        return simplemm.getStartDate();
+    public ATJDate getStartDate() {
+        return new ATJDate(simplemm.getStartDate());
     }
 
     /**
@@ -64,8 +64,8 @@ public class ATTSimpleMM extends ATTrade {
      *
      * @return the end date
      */
-    public JDate getEndDate() {
-        return simplemm.getEndDate();
+    public ATJDate getEndDate() {
+        return new ATJDate(simplemm.getEndDate());
     }
 
     /**
@@ -163,8 +163,8 @@ public class ATTSimpleMM extends ATTrade {
      *
      * @return the maturity date
      */
-    public JDate getMaturityDate() {
-        return simplemm.getMaturityDate();
+    public ATJDate getMaturityDate() {
+        return new ATJDate(simplemm.getMaturityDate());
     }
 
     /**
@@ -253,7 +253,8 @@ public class ATTSimpleMM extends ATTrade {
      *
      * @return the params
      */
-    public Hashtable getParams() {
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getParams() {
         return simplemm.getParams();
     }
 

@@ -74,12 +74,36 @@ public class BuggyAT extends BuggyVersion {
         testProperties = new Properties();
     }
 
+    /**
+     * Calculate date by tenor.
+     *
+     * @param tenor
+     *            the tenor
+     * @param holidays
+     *            the holidays
+     * @return the ATJ date
+     */
     public ATJDate calculateDateByTenor(final String tenor, final List<String> holidays) {
         return new ATHolidays().calculateDateByTenor(tenor, holidays, null);
     }
 
+    /**
+     * Calculate date by tenor.
+     *
+     * @param tenor
+     *            the tenor
+     * @param holidays
+     *            the holidays
+     * @param timeZone
+     *            the time zone
+     * @return the ATJ date
+     */
     public ATJDate calculateDateByTenor(final String tenor, final List<String> holidays, final String timeZone) {
         return new ATHolidays().calculateDateByTenor(tenor, holidays, timeZone);
+    }
+
+    public ATJDate today() {
+        return new ATJDate();
     }
 
     /**

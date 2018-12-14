@@ -10,8 +10,8 @@ import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.infra.ATDSConnection;
+import calypsox.buggy.refdata.ATJDate;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ATTrade.
  */
@@ -312,8 +312,8 @@ public class ATTrade {
      *
      * @return the settle date
      */
-    public com.calypso.tk.core.JDate getSettleDate() {
-        return trade.getSettleDate();
+    public ATJDate getSettleDate() {
+        return new ATJDate(trade.getSettleDate());
     }
 
     /**

@@ -8,7 +8,6 @@ import com.calypso.tk.core.DateRoll;
 import com.calypso.tk.core.DateRule;
 import com.calypso.tk.core.DayCount;
 import com.calypso.tk.core.Frequency;
-import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.PeriodRule;
 import com.calypso.tk.core.RoundingMethod;
 import com.calypso.tk.core.StubRule;
@@ -20,6 +19,7 @@ import com.calypso.tk.product.flow.CashFlowInterest;
 import com.calypso.tk.product.flow.IndexCalculator;
 import com.calypso.tk.product.util.InterpStyle;
 
+import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.ui.ATAmount;
 
 /**
@@ -128,8 +128,8 @@ public class ATCash extends ATTSimpleMM {
      *
      * @return the start stub date
      */
-    public JDate getStartStubDate() {
-        return cash.getStartStubDate();
+    public ATJDate getStartStubDate() {
+        return new ATJDate(cash.getStartStubDate());
     }
 
     /**
@@ -137,8 +137,8 @@ public class ATCash extends ATTSimpleMM {
      *
      * @return the end stub date
      */
-    public JDate getEndStubDate() {
-        return cash.getEndStubDate();
+    public ATJDate getEndStubDate() {
+        return new ATJDate(cash.getEndStubDate());
     }
 
     /**
@@ -182,8 +182,8 @@ public class ATCash extends ATTSimpleMM {
      *
      * @return the roll over date
      */
-    public JDate getRollOverDate() {
-        return cash.getRollOverDate();
+    public ATJDate getRollOverDate() {
+        return new ATJDate(cash.getRollOverDate());
     }
 
     /**

@@ -2,11 +2,12 @@ package calypsox.buggy.uti;
 
 import java.lang.reflect.Method;
 
-import com.calypso.tk.bo.Task;
+import com.calypso.tk.core.JDate;
+import com.calypso.tk.product.Cash;
 
 public class WarpCalypoClass {
 
-    public static final Class<?> clazz = Task.class;
+    public static final Class<?> clazz = Cash.class;
 
     private static final String SKIP_METHOD = "getKey getClass getSourceTable getSourceClass getLockId getClassName getAllocatedLongSeed";
 
@@ -19,7 +20,10 @@ public class WarpCalypoClass {
             if (methodName.startsWith("get") && method.getParameterTypes().length == 0) {
                 if (!SKIP_METHOD.contains(method.getName())) {
 
-                    if ("getBookId".equals(methodName)) {
+                    final Class<?> returnType = method.getReturnType();
+                    if (returnType == JDate.class) {
+                        System.out.println(generateGetAT(method, "ATJDate"));
+                    } else if ("getBookId".equals(methodName)) {
                         System.out.println(generateGetAT(method, "ATBook"));
                     } else if ("getTransferId".equals(methodName)) {
                         System.out.println(generateGetAT(method, "ATTransfer"));

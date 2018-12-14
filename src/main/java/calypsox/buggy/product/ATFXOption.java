@@ -7,7 +7,6 @@ import java.util.Vector;
 import com.calypso.tk.core.DateRoll;
 import com.calypso.tk.core.DisplayValue;
 import com.calypso.tk.core.Frequency;
-import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
 import com.calypso.tk.core.Product;
 import com.calypso.tk.core.Trade;
@@ -22,578 +21,580 @@ import com.calypso.tk.refdata.CurrencyPair;
 import com.calypso.tk.refdata.FXReset;
 import com.calypso.tk.refdata.RateIndex;
 
+import calypsox.buggy.refdata.ATJDate;
+
 public class ATFXOption extends ATTrade {
 
     public ATFXOption(final Trade trade) {
-	super(trade);
-	fxoption = (FXOption) trade.getProduct();
+        super(trade);
+        fxoption = (FXOption) trade.getProduct();
     }
 
     private final FXOption fxoption;
 
     public int getOptionSide() {
-	return fxoption.getOptionSide();
+        return fxoption.getOptionSide();
     }
 
     public String getOptionStyle() {
-	return fxoption.getOptionStyle();
+        return fxoption.getOptionStyle();
     }
 
     public Vector getHolidays() {
-	return fxoption.getHolidays();
+        return fxoption.getHolidays();
     }
 
     public Vector getExpiryHolidays() {
-	return fxoption.getExpiryHolidays();
+        return fxoption.getExpiryHolidays();
     }
 
     public Vector getDeliveryHolidays() {
-	return fxoption.getDeliveryHolidays();
+        return fxoption.getDeliveryHolidays();
     }
 
     public CurrencyPair getCurrencyPair() {
-	return fxoption.getCurrencyPair();
+        return fxoption.getCurrencyPair();
     }
 
     public int getOptionType() {
-	return fxoption.getOptionType();
+        return fxoption.getOptionType();
     }
 
     public int getQuotingOptionType() {
-	return fxoption.getQuotingOptionType();
+        return fxoption.getQuotingOptionType();
     }
 
     public String getQuotingOptionTypeAsString() {
-	return fxoption.getQuotingOptionTypeAsString();
+        return fxoption.getQuotingOptionTypeAsString();
     }
 
     public double getPrimaryAmount() {
-	return fxoption.getPrimaryAmount();
+        return fxoption.getPrimaryAmount();
     }
 
     public double getQuotingAmount() {
-	return fxoption.getQuotingAmount();
+        return fxoption.getQuotingAmount();
     }
 
     public String getPrimaryCurrency() {
-	return fxoption.getPrimaryCurrency();
+        return fxoption.getPrimaryCurrency();
     }
 
     public String getQuotingCurrency() {
-	return fxoption.getQuotingCurrency();
+        return fxoption.getQuotingCurrency();
     }
 
     public String getDescription() {
-	return fxoption.getDescription();
+        return fxoption.getDescription();
     }
 
     @Override
     public String getProductFamily() {
-	return fxoption.getProductFamily();
+        return fxoption.getProductFamily();
     }
 
     public String getProductClass() {
-	return fxoption.getProductClass();
+        return fxoption.getProductClass();
     }
 
     public String getOptionSideAsString() {
-	return fxoption.getOptionSideAsString();
+        return fxoption.getOptionSideAsString();
     }
 
     public String getOptionTypeAsString() {
-	return fxoption.getOptionTypeAsString();
+        return fxoption.getOptionTypeAsString();
     }
 
     public Vector getSchedule() {
-	return fxoption.getSchedule();
+        return fxoption.getSchedule();
     }
 
     public double getPrincipal() {
-	return fxoption.getPrincipal();
+        return fxoption.getPrincipal();
     }
 
-    public JDate getMaturityDate() {
-	return fxoption.getMaturityDate();
+    public ATJDate getMaturityDate() {
+        return new ATJDate(fxoption.getMaturityDate());
     }
 
     public String getCurrency() {
-	return fxoption.getCurrency();
+        return fxoption.getCurrency();
     }
 
     public double getQuantoFactor() {
-	return fxoption.getQuantoFactor();
+        return fxoption.getQuantoFactor();
     }
 
     public CurrencyPair getQuantoCurrencyPair() {
-	return fxoption.getQuantoCurrencyPair();
+        return fxoption.getQuantoCurrencyPair();
     }
 
     public CurrencyPair getQuantoCrossCurrenyPair() {
-	return fxoption.getQuantoCrossCurrenyPair();
+        return fxoption.getQuantoCrossCurrenyPair();
     }
 
     public JDatetime getExpiryDatetime() {
-	return fxoption.getExpiryDatetime();
+        return fxoption.getExpiryDatetime();
     }
 
-    public JDate getExpiryDateInTime() {
-	return fxoption.getExpiryDateInTime();
+    public ATJDate getExpiryDateInTime() {
+        return new ATJDate(fxoption.getExpiryDateInTime());
     }
 
-    public JDate getUndrlExpDate() {
-	return fxoption.getUndrlExpDate();
+    public ATJDate getUndrlExpDate() {
+        return new ATJDate(fxoption.getUndrlExpDate());
     }
 
     public int getUndrlExpTime() {
-	return fxoption.getUndrlExpTime();
+        return fxoption.getUndrlExpTime();
     }
 
     public TimeZone getUndrlExpTimeZone() {
-	return fxoption.getUndrlExpTimeZone();
+        return fxoption.getUndrlExpTimeZone();
     }
 
     public JDatetime getUndrlExpDatetime() {
-	return fxoption.getUndrlExpDatetime();
+        return fxoption.getUndrlExpDatetime();
     }
 
     public double getFwdVol() {
-	return fxoption.getFwdVol();
+        return fxoption.getFwdVol();
     }
 
     public double getVega() {
-	return fxoption.getVega();
+        return fxoption.getVega();
     }
 
     public Frequency getFrequency() {
-	return fxoption.getFrequency();
+        return fxoption.getFrequency();
     }
 
     public boolean getAdjusted() {
-	return fxoption.getAdjusted();
+        return fxoption.getAdjusted();
     }
 
     public boolean getWeighted() {
-	return fxoption.getWeighted();
+        return fxoption.getWeighted();
     }
 
     public boolean getRollOnEndDate() {
-	return fxoption.getRollOnEndDate();
+        return fxoption.getRollOnEndDate();
     }
 
     public boolean getCustom() {
-	return fxoption.getCustom();
+        return fxoption.getCustom();
     }
 
-    public JDate getStartDate() {
-	return fxoption.getStartDate();
+    public ATJDate getStartDate() {
+        return new ATJDate(fxoption.getStartDate());
     }
 
-    public JDate getSpotDateFromExpiry() {
-	return fxoption.getSpotDateFromExpiry();
+    public ATJDate getSpotDateFromExpiry() {
+        return new ATJDate(fxoption.getSpotDateFromExpiry());
     }
 
-    public JDate getEndDate() {
-	return fxoption.getEndDate();
+    public ATJDate getEndDate() {
+        return new ATJDate(fxoption.getEndDate());
     }
 
     public FXReset getFXReset() {
-	return fxoption.getFXReset();
+        return fxoption.getFXReset();
     }
 
     public FXResetFixing getFXResetFixing() {
-	return fxoption.getFXResetFixing();
+        return fxoption.getFXResetFixing();
     }
 
     public FXResetFixing getOptionTypeFXResetFixing() {
-	return fxoption.getOptionTypeFXResetFixing();
+        return fxoption.getOptionTypeFXResetFixing();
     }
 
     public FXReset getOptionTypeFXReset() {
-	return fxoption.getOptionTypeFXReset();
+        return fxoption.getOptionTypeFXReset();
     }
 
     public FXReset getNonAsianFXReset() {
-	return fxoption.getNonAsianFXReset();
+        return fxoption.getNonAsianFXReset();
     }
 
     public FXReset getFxReset() {
-	return fxoption.getFxReset();
+        return fxoption.getFxReset();
     }
 
     public Vector getAsianHolidays() {
-	return fxoption.getAsianHolidays();
+        return fxoption.getAsianHolidays();
     }
 
     public boolean getRollOnDay() {
-	return fxoption.getRollOnDay();
+        return fxoption.getRollOnDay();
     }
 
     public int getDayToRollOn() {
-	return fxoption.getDayToRollOn();
+        return fxoption.getDayToRollOn();
     }
 
     public String getAsianType() {
-	return fxoption.getAsianType();
+        return fxoption.getAsianType();
     }
 
     public String getLookbackType() {
-	return fxoption.getLookbackType();
+        return fxoption.getLookbackType();
     }
 
     public FXResetSampleDate[] getAsianSchedule() {
-	return fxoption.getAsianSchedule();
+        return fxoption.getAsianSchedule();
     }
 
     public double getUpBarrierValue() {
-	return fxoption.getUpBarrierValue();
+        return fxoption.getUpBarrierValue();
     }
 
     public double getDownBarrierValue() {
-	return fxoption.getDownBarrierValue();
+        return fxoption.getDownBarrierValue();
     }
 
     public double getDownRangeValue() {
-	return fxoption.getDownRangeValue();
+        return fxoption.getDownRangeValue();
     }
 
     public double getUpRangeValue() {
-	return fxoption.getUpRangeValue();
+        return fxoption.getUpRangeValue();
     }
 
     public String getRangeType() {
-	return fxoption.getRangeType();
+        return fxoption.getRangeType();
     }
 
     public String getUpBarrierType() {
-	return fxoption.getUpBarrierType();
+        return fxoption.getUpBarrierType();
     }
 
     public String getDownBarrierType() {
-	return fxoption.getDownBarrierType();
+        return fxoption.getDownBarrierType();
     }
 
     public double getPayOut() {
-	return fxoption.getPayOut();
+        return fxoption.getPayOut();
     }
 
     public double getRebate() {
-	return fxoption.getRebate();
+        return fxoption.getRebate();
     }
 
     public String getRebateCondition() {
-	return fxoption.getRebateCondition();
+        return fxoption.getRebateCondition();
     }
 
     public String getRebatePayRec() {
-	return fxoption.getRebatePayRec();
+        return fxoption.getRebatePayRec();
     }
 
     public String getRebateCurrency() {
-	return fxoption.getRebateCurrency();
+        return fxoption.getRebateCurrency();
     }
 
     public String getRebateTiming() {
-	return fxoption.getRebateTiming();
+        return fxoption.getRebateTiming();
     }
 
     public String getTermType() {
-	return fxoption.getTermType();
+        return fxoption.getTermType();
     }
 
     public String getTimingType() {
-	return fxoption.getTimingType();
+        return fxoption.getTimingType();
     }
 
     public String getBarrierDurationType() {
-	return fxoption.getBarrierDurationType();
+        return fxoption.getBarrierDurationType();
     }
 
     public Vector getBarrierDurationTypeDomain() {
-	return FXOption.getBarrierDurationTypeDomain();
+        return FXOption.getBarrierDurationTypeDomain();
     }
 
-    public JDate getUpBarrierStartDate() {
-	return fxoption.getUpBarrierStartDate();
+    public ATJDate getUpBarrierStartDate() {
+        return new ATJDate(fxoption.getUpBarrierStartDate());
     }
 
-    public JDate getUpBarrierEndDate() {
-	return fxoption.getUpBarrierEndDate();
+    public ATJDate getUpBarrierEndDate() {
+        return new ATJDate(fxoption.getUpBarrierEndDate());
     }
 
     public int getUpBarrierStartTime() {
-	return fxoption.getUpBarrierStartTime();
+        return fxoption.getUpBarrierStartTime();
     }
 
     public int getUpBarrierEndTime() {
-	return fxoption.getUpBarrierEndTime();
+        return fxoption.getUpBarrierEndTime();
     }
 
     public TimeZone getUpBarrierStartTimeZone() {
-	return fxoption.getUpBarrierStartTimeZone();
+        return fxoption.getUpBarrierStartTimeZone();
     }
 
     public TimeZone getUpBarrierEndTimeZone() {
-	return fxoption.getUpBarrierEndTimeZone();
+        return fxoption.getUpBarrierEndTimeZone();
     }
 
-    public JDate getDownBarrierStartDate() {
-	return fxoption.getDownBarrierStartDate();
+    public ATJDate getDownBarrierStartDate() {
+        return new ATJDate(fxoption.getDownBarrierStartDate());
     }
 
-    public JDate getDownBarrierEndDate() {
-	return fxoption.getDownBarrierEndDate();
+    public ATJDate getDownBarrierEndDate() {
+        return new ATJDate(fxoption.getDownBarrierEndDate());
     }
 
     public int getDownBarrierStartTime() {
-	return fxoption.getDownBarrierStartTime();
+        return fxoption.getDownBarrierStartTime();
     }
 
     public int getDownBarrierEndTime() {
-	return fxoption.getDownBarrierEndTime();
+        return fxoption.getDownBarrierEndTime();
     }
 
     public TimeZone getDownBarrierStartTimeZone() {
-	return fxoption.getDownBarrierStartTimeZone();
+        return fxoption.getDownBarrierStartTimeZone();
     }
 
     public TimeZone getDownBarrierEndTimeZone() {
-	return fxoption.getDownBarrierEndTimeZone();
+        return fxoption.getDownBarrierEndTimeZone();
     }
 
-    public JDate getExercisedDate() {
-	return fxoption.getExercisedDate();
+    public ATJDate getExercisedDate() {
+        return new ATJDate(fxoption.getExercisedDate());
     }
 
     public FXResetFixing getFwdStartFxResetFixing() {
-	return fxoption.getFwdStartFxResetFixing();
+        return fxoption.getFwdStartFxResetFixing();
     }
 
     public FXResetFixing getNonAsianFxResetFixing() {
-	return fxoption.getNonAsianFxResetFixing();
+        return fxoption.getNonAsianFxResetFixing();
     }
 
     public double getResetPrice() {
-	return fxoption.getResetPrice();
+        return fxoption.getResetPrice();
     }
 
     public String[] getUsedHolidays() {
-	return fxoption.getUsedHolidays();
+        return fxoption.getUsedHolidays();
     }
 
-    public JDate getSpotDate() {
-	return fxoption.getSpotDate();
+    public ATJDate getSpotDate() {
+        return new ATJDate(fxoption.getSpotDate());
     }
 
     public int getDispOptionType() {
-	return fxoption.getDispOptionType();
+        return fxoption.getDispOptionType();
     }
 
     public String getDispOptionTypeAsString() {
-	return fxoption.getDispOptionTypeAsString();
+        return fxoption.getDispOptionTypeAsString();
     }
 
     public int getPutCall() {
-	return fxoption.getPutCall();
+        return fxoption.getPutCall();
     }
 
     public int getOptionCalcOffset() {
-	return fxoption.getOptionCalcOffset();
+        return fxoption.getOptionCalcOffset();
     }
 
     public boolean getOptionCalcOffsetDaysB() {
-	return fxoption.getOptionCalcOffsetDaysB();
+        return fxoption.getOptionCalcOffsetDaysB();
     }
 
     public boolean getOptionCalcBusB() {
-	return fxoption.getOptionCalcBusB();
+        return fxoption.getOptionCalcBusB();
     }
 
     public String getABType() {
-	return fxoption.getABType();
+        return fxoption.getABType();
     }
 
     public Vector getSettlementTypeDomain() {
-	return fxoption.getSettlementTypeDomain();
+        return fxoption.getSettlementTypeDomain();
     }
 
     public AsianParameter getAsianParameter() {
-	return fxoption.getAsianParameter();
+        return fxoption.getAsianParameter();
     }
 
     public AsianParameter getAsianParameter1() {
-	return fxoption.getAsianParameter1();
+        return fxoption.getAsianParameter1();
     }
 
     public Vector getValidTouchTypes() {
-	return fxoption.getValidTouchTypes();
+        return fxoption.getValidTouchTypes();
     }
 
     public String getFaderType() {
-	return fxoption.getFaderType();
+        return fxoption.getFaderType();
     }
 
     public String getFaderRangeType() {
-	return fxoption.getFaderRangeType();
+        return fxoption.getFaderRangeType();
     }
 
     public double getFaderLowTriggerValue() {
-	return fxoption.getFaderLowTriggerValue();
+        return fxoption.getFaderLowTriggerValue();
     }
 
     public double getFaderHighTriggerValue() {
-	return fxoption.getFaderHighTriggerValue();
+        return fxoption.getFaderHighTriggerValue();
     }
 
     public double getFwdStartStrike() {
-	return fxoption.getFwdStartStrike();
+        return fxoption.getFwdStartStrike();
     }
 
     public BasicStrikeInputStyle getFwdStartStrikeStyle() {
-	return fxoption.getFwdStartStrikeStyle();
+        return fxoption.getFwdStartStrikeStyle();
     }
 
-    public JDate getFwdStartFixingDate() {
-	return fxoption.getFwdStartFixingDate();
+    public ATJDate getFwdStartFixingDate() {
+        return new ATJDate(fxoption.getFwdStartFixingDate());
     }
 
     public FXReset getFwdStartFXReset() {
-	return fxoption.getFwdStartFXReset();
+        return fxoption.getFwdStartFXReset();
     }
 
     public String getOptionSubType() {
-	return fxoption.getOptionSubType();
+        return fxoption.getOptionSubType();
     }
 
     public List getAsianParameters() {
-	return fxoption.getAsianParameters();
+        return fxoption.getAsianParameters();
     }
 
     public OptionFlavor getOptionFlavor() {
-	return fxoption.getOptionFlavor();
+        return fxoption.getOptionFlavor();
     }
 
     public double getStrike() {
-	return fxoption.getStrike();
+        return fxoption.getStrike();
     }
 
     public boolean getAutoExercise() {
-	return fxoption.getAutoExercise();
+        return fxoption.getAutoExercise();
     }
 
-    public JDate getExpiryDate() {
-	return fxoption.getExpiryDate();
+    public ATJDate getExpiryDate() {
+        return new ATJDate(fxoption.getExpiryDate());
     }
 
     public int getExpiryTime() {
-	return fxoption.getExpiryTime();
+        return fxoption.getExpiryTime();
     }
 
     public TimeZone getExpiryTimeZone() {
-	return fxoption.getExpiryTimeZone();
+        return fxoption.getExpiryTimeZone();
     }
 
-    public JDate getFirstExerciseDate() {
-	return fxoption.getFirstExerciseDate();
+    public ATJDate getFirstExerciseDate() {
+        return new ATJDate(fxoption.getFirstExerciseDate());
     }
 
     public String getSettlementType() {
-	return fxoption.getSettlementType();
+        return fxoption.getSettlementType();
     }
 
     public String getSettlementCurrency() {
-	return fxoption.getSettlementCurrency();
+        return fxoption.getSettlementCurrency();
     }
 
     public Product getUnderlyingProduct() {
-	return fxoption.getUnderlyingProduct();
+        return fxoption.getUnderlyingProduct();
     }
 
     @Override
-    public JDate getSettleDate() {
-	return fxoption.getSettleDate();
+    public ATJDate getSettleDate() {
+        return new ATJDate(fxoption.getSettleDate());
     }
 
     public String getSubType() {
-	return fxoption.getSubType();
+        return fxoption.getSubType();
     }
 
     public String getExerciseType() {
-	return fxoption.getExerciseType();
+        return fxoption.getExerciseType();
     }
 
     public JDatetime getUpBarrierEndDatetime() {
-	return fxoption.getUpBarrierEndDatetime();
+        return fxoption.getUpBarrierEndDatetime();
     }
 
     public JDatetime getUpBarrierStartDatetime() {
-	return fxoption.getUpBarrierStartDatetime();
+        return fxoption.getUpBarrierStartDatetime();
     }
 
     public JDatetime getDownBarrierEndDatetime() {
-	return fxoption.getDownBarrierEndDatetime();
+        return fxoption.getDownBarrierEndDatetime();
     }
 
     public JDatetime getDownBarrierStartDatetime() {
-	return fxoption.getDownBarrierStartDatetime();
+        return fxoption.getDownBarrierStartDatetime();
     }
 
     public List getBarrierDescriptors() {
-	return fxoption.getBarrierDescriptors();
+        return fxoption.getBarrierDescriptors();
     }
 
     public String getDigitalPaymentType() {
-	return fxoption.getDigitalPaymentType();
+        return fxoption.getDigitalPaymentType();
     }
 
     public String getCustomerFeeCcyPair() {
-	return fxoption.getCustomerFeeCcyPair();
+        return fxoption.getCustomerFeeCcyPair();
     }
 
     public double getPremiumRateToOption() {
-	return fxoption.getPremiumRateToOption();
+        return fxoption.getPremiumRateToOption();
     }
 
     public String getPremiumBaseCcyPair() {
-	return fxoption.getPremiumBaseCcyPair();
+        return fxoption.getPremiumBaseCcyPair();
     }
 
     public double getPremiumRateToBase() {
-	return fxoption.getPremiumRateToBase();
+        return fxoption.getPremiumRateToBase();
     }
 
-    public JDate getResetDate() {
-	return fxoption.getResetDate();
+    public ATJDate getResetDate() {
+        return new ATJDate(fxoption.getResetDate());
     }
 
     public Vector getCashSettleInfo() {
-	return fxoption.getCashSettleInfo();
+        return fxoption.getCashSettleInfo();
     }
 
     public RateIndex getDefaultRateIndex() {
-	return fxoption.getDefaultRateIndex();
+        return fxoption.getDefaultRateIndex();
     }
 
     public Frequency getDefaultFrequency() {
-	return fxoption.getDefaultFrequency();
+        return fxoption.getDefaultFrequency();
     }
 
     public Vector getDefaultHolidays() {
-	return fxoption.getDefaultHolidays();
+        return fxoption.getDefaultHolidays();
     }
 
     public DateRoll getDefaultDateRoll() {
-	return fxoption.getDefaultDateRoll();
+        return fxoption.getDefaultDateRoll();
     }
 
     public DisplayValue getPriceDisplayValue() {
-	return fxoption.getPriceDisplayValue();
+        return fxoption.getPriceDisplayValue();
     }
 
     public ForexHandler getCashConversion() {
-	return fxoption.getCashConversion();
+        return fxoption.getCashConversion();
     }
 
     public String getQuoteName() {
-	return fxoption.getQuoteName();
+        return fxoption.getQuoteName();
     }
 }
