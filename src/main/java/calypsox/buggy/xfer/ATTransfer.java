@@ -29,7 +29,7 @@ public class ATTransfer {
     private static final String ASSIGNED = "Assigned";
 
     /** The botransfer. */
-    private final BOTransfer botransfer;
+    private BOTransfer botransfer;
 
     /**
      * Instantiates a new AT transfer.
@@ -45,6 +45,15 @@ public class ATTransfer {
         botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(transferLongId);
     }
 
+    public ATTransfer reload() throws CalypsoServiceException {
+        botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(botransfer.getLongId());
+        return this;
+    }
+
+    public boolean applyAction(final String action) throws CloneNotSupportedException, CalypsoServiceException {
+        return applyAction(action, null);
+    }
+
     /**
      * Apply action to transfer.
      *
@@ -52,7 +61,7 @@ public class ATTransfer {
      *            the transfer
      * @param action
      *            the action
-     * @param username
+     * @param userName
      *            the username
      * @return true, if successful
      * @throws CloneNotSupportedException
@@ -62,7 +71,11 @@ public class ATTransfer {
      */
     public boolean applyAction(final String action, final String username)
             throws CloneNotSupportedException, CalypsoServiceException {
-        final ATDSConnection dsCon = new ATDSConnection(username);
+        String userName = username;
+        if (username == null) {
+            userName = "calypso_user";
+        }
+        final ATDSConnection dsCon = new ATDSConnection(userName);
 
         final RemoteBackOffice remoteBo = dsCon.getRemoteBackOffice();
 
@@ -84,7 +97,7 @@ public class ATTransfer {
                     newTransfer.setAction(Action.NEW);
                     newTransfer.setStatus(Status.S_NONE);
                     newTransfer.setParentLongId(clonedTransfer.getLongId());
-                    newTransfer.setEnteredUser(username);
+                    newTransfer.setEnteredUser(userName);
 
                     newTransfer.setLongId(0);
                     newTransfer.setAttribute("PayerStatus", XFER_ASSIGNED);
@@ -96,12 +109,12 @@ public class ATTransfer {
                     remoteBo.save(newTransfer, 0, null);
                 }
                 clonedTransfer.setAction(Action.valueOf(action));
-                clonedTransfer.setEnteredUser(username);
+                clonedTransfer.setEnteredUser(userName);
                 remoteBo.save(clonedTransfer, 0, null);
                 rst = true;
             } else {
                 dsCon.restoreRealConnection();
-                throw new SecurityException("Action " + action + " can't be performed with user " + username
+                throw new SecurityException("Action " + action + " can't be performed with user " + userName
                         + " on transfer " + clonedTransfer.getLongId());
             }
         }

@@ -162,6 +162,22 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Gets the netted transfers with status.
+     *
+     * @param trade
+     *            the trade
+     * @param status
+     *            the status
+     * @return the netted transfers with status
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTransfer> getNettedTransfersWithStatus(final ATTrade trade, final String status)
+            throws CalypsoServiceException {
+        return new ATTransfers().getNettedTransfersWithStatus(trade, status);
+    }
+
+    /**
      * Gets the property.
      *
      * @param key
@@ -274,11 +290,33 @@ public class BuggyAT extends BuggyVersion {
      * @throws InvocationTargetException
      *             the invocation target exception
      */
-    public String invoke(final Object obj, final String methodName, final List<String> params)
+    private String invoke(final Object obj, final String methodName, final Object param)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        params.toArray(new String[] {});
-        final Method method = obj.getClass().getMethod(methodName, String.class);
-        return method.invoke(obj, params).toString();
+        final Method method = obj.getClass().getMethod(methodName, param.getClass());
+        return String.valueOf(method.invoke(obj, param));
+    }
+
+    /**
+     * Repeat the execution of a method in a list of objects
+     *
+     * @param objects
+     *            the objects
+     * @param methodName
+     *            the method name
+     * @param params
+     *            the params
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     */
+    public void repeat(final List<Object> objects, final String methodName, final Object param)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        for (final Object obj : objects) {
+            invoke(obj, methodName, param);
+        }
     }
 
     /**
@@ -291,6 +329,18 @@ public class BuggyAT extends BuggyVersion {
      */
     public void setProperty(final String key, final String value) {
         testProperties.setProperty(key, value);
+    }
+
+    /**
+     * Sets the property.
+     *
+     * @param key
+     *            the key
+     * @param value
+     *            the value
+     */
+    public void setProperty(final String key, final Object value) {
+        testProperties.setProperty(key, value.toString());
     }
 
     /**

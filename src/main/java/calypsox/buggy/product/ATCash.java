@@ -15,6 +15,7 @@ import com.calypso.tk.core.StubRule;
 import com.calypso.tk.core.Tenor;
 import com.calypso.tk.core.Trade;
 import com.calypso.tk.product.Cash;
+import com.calypso.tk.product.EventTypeAction;
 import com.calypso.tk.product.flow.CashFlowInterest;
 import com.calypso.tk.product.flow.IndexCalculator;
 import com.calypso.tk.product.util.InterpStyle;
@@ -699,6 +700,7 @@ public class ATCash extends ATTSimpleMM {
      *
      * @return the coupon holidays
      */
+    @SuppressWarnings("unchecked")
     public List<String> getCouponHolidays() {
         return cash.getCouponHolidays();
     }
@@ -805,8 +807,8 @@ public class ATCash extends ATTSimpleMM {
      *
      * @return the event type actions
      */
-    public Vector getEventTypeActions() {
-        // TODO: check the rigth return type
+    @SuppressWarnings("unchecked")
+    public Vector<EventTypeAction> getEventTypeActions() {
         return cash.getEventTypeActions();
     }
 
@@ -825,8 +827,8 @@ public class ATCash extends ATTSimpleMM {
      *
      * @return the applied action list
      */
-    public Vector getAppliedActionList() {
-        // TODO: check the rigth return type
+    @SuppressWarnings("unchecked")
+    public Vector<String> getAppliedActionList() {
         return cash.getAppliedActionList();
     }
 

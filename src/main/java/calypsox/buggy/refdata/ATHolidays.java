@@ -25,6 +25,6 @@ public class ATHolidays {
         JDate rstDate = JDate.getNow();
         final Tenor tenor = Tenor.valueOf(tenorString.replace("+", ""));
         rstDate = rstDate.addBusinessDays(tenor.getCode(), holidays);
-        return new ATJDate(rstDate);
+        return new ATJDate(rstDate, timeZone);
     }
 }

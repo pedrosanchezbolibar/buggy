@@ -23,20 +23,18 @@ public class ATTransfers {
     private static final int MAX_ROW_COUNT = 5000;
 
     /**
-     * Gets the BO transfers.
+     * To AT transfer list.
      *
-     * @param trade
-     *            the trade
-     * @return the BO transfers
-     * @throws CalypsoServiceException
-     *             the calypso service exception
+     * @param array
+     *            the array
+     * @return the list
      */
-    public List<ATTransfer> getNettedTransfers(final ATTrade trade) throws CalypsoServiceException {
-        if (trade != null) {
-            final String where = String.format("trade_id = %d and netted_transfer_id = 0", trade.getId());
-            return getBOTransfers(null, where);
+    public static List<ATTransfer> toATTransferList(final TransferArray array) {
+        final List<ATTransfer> list = new ArrayList<>();
+        for (final BOTransfer xfer : array) {
+            list.add(new ATTransfer(xfer));
         }
-        return new ArrayList<>();
+        return list;
     }
 
     /**
@@ -59,17 +57,40 @@ public class ATTransfers {
     }
 
     /**
-     * To AT transfer list.
+     * Gets the BO transfers.
      *
-     * @param array
-     *            the array
-     * @return the list
+     * @param trade
+     *            the trade
+     * @return the BO transfers
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
-    public static List<ATTransfer> toATTransferList(final TransferArray array) {
-        final List<ATTransfer> list = new ArrayList<>();
-        for (final BOTransfer xfer : array) {
-            list.add(new ATTransfer(xfer));
+    public List<ATTransfer> getNettedTransfers(final ATTrade trade) throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format("trade_id = %d and netted_transfer_id = 0", trade.getId());
+            return getBOTransfers(null, where);
         }
-        return list;
+        return new ArrayList<>();
+    }
+
+    /**
+     * Gets the netted transfers with status.
+     *
+     * @param trade
+     *            the trade
+     * @param status
+     *            the status
+     * @return the netted transfers with status
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTransfer> getNettedTransfersWithStatus(final ATTrade trade, final String status)
+            throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format("trade_id = %d and netted_transfer_id = 0 and transfer_status = '%s'",
+                    trade.getId(), status);
+            return getBOTransfers(null, where);
+        }
+        return new ArrayList<>();
     }
 }

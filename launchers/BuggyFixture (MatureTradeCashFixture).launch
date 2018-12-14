@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/buggy/src/test/java/calypsox/buggy/xfer/CancelTradeReversalFixture.java"/>
+<listEntry value="/buggy/src/test/java/calypsox/buggy/trade/schedtask/MatureTradeCashFixture.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
@@ -326,7 +326,7 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="calypsox.buggy.xfer.CancelTradeReversalFixture"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="calypsox.buggy.trade.schedtask.MatureTradeCashFixture"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="buggy"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser=calypso_user -Dpassword=Calypso!123 -Denv=localKLYODEV21 -DdontReloadStaticData=true"/>

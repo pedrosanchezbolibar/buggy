@@ -52,6 +52,8 @@
 	    <p>
             La External Reference de la operación será
 	        <span concordion:execute="#extRef=generateExternalRef()"> </span>  
+	        <span concordion:execute="setProperty('EXTERNAL_REFERENCE',#extRef)"> </span>
+	        
 			<span concordion:echo="#extRef"> </span>.
 	    </p>
 
@@ -91,7 +93,7 @@
                 <td>RIKSSESTC</td>
                 <td></td>
                 <td></td>
-                <td>15000000.00 USD</td>
+                <td>15,000,000.00 USD</td>
             </tr>
         </table>
         
@@ -115,28 +117,30 @@
 				<td></td>
 				<td>BACKDATED</td>
 				<td>NONE</td>
-				<td>15000000.0000</td>
+				<td>15,000,000.00 USD</td>
 				<td></td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>BACKDATED</td>
 				<td>NONE</td>
-				<td>-15000729.1700</td>
+				<td>-15,000,729.17 USD</td>
 				<td></td>
 			</tr>
 		</table>
 			
-<pre>quique</pre>			
-			
 		<p>
 		    Aplicamos la acción <span concordion:set="#action">MANUAL_SETTLE</span>
-			al transfer que está en estado BACKDATED <span concordion:execute="applyActionToTransfers(#extRef, 'BACKDATED',#action, #userName)"> </span>
-			
+			al transfer que está en estado <span concordion:set="#status">BACKDATED</span>
+			<span concordion:execute="#transfers=getNettedTransfersWithStatus(#trade, #status)"> </span>
+			<span concordion:execute="repeat(#transfers, 'applyAction', #action )"> </span>		
 		</p>
+		
 		<p>
+			<span concordion:execute="#transfers=getNettedTransfersWithStatus(#trade, 'PENDING_DATE')"> </span>
 		    Y aplicamos la acción <span concordion:set="#action">AUTHORIZE</span>
-			al transfer para que llegue al estado SETTLED.<span concordion:execute="applyActionToTransfers(#extRef, 'PENDING_DATE',#action, #userName)"> </span> 
+			al transfer para que llegue al estado SETTLED.
+			<span concordion:execute="repeat(#transfers, 'applyAction', #action )"> </span>		
 		</p>
 	 	
          <p>
@@ -148,33 +152,29 @@
          <p>
          		Comprobamos que las Transfers estén en estado SETTLED:
 		</p>
-			<table concordion:verifyRows="#xfer : getTradeNettedXfers(#extRef)">
+			<table concordion:verifyRows="#xfer : getNettedTransfers(#trade)">
 				<tr>
-					<th concordion:echo="#xfer.longId">Id</th>
-					<th concordion:assertEquals="#xfer.status">Status</th>
-					<th concordion:assertEquals="#xfer.transferType">Tipo</th>
-					<th concordion:assertEquals="formatAmount(#xfer.settlementAmount)">Cantidad</th>
-					<th concordion:assertEquals="#xfer.settlementCurrency">Divisa</th>
-					<th concordion:echo="#xfer.valueDate">Fecha valor</th>
-					
-				</tr>
-				<tr>
-					<td></td>
-					<td>SETTLED</td>
-					<td>NONE</td>
-					<td>15000000.0000</td>
-					<td>USD</td>
-					<td></td>	
-				</tr>
-				<tr>
-					<td></td>
-					<td>SETTLED</td>
-					<td>NONE</td>
-					<td>-15000729.1700</td>
-					<td>USD</td>
-					<td></td>	
-				</tr>
-			</table>
+				<th concordion:echo="#xfer.id">Id</th>
+				<th concordion:assertEquals="#xfer.status">Status</th>
+				<th concordion:assertEquals="#xfer.transferType">Tipo</th>
+				<th concordion:assertEquals="#xfer.settlementAmount">Cantidad</th>
+				<th concordion:echo="#xfer.valueDate">Fecha valor</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td>SETTLED</td>
+				<td>NONE</td>
+				<td>15,000,000.00 USD</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>SETTLED</td>
+				<td>NONE</td>
+				<td>-15,000,729.17 USD</td>
+				<td></td>
+			</tr>
+		</table>
 		
         <h2>Resultado</h2>
         
