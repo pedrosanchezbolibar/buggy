@@ -15,6 +15,26 @@ public class ATJDate {
     /** The Constant DEFAULT_PATTERN. */
     private static final String DEFAULT_PATTERN = "yyyy-MM-dd";
 
+    /** The jdate. */
+    private final JDate jdate;
+
+    /**
+     * Instantiates a new ATJ date.
+     */
+    public ATJDate() {
+        jdate = JDate.getNow();
+    }
+
+    /**
+     * Instantiates a new ATJ date.
+     *
+     * @param date
+     *            the date
+     */
+    public ATJDate(final JDate date) {
+        jdate = date;
+    }
+
     /**
      * Calculate date by Tenor.
      *
@@ -27,9 +47,8 @@ public class ATJDate {
      * @return the string
      */
     public JDate calculateDateByTenor(final String tenorString, final List<String> holidays, final String timeZone) {
-        final JDate rstDate = JDate.getNow();
         final Tenor tenor = Tenor.valueOf(tenorString.replace("+", ""));
-        return rstDate.addBusinessDays(tenor.getCode(), holidays);
+        return jdate.addBusinessDays(tenor.getCode(), holidays);
     }
 
     /**
@@ -39,7 +58,7 @@ public class ATJDate {
      *            the jdate
      * @return the string
      */
-    public String toSchedTaskRunnerFormat(final JDate jdate) {
+    public String toSchedTaskRunnerFormat() {
         final StringBuilder str = new StringBuilder();
         str.append(jdate.getMonth());
         str.append('/');
@@ -54,6 +73,18 @@ public class ATJDate {
      *
      * @see java.lang.Object#toString()
      */
+    @Override
+    public String toString() {
+        return toString(jdate);
+    }
+
+    /**
+     * To string.
+     *
+     * @param jdate
+     *            the jdate
+     * @return the string
+     */
     public String toString(final JDate jdate) {
         final SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_PATTERN);
         return formatter.format(jdate.getDate(TimeZone.getDefault()));
@@ -62,8 +93,12 @@ public class ATJDate {
     /**
      * To string.
      *
+     * @param jdate
+     *            the jdate
      * @param pattern
      *            the pattern
+     * @param timeZone
+     *            the time zone
      * @return the string
      */
     public String toString(final JDate jdate, final String pattern, final TimeZone timeZone) {
@@ -71,6 +106,15 @@ public class ATJDate {
         return formatter.format(jdate.getDate(timeZone));
     }
 
+    /**
+     * To string.
+     *
+     * @param jdate
+     *            the jdate
+     * @param timeZone
+     *            the time zone
+     * @return the string
+     */
     /*
      * (non-Javadoc)
      *

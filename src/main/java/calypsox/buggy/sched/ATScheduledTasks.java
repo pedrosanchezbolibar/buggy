@@ -23,6 +23,10 @@ public class ATScheduledTasks {
         final DSConnection dscon = DSConnection.getDefault();
         final RemoteSchedulingService service = dscon.getService(RemoteSchedulingService.class);
         final ScheduledTask scheduledTask = service.getScheduledTaskByExternalReference(externalReference);
+        if (scheduledTask == null) {
+            throw new IllegalArgumentException(
+                    "Can't retrieve a scheduled task with external referernce = '" + externalReference + "'");
+        }
         return new ATScheduledTask(scheduledTask);
     }
 }

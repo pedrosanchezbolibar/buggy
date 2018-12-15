@@ -29,6 +29,8 @@ import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
 import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.refdata.ATUsers;
+import calypsox.buggy.sched.ATScheduledTask;
+import calypsox.buggy.sched.ATScheduledTasks;
 import calypsox.buggy.task.ATTask;
 import calypsox.buggy.task.ATTasks;
 import calypsox.buggy.uploader.DUPAck;
@@ -249,6 +251,19 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Gets the scheduled task.
+     *
+     * @param stExternalRef
+     *            the Scheduled Task External Reference
+     * @return the scheduled task
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATScheduledTask getScheduledTask(final String stExternalRef) throws CalypsoServiceException {
+        return new ATScheduledTasks().getScheduledTask(stExternalRef);
+    }
+
+    /**
      * Gets the tasks by event type.
      *
      * @param trade
@@ -417,8 +432,8 @@ public class BuggyAT extends BuggyVersion {
      *
      * @return the ATJ date
      */
-    public JDate today() {
-        return JDate.getNow();
+    public ATJDate today() {
+        return new ATJDate(JDate.getNow());
     }
 
     /**

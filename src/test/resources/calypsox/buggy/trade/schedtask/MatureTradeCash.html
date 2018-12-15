@@ -180,10 +180,13 @@
 		
         <h2>Resultado</h2>
         
-        <p>Ejecutamos la ScheduledTask <span concordion:set="#stExtRef">MatureTrade_MMSETTLEDATE_MAD</span> con Fecha
-				<span concordion:echo="#today=today()"> </span> 
-	            (<span concordion:assertEquals="executeScheduledTaskWithTF(#stExtRef,#extRef,#today)">OK</span>).
-			</p>
+        <p>
+        	Ejecutamos la ScheduledTask <span concordion:execute="#schedTask=getScheduledTask(#TEXT)">MatureTrade_MMSETTLEDATE_MAD</span>
+        	con Fecha
+			<span concordion:echo="#date=today()"> </span> 
+			<span concordion:execute="#todayStr=#date.toSchedTaskRunnerFormat()"> </span> 
+	        (<span concordion:execute="#schedTask.execute(#trade, #todayStr)"> </span>).
+		</p>
 		
 		<p>
 	    	Comprobamos que la operación ha pasado a MATURED:	   
