@@ -162,6 +162,22 @@
 		
 		<dependency>
 			<groupId>com.calypso</groupId>
+			<artifactId>calypso-scheduling-engine-api</artifactId>
+			<version>4.1.4</version>
+			<scope>system</scope>
+			<systemPath>${calypso.home}/client/lib/calypso-scheduling-engine-api-4.1.4.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.calypso</groupId>
+			<artifactId>calypso-scheduling-engine-data</artifactId>
+			<version>4.1.4</version>
+			<scope>system</scope>
+			<systemPath>${calypso.home}/client/lib/calypso-scheduling-engine-data-4.1.4.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.calypso</groupId>
 			<artifactId>jboss-client</artifactId>
 			<version>7.0.9.0</version>
 			<scope>system</scope>
