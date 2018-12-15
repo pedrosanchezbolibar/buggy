@@ -11,6 +11,7 @@ import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.uti.AvoidSystemExitSecurityManager;
 import calypsox.buggy.uti.CalypsoEnvironment;
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>
  * Execute a Scheduled task using StartQuartzTaskRunner.
@@ -36,7 +37,7 @@ import calypsox.buggy.uti.CalypsoEnvironment;
 public class ATScheduledTask {
 
     /** The scheduled task. */
-    private final ScheduledTask scheduledTask;
+    private ScheduledTask scheduledTask;
 
     /** The temp trade filter. */
     private TradeFilter tempTradeFilter;
@@ -52,6 +53,56 @@ public class ATScheduledTask {
      */
     public ATScheduledTask(final ScheduledTask task) {
         scheduledTask = task;
+    }
+
+    /**
+     * Instantiates a new AT scheduled task.
+     *
+     * @param externalReference
+     *            the external reference
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATScheduledTask(final String externalReference) throws CalypsoServiceException {
+        scheduledTask = load(externalReference);
+    }
+
+    /**
+     * Creates the params.
+     *
+     * @param valDate
+     *            the val date
+     * @return the string[]
+     */
+    private String[] createParams(final String valDate) {
+
+        final String[] params = new String[9];
+
+        params[0] = "-nogui";
+        params[1] = "-env";
+        params[2] = CalypsoEnvironment.getInstance().getEnvName();
+        params[3] = "-user";
+        params[4] = CalypsoEnvironment.getInstance().getUser();
+        params[5] = "-password";
+        params[6] = CalypsoEnvironment.getInstance().getPassword();
+        params[7] = "-taskExtRef";
+        params[8] = scheduledTask.getExternalReference();
+
+        return params;
+    }
+
+    /**
+     * Creates the trade filter.
+     *
+     * @param trade
+     *            the trade
+     * @return the trade filter
+     */
+    private TradeFilter createTradeFilter(final ATTrade trade) {
+        final TradeFilter tradeFilter = new TradeFilter();
+        tradeFilter.setName("_Trade_" + trade.getId());
+        tradeFilter.setSQLWhereClause("trade_id = " + trade.getId());
+        return tradeFilter;
     }
 
     /**
@@ -97,46 +148,33 @@ public class ATScheduledTask {
     }
 
     /**
-     * Creates the params.
+     * Load.
      *
      * @param extRef
      *            the ext ref
-     * @param valDate
-     *            the val date
-     * @param intraday
-     *            if we need to add the intraday param, for those without PO
-     *            informed in SCHED TASK
-     * @return the string[]
+     * @return the scheduled task
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
-    private String[] createParams(final String valDate) {
-
-        final String[] params = new String[9];
-
-        params[0] = "-nogui";
-        params[1] = "-env";
-        params[2] = CalypsoEnvironment.getInstance().getEnvName();
-        params[3] = "-user";
-        params[4] = CalypsoEnvironment.getInstance().getUser();
-        params[5] = "-password";
-        params[6] = CalypsoEnvironment.getInstance().getPassword();
-        params[7] = "-taskExtRef";
-        params[8] = scheduledTask.getExternalReference();
-
-        return params;
+    private ScheduledTask load(final String extRef) throws CalypsoServiceException {
+        final DSConnection dscon = DSConnection.getDefault();
+        final RemoteSchedulingService service = dscon.getService(RemoteSchedulingService.class);
+        final ScheduledTask schedTask = service.getScheduledTaskByExternalReference(extRef);
+        if (schedTask == null) {
+            throw new IllegalArgumentException(
+                    "Can't retrieve a scheduled task with external referernce = '" + extRef + "'");
+        }
+        return schedTask;
     }
 
     /**
-     * Creates the trade filter.
+     * Reload.
      *
-     * @param trade
-     *            the trade
-     * @return the trade filter
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
-    private TradeFilter createTradeFilter(final ATTrade trade) {
-        final TradeFilter tradeFilter = new TradeFilter();
-        tradeFilter.setName("_Trade_" + trade.getId());
-        tradeFilter.setSQLWhereClause("trade_id = " + trade.getId());
-        return tradeFilter;
+    public void reload() throws CalypsoServiceException {
+        scheduledTask = load(scheduledTask.getExternalReference());
     }
 
     /**
@@ -158,6 +196,8 @@ public class ATScheduledTask {
         oldTradeFilter = scheduledTask.getTradeFilter();
         scheduledTask.setTradeFilter(tradeFilter.getName());
         service.save(scheduledTask);
+
+        reload();
     }
 
     /**
@@ -169,6 +209,7 @@ public class ATScheduledTask {
     private void restoreTradeFilter() throws CalypsoServiceException {
         final DSConnection dscon = DSConnection.getDefault();
         final RemoteSchedulingService service = dscon.getService(RemoteSchedulingService.class);
+        reload();
         scheduledTask.setTradeFilter(oldTradeFilter);
         service.save(scheduledTask);
         dscon.getRemoteReferenceData().remove(tempTradeFilter);

@@ -1,9 +1,6 @@
 package calypsox.buggy.sched;
 
 import com.calypso.tk.core.CalypsoServiceException;
-import com.calypso.tk.scheduling.service.RemoteSchedulingService;
-import com.calypso.tk.service.DSConnection;
-import com.calypso.tk.util.ScheduledTask;
 
 /**
  * The Class ATScheduledTasks.
@@ -20,13 +17,6 @@ public class ATScheduledTasks {
      *             the calypso service exception
      */
     public ATScheduledTask getScheduledTask(final String externalReference) throws CalypsoServiceException {
-        final DSConnection dscon = DSConnection.getDefault();
-        final RemoteSchedulingService service = dscon.getService(RemoteSchedulingService.class);
-        final ScheduledTask scheduledTask = service.getScheduledTaskByExternalReference(externalReference);
-        if (scheduledTask == null) {
-            throw new IllegalArgumentException(
-                    "Can't retrieve a scheduled task with external referernce = '" + externalReference + "'");
-        }
-        return new ATScheduledTask(scheduledTask);
+        return new ATScheduledTask(externalReference);
     }
 }

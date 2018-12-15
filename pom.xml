@@ -83,6 +83,16 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.2.1</version>
 		</dependency>
+		
+		<!-- jboss -->
+		
+		<dependency>
+			<groupId>com.calypso</groupId>
+			<artifactId>jboss-client</artifactId>
+			<version>7.0.9.0</version>
+			<scope>system</scope>
+			<systemPath>${calypso.home}/jboss/jboss-eap-7.0.9.0/bin/client/jboss-client.jar</systemPath>
+		</dependency>
 
 		<!-- calypso -->
 		<dependency>

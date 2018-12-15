@@ -181,11 +181,11 @@
         <h2>Resultado</h2>
         
         <p>
-        	Ejecutamos la ScheduledTask <span concordion:execute="#schedTask=getScheduledTask(#TEXT)">MatureTrade_MMSETTLEDATE_MAD</span>
+        	Ejecutamos la ScheduledTask <span concordion:execute="#schedTask=getScheduledTask(#TEXT)">MATURE_TRADE</span>
         	con Fecha
 			<span concordion:echo="#date=today()"> </span> 
 			<span concordion:execute="#todayStr=#date.toSchedTaskRunnerFormat()"> </span> 
-	        (<span concordion:execute="#schedTask.execute(#trade, #todayStr)"> </span>).
+	        <span concordion:execute="#schedTask.execute(#trade, #todayStr)"> </span>.
 		</p>
 		
 		<p>
