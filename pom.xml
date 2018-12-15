@@ -146,6 +146,14 @@
 
 		<dependency>
 			<groupId>com.calypso</groupId>
+			<artifactId>calypso-scheduling-engine-impl</artifactId>
+			<version>4.1.4</version>
+			<scope>system</scope>
+			<systemPath>${calypso.home}/client/lib/calypso-scheduling-engine-impl-4.1.4.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.calypso</groupId>
 			<artifactId>jboss-client</artifactId>
 			<version>7.0.9.0</version>
 			<scope>system</scope>

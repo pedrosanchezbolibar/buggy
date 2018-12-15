@@ -32,6 +32,23 @@ public class ATJDate {
         return rstDate.addBusinessDays(tenor.getCode(), holidays);
     }
 
+    /**
+     * To sched task runner format.
+     *
+     * @param jdate
+     *            the jdate
+     * @return the string
+     */
+    public String toSchedTaskRunnerFormat(final JDate jdate) {
+        final StringBuilder str = new StringBuilder();
+        str.append(jdate.getMonth());
+        str.append('/');
+        str.append(jdate.getDayOfMonth());
+        str.append('/');
+        str.append(jdate.getYear() - 1900);
+        return str.toString();
+    }
+
     /*
      * (non-Javadoc)
      *
