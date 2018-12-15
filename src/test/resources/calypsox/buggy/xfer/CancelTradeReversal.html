@@ -170,19 +170,47 @@
 	    </pre>
 	
 		<table>
-	        <tr>
-	            <th>Descripción</th>
-	            <th>TAG</th>
-	            <th>Value</th>
-	        </tr>
-	        <tr><td>Transaction Reference Number</td>	<td concordion:set="#tag">20</td><td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Account Identification</td>		 	<td concordion:set="#tag">25</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">10936152</td></tr>
-			<tr><td>Value Date</td>   					<td concordion:set="#tag">30</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">220602</td></tr>
-	        <tr><td>Related Reference</td>				<td concordion:set="#tag">21</td><td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Currency Code, Amount</td>          <td concordion:set="#tag">32B</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">USD1048688,89</td></tr>
-	        <tr><td>Ordering Institution</td>           <td concordion:set="#tag">50F</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">/DE40700700100190464800</td></tr>
-	        <tr><td>Intermediary</td>                   <td concordion:set="#tag">56A</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">BKTRUS30XXX</td></tr>
-	    </table>	
+			<tr>
+				<th>TAG</th>
+				<th>Value</th>
+				<th>Descripción</th>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">20</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagValue(#tag, 1)"/>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)"></td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">25</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">10936152</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Account Identification</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">30</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">220602</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Value Date</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">21</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagValue(#tag, 1)"/>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Related Reference</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">32B</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">USD1048688,89</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Currency Code, Amount</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">50F</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">/DE40700700100190464800</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Ordering Institution</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">56A</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">BKTRUS30XXX</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Intermediary</td>
+			</tr>
+		</table>	
 	    
 		<p>
 			Accedemos a Calypso con un usuario de UCLI (grupos: <span concordion:set="#group1">bocash_msg</span>
@@ -466,19 +494,47 @@
 	    </p>
 	    
 		<table>
-	        <tr>
-	            <th>Descripción</th>
-	            <th>TAG</th>
-	            <th>Value</th>
-	        </tr>
-	        <tr><td>Transaction Reference Number</td>	<td concordion:set="#tag">20</td><td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Account Identification</td>		 	<td concordion:set="#tag">25</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">10936152</td></tr>
-			<tr><td>Value Date</td>   					<td concordion:set="#tag">30</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">220602</td></tr>
-	        <tr><td>Related Reference</td>				<td concordion:set="#tag">21</td><td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Currency Code, Amount</td>          <td concordion:set="#tag">32B</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">USD1048688,89</td></tr>
-	        <tr><td>Ordering Institution</td>           <td concordion:set="#tag">50F</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">/DE40700700100190464800</td></tr>
-	        <tr><td>Intermediary</td>                   <td concordion:set="#tag">56A</td><td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">BKTRUS30XXX</td></tr>
-	    </table>
+			<tr>
+				<th>TAG</th>
+				<th>Value</th>
+				<th>Descripción</th>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">20</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagValue(#tag, 1)"/>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)"></td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">25</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">10936152</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Account Identification</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">30</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">220602</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Value Date</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">21</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagValue(#tag, 1)"/>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Related Reference</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">32B</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">USD1048688,89</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Currency Code, Amount</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">50F</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">/DE40700700100190464800</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Ordering Institution</td>
+			</tr>
+			<tr>
+				<td concordion:set="#tag">56A</td>
+				<td concordion:assertEquals="#swiftMessage.getSwiftTagValue(#tag, 1)">BKTRUS30XXX</td>
+				<td concordion:echo="#swiftMessage.getSwiftTagName(#tag, 1)">Intermediary</td>
+			</tr>
+		</table>
 	
 		<p>
 			Deben aparecer las tareas de la liquidación en MAN_CHOICE (MAN_CHOCIE_PAYMENT) y del Mensaje de 

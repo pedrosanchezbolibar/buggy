@@ -114,36 +114,24 @@
 					<td>SOGEFRPAR1</td>
 				</tr>
 		</table>
-		<p>
+		<p concordion:execute="#swiftMessage=#msg.formatSwiftDocument(#pricingEnv)">
 			Se comprueba que el mensaje tiene los códigos BIC de la contrapartida y el agente informados:
-			<span concordion:execute="#swiftMessage=#msg.formatSwiftDocument(#pricingEnv)"></span>
+				
 		</p>
 		
 		<table>
 	        <tr>
-	            <th>Descripción</th>
-	            <th>TAG</th>
+				<th concordion:execute="#swiftField=#swiftMessage.getSwiftField(#tag)"></th>     	
+	            <th concordion:echo="#swiftField.name">Descripción</th>
+	            <th concordion:set="#tag">TAG</th>
 	            <th>Value</th>
 	        </tr>
-	        <tr><td>General Information</td>			<td concordion:set="#tag">15A</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Transaction Reference Number</td>	<td concordion:set="#tag">20</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Type of Operation</td>				<td concordion:set="#tag">22A</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Scope of Operation</td>				<td concordion:set="#tag">94A</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Common Reference</td>				<td concordion:set="#tag">22C</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Party A</td>						<td concordion:set="#tag">82A</td>	<td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">BBVAESM0FXD</td></tr>	        
-	        <tr><td>Party B</td>		            	<td concordion:set="#tag">87A</td>	<td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">AISIGB20XXX</td></tr>
-	        <tr><td>New Sequence</td>					<td concordion:set="#tag">15B</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Trade Date</td>						<td concordion:set="#tag">30T</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Value Date</td>						<td concordion:set="#tag">30V</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Exchange Rate</td>					<td concordion:set="#tag">36</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Currency Amount</td>				<td concordion:set="#tag">32B</td>	<td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">EUR3811561,48</td></tr>
-	        <tr><td>Delivery Agent</td>					<td concordion:set="#tag">53A</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Receiving Agent</td>            	<td concordion:set="#tag">57A</td>	<td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">BBVAESM0FXD</td></tr>
-	        <tr><td>Currency Amount</td>				<td concordion:set="#tag">33B</td>	<td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">CNY30000000,</td></tr>
-	        <tr><td>Delivery Agent</td>					<td concordion:set="#tag">53A</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 1)"></td></tr>
-	        <tr><td>Receiving Agent</td>            	<td concordion:set="#tag">57A</td>	<td concordion:echo="#swiftMessage.getSwiftTag(#tag, 2)"></td></tr>
-	        <tr><td>Beneficiary Institution</td>		<td concordion:set="#tag">58A</td>	<td concordion:assertEquals="#swiftMessage.getSwiftTag(#tag, 1)">AISIGB20XXX</td></tr>
+	        <tr><td></td><td></td><td>15A</td>	<td concordion:echo="#swiftField.value"></td></tr>
+	        <tr><td></td><td></td><td>205</td>	<td concordion:echo="#swiftField.value"></td></tr>
+	        <tr><td></td><td></td><td>82A</td>	<td concordion:assertEquals="#swiftField.value">BBVAESM0FXD</td></tr>
 	    </table>
+		
+		
 	    
 <button onclick="showMessage('swiftMessage')">Mostrar Mensaje Swift completo</button>	
 <pre concordion:echo="#swiftMessage.text" id="swiftMessage" style="display:none"> </pre>	

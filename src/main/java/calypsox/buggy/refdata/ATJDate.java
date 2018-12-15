@@ -37,9 +37,9 @@ public class ATJDate {
      *
      * @see java.lang.Object#toString()
      */
-    public String toString(final JDate jdate, final TimeZone timeZone) {
+    public String toString(final JDate jdate) {
         final SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_PATTERN);
-        return formatter.format(jdate.getDate(timeZone));
+        return formatter.format(jdate.getDate(TimeZone.getDefault()));
     }
 
     /**
@@ -49,8 +49,18 @@ public class ATJDate {
      *            the pattern
      * @return the string
      */
-    public String toString(final JDate jdate, final TimeZone timeZone, final String pattern) {
+    public String toString(final JDate jdate, final String pattern, final TimeZone timeZone) {
         final SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        return formatter.format(jdate.getDate(timeZone));
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see java.lang.Object#toString()
+     */
+    public String toString(final JDate jdate, final TimeZone timeZone) {
+        final SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_PATTERN);
         return formatter.format(jdate.getDate(timeZone));
     }
 }

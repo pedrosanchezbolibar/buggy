@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import org.concordion.api.FullOGNL;
 import org.concordion.api.extension.Extensions;
@@ -100,6 +101,45 @@ public class BuggyAT extends BuggyVersion {
      */
     public JDate calculateDateByTenor(final String tenor, final List<String> holidays, final String timeZone) {
         return new ATJDate().calculateDateByTenor(tenor, holidays, timeZone);
+    }
+
+    /**
+     * Format.
+     *
+     * @param date
+     *            the date
+     * @return the string
+     */
+    public String format(final JDate date) {
+        return new ATJDate().toString(date);
+    }
+
+    /**
+     * Format.
+     *
+     * @param date
+     *            the date
+     * @param timeZoneId
+     *            the time zone id
+     * @return the string
+     */
+    public String format(final JDate date, final String timeZoneId) {
+        return new ATJDate().toString(date, TimeZone.getTimeZone(timeZoneId));
+    }
+
+    /**
+     * Format.
+     *
+     * @param date
+     *            the date
+     * @param pattern
+     *            the pattern
+     * @param timeZoneId
+     *            the time zone id
+     * @return the string
+     */
+    public String format(final JDate date, final String pattern, final String timeZoneId) {
+        return new ATJDate().toString(date, pattern, TimeZone.getTimeZone(timeZoneId));
     }
 
     /**
@@ -250,6 +290,15 @@ public class BuggyAT extends BuggyVersion {
         return new ATTrades().getTrade(tradeId);
     }
 
+    /**
+     * Gets the trades.
+     *
+     * @param extRef
+     *            the ext ref
+     * @return the trades
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
     public List<ATTrade> getTrades(final String extRef) throws CalypsoServiceException {
         return new ATTrades().getTrades(extRef);
     }
@@ -294,14 +343,37 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Repeat the execution of a method in a list of objects
+     * Invoke.
+     *
+     * @param obj
+     *            the obj
+     * @param methodName
+     *            the method name
+     * @param param
+     *            the param
+     * @return the string
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     */
+    private String invoke(final Object obj, final String methodName, final Object param)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final Method method = obj.getClass().getMethod(methodName, param.getClass());
+        return String.valueOf(method.invoke(obj, param));
+    }
+
+    /**
+     * Repeat the execution of a method in a list of objects.
      *
      * @param objects
      *            the objects
      * @param methodName
      *            the method name
-     * @param params
-     *            the params
+     * @param param
+     *            the param
      * @throws NoSuchMethodException
      *             the no such method exception
      * @throws IllegalAccessException
@@ -360,29 +432,6 @@ public class BuggyAT extends BuggyVersion {
      */
     public int waitForEngine(final String engine) throws InterruptedException {
         return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
-    }
-
-    /**
-     * Invoke.
-     *
-     * @param obj
-     *            the obj
-     * @param methodName
-     *            the method name
-     * @param params
-     *            the params
-     * @return the string
-     * @throws NoSuchMethodException
-     *             the no such method exception
-     * @throws IllegalAccessException
-     *             the illegal access exception
-     * @throws InvocationTargetException
-     *             the invocation target exception
-     */
-    private String invoke(final Object obj, final String methodName, final Object param)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final Method method = obj.getClass().getMethod(methodName, param.getClass());
-        return String.valueOf(method.invoke(obj, param));
     }
 
 }

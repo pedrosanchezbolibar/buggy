@@ -41,12 +41,14 @@
 	        utilizando la acción <span concordion:execute="setProperty('ACTION', #TEXT)">NEW</span>
 	        y la contrapartida <span concordion:execute="setProperty('CPTY', #TEXT)">RIKSSESTC</span>.
 	        La fecha de START_DATE será <span concordion:set="#tenor">-1Y</span>
-	        <span concordion:execute="#tenorDate=calculateDateByTenor(#tenor,{'USD'})"> </span> 
-			(<span concordion:execute="setProperty('START_DATE',#tenorDate)"> </span>
+	        <span concordion:execute="#tenorDate=calculateDateByTenor(#tenor,{'USD'})"> </span>
+	        <span concordion:execute="#tenorDateStr=format(#tenorDate)"> </span> 
+			(<span concordion:execute="setProperty('START_DATE',#tenorDateStr)"> </span>
 			<span concordion:echo="#tenorDate"> </span>) 
 			y la fecha de MATURITY_DATE será <span concordion:set="#tenor">-2W</span> 
 			<span concordion:execute="#tenorDate=calculateDateByTenor(#tenor,{'USD'})"> </span> 
-			(<span concordion:execute="setProperty('MATURITY_DATE',#tenorDate)"> </span>
+			<span concordion:execute="#tenorDateStr=format(#tenorDate)"> </span> 
+			(<span concordion:execute="setProperty('MATURITY_DATE',#tenorDateStr)"> </span>
 			<span concordion:echo="#tenorDate"> </span>).
 	    </p>
 	    <p>
