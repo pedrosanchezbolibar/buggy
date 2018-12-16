@@ -286,6 +286,26 @@ public class BuggyAT extends BuggyVersion {
         return new ATTransfers().getNettedTransfersWithStatus(trade, status);
     }
 
+    public List<ATTask> getNonCompletedTasks(final ATTrade trade) throws CalypsoServiceException {
+        return new ATTasks().getNonCompletedTasks(trade);
+    }
+
+    /**
+     * Gets the non completed tasks by event type.
+     *
+     * @param trade
+     *            the trade
+     * @param eventTypes
+     *            the event types
+     * @return the non completed tasks by event type
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getNonCompletedTasksByEventType(final ATTrade trade, final List<String> eventTypes)
+            throws CalypsoServiceException {
+        return new ATTasks().getNonCompletedTasksByEventType(trade, eventTypes);
+    }
+
     /**
      * Gets the property.
      *

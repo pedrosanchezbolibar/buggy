@@ -1,16 +1,27 @@
 package calypsox.buggy.task;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import com.calypso.tk.bo.Task;
 import com.calypso.tk.bo.util.ProcessTaskUtil.ObjectDesc;
+import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.JDatetime;
+import com.calypso.tk.core.Log;
+import com.calypso.tk.core.PendingModification;
 import com.calypso.tk.core.Status;
+import com.calypso.tk.core.Trade;
+import com.calypso.tk.core.Util;
+import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
+import com.calypso.tk.service.RemoteReferenceData;
+import com.calypso.tk.service.RemoteTrade;
 
+import calypsox.buggy.infra.ATCache;
+import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.refdata.ATBook;
 import calypsox.buggy.refdata.ATLegalEntity;
@@ -21,7 +32,7 @@ import calypsox.buggy.refdata.ATLegalEntity;
 public class ATTask {
 
     /** The task. */
-    private final Task task;
+    private Task task;
 
     /**
      * Instantiates a new AT task.
@@ -43,6 +54,64 @@ public class ATTask {
      */
     public ATTask(final Task task) {
         this.task = task;
+    }
+
+    /**
+     * Apply task action.
+     *
+     * @param action
+     *            the action
+     * @param username
+     *            the username
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void applyTaskAction(final String action, final String username) {
+        final ATDSConnection dsCon = new ATDSConnection(username);
+        final RemoteTrade remoteTrade = dsCon.getRemoteTrade();
+        final RemoteReferenceData remoteRefData = dsCon.getRemoteReferenceData();
+        if (task != null) {
+            final String where = getApplyTaskActionWhereClause();
+            final Vector<String> errors = new Vector<>();
+            List<PendingModification> diffs = null;
+
+            try {
+                diffs = remoteRefData.getPendingModifs(where, "pending_modif.entity_id");
+                final Trade trade = remoteTrade.getTrade((int) task.getTradeId());
+
+                String actionTrade = null;
+
+                if (diffs != null) {
+                    final Vector<PendingModification> saves = new Vector<>();
+                    for (int i = 0; i < diffs.size(); i++) {
+                        final PendingModification pm = diffs.get(i);
+                        actionTrade = pm.getActionType();
+                        trade.setAction(Action.valueOf(actionTrade));
+                        trade.setEnteredUser(DSConnection.getDefault().getUser());
+                        String authStatus = null;
+
+                        authStatus = processActions(action);
+                        PendingModification newPm = null;
+                        newPm = pm.clone();
+
+                        if (AccessUtil.isAuthorized(newPm, errors)
+                                && AccessUtil.checkTradeOtherPermission(trade, new StringBuffer())) {
+                            newPm.setAuthStatus(authStatus);
+                            newPm.setUserName(DSConnection.getDefault().getUser());
+                            saves.addElement(newPm);
+                        } else {
+                            dsCon.restoreRealConnection();
+                            throw new SecurityException("Action " + action + " can't be performed with user " + username
+                                    + " on task " + task.getId());
+                        }
+
+                    }
+                    remoteTrade.applyTradePendingModifications((int) task.getTradeId(), saves);
+                }
+            } catch (final CalypsoServiceException e) {
+                Log.error(this, e);
+            }
+        }
+        dsCon.restoreRealConnection();
     }
 
     /**
@@ -394,30 +463,12 @@ public class ATTask {
     }
 
     /**
-     * Gets the priority domain.
-     *
-     * @return the priority domain
-     */
-    public Vector getPriorityDomain() {
-        return task.getPriorityDomain();
-    }
-
-    /**
      * Gets the priority id.
      *
      * @return the priority id
      */
     public int getPriorityId() {
         return task.getPriorityId();
-    }
-
-    /**
-     * Gets the priority max.
-     *
-     * @return the priority max
-     */
-    public int getPriorityMax() {
-        return task.getPriorityMax();
     }
 
     /**
@@ -454,15 +505,6 @@ public class ATTask {
      */
     public String getStatus() {
         return task.getStatusAsString();
-    }
-
-    /**
-     * Gets the status domain.
-     *
-     * @return the status domain
-     */
-    public Vector getStatusDomain() {
-        return task.getStatusDomain();
     }
 
     /**
@@ -564,5 +606,57 @@ public class ATTask {
      */
     public String getWorkflowType() {
         return task.getWorkflowType();
+    }
+
+    /**
+     * Reload.
+     *
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public void reload() throws CalypsoServiceException {
+        new ATCache().clearCache("Task");
+        task = DSConnection.getDefault().getRemoteBackOffice().getTask(task.getId());
+    }
+
+    /**
+     * Gets the where clause for the apply task action method
+     *
+     * @return the where clause
+     */
+    private String getApplyTaskActionWhereClause() {
+        final StringBuilder where = new StringBuilder();
+        final JDatetime datetime = task.getDatetime();
+        final JDatetime startTime = datetime.add(0, 0, 0, -1, 0);
+        final JDatetime endTime = datetime.add(0, 0, 0, 1, 0);
+        where.append("entity_class_name='");
+        where.append(task.getObjectClassName());
+        where.append("' AND entity_id=");
+        where.append(task.getObjectLongId());
+        where.append(" AND modif_date >");
+        where.append(Util.datetime2SQLString(startTime));
+        where.append(" AND modif_date < ");
+        where.append(Util.datetime2SQLString(endTime));
+        return where.toString();
+    }
+
+    /**
+     * Process actions.
+     *
+     * @param action
+     *            the action
+     * @return the string
+     */
+    private String processActions(final String action) {
+        String result = null;
+
+        if (action.equals("Accept")) {
+            result = action.replace("Accept", "Accepted");
+        }
+
+        if (result == null) {
+            throw new UnsupportedOperationException("Action not permitted.");
+        }
+        return result;
     }
 }
