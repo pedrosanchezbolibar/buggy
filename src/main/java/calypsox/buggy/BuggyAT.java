@@ -23,6 +23,7 @@ import calypsox.buggy.acc.ATCre;
 import calypsox.buggy.acc.ATCres;
 import calypsox.buggy.cml.CMLImporter;
 import calypsox.buggy.infra.ATEngines;
+import calypsox.buggy.infra.ATWorkflows;
 import calypsox.buggy.msg.ATMessage;
 import calypsox.buggy.msg.ATMessages;
 import calypsox.buggy.product.ATTrade;
@@ -78,6 +79,30 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Adds a new action to workflow.
+     *
+     * @param fromStatus
+     *            the from status
+     * @param action
+     *            the action
+     * @param toStatus
+     *            the to status
+     * @param eventClass
+     *            the event class
+     * @param productType
+     *            the product type
+     * @param wfSubType
+     *            the wf sub type
+     * @return the int
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public int addManualWorkflowAction(final String fromStatus, final String action, final String toStatus,
+            final String eventClass, final String productType, final String wfSubType) throws CalypsoServiceException {
+        return new ATWorkflows().addManualAction(fromStatus, action, toStatus, eventClass, productType, wfSubType);
+    }
+
+    /**
      * Calculate date by tenor.
      *
      * @param tenor
@@ -117,6 +142,19 @@ public class BuggyAT extends BuggyVersion {
      */
     public void deleteCresByEventType(final ATTrade trade, final String eventType) throws CalypsoServiceException {
         new ATCres().deleteCres(trade, eventType);
+    }
+
+    /**
+     * delete action in a workflow.
+     *
+     * @param transitionId
+     *            transition to delete
+     * @return OK if everything was fine
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public boolean deleteWorkflowAction(final String transitionId) throws CalypsoServiceException {
+        return new ATWorkflows().deleteAction(transitionId);
     }
 
     /**
@@ -286,6 +324,15 @@ public class BuggyAT extends BuggyVersion {
         return new ATTransfers().getNettedTransfersWithStatus(trade, status);
     }
 
+    /**
+     * Gets the non completed tasks.
+     *
+     * @param trade
+     *            the trade
+     * @return the non completed tasks
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
     public List<ATTask> getNonCompletedTasks(final ATTrade trade) throws CalypsoServiceException {
         return new ATTasks().getNonCompletedTasks(trade);
     }
@@ -515,5 +562,4 @@ public class BuggyAT extends BuggyVersion {
         final Method method = obj.getClass().getMethod(methodName, param.getClass());
         return String.valueOf(method.invoke(obj, param));
     }
-
 }
