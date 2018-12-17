@@ -120,8 +120,8 @@ public class ATCre {
     /**
      * Gets the cre amount.
      *
-     * @param index
-     *            the index
+     * @param strIndex
+     *            the str index
      * @return the cre amount
      */
     public ATAmount getCreAmount(final String strIndex) {

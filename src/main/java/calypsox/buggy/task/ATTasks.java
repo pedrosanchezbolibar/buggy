@@ -12,6 +12,9 @@ import com.calypso.tk.util.TaskArray;
 
 import calypsox.buggy.product.ATTrade;
 
+/**
+ * Retrieve and manipulate Calypso Tasks
+ */
 public class ATTasks {
 
     /** The Constant ORDER_BY. */
@@ -21,11 +24,11 @@ public class ATTasks {
      * Get non completed tasks associated to the trade with external reference
      * ordered by event type.
      *
-     * @param externalReference
-     *            the external reference
-     * @param orderedBy
+     * @param trade
+     *            the trade
      * @return trade tasks list
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public List<ATTask> getNonCompletedTasks(final ATTrade trade) throws CalypsoServiceException {
         final String where = String.format("trade_id = %d and task_status != %d", trade.getId(), Task.COMPLETED);
@@ -55,8 +58,8 @@ public class ATTasks {
     /**
      * Gets the trade task by event type.
      *
-     * @param externalReference
-     *            the external reference
+     * @param trade
+     *            the trade
      * @param eventTypes
      *            the event type
      * @return the trade task by event type

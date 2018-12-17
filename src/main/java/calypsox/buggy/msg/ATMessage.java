@@ -24,7 +24,7 @@ import calypsox.buggy.refdata.ATLegalEntity;
 import calypsox.buggy.xfer.ATTransfer;
 
 /**
- * Encapsulate and format the information of a BOMessage
+ * Encapsulate and format the information of a BOMessage.
  */
 public class ATMessage {
 
@@ -60,12 +60,8 @@ public class ATMessage {
     /**
      * Apply action to a message.
      *
-     * @param msg
-     *            the msg
      * @param action
      *            the action
-     * @param userName
-     *            the username
      * @return true, if successful
      * @throws CalypsoServiceException
      *             the calypso service exception
@@ -79,8 +75,6 @@ public class ATMessage {
     /**
      * Apply action to a message.
      *
-     * @param msg
-     *            the msg
      * @param action
      *            the action
      * @param userName
@@ -127,8 +121,6 @@ public class ATMessage {
     /**
      * Format swift document.
      *
-     * @param message
-     *            the message
      * @param pricingEnv
      *            the pricing env
      * @return the AT swift message
@@ -140,31 +132,6 @@ public class ATMessage {
     public ATSwiftMessage formatSwiftDocument(final String pricingEnv)
             throws CalypsoServiceException, MessageFormatException {
         return new ATSwiftMessage(generateSwiftDocument(pricingEnv));
-    }
-
-    /**
-     * Generate swift document.
-     *
-     * @param boMessage
-     *            the bo message
-     * @param pricingEnvName
-     *            the pricing env name
-     * @return the swift message
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     * @throws MessageFormatException
-     *             the message format exception
-     */
-    private SwiftMessage generateSwiftDocument(final String pricingEnvName)
-            throws CalypsoServiceException, MessageFormatException {
-        final SWIFTFormatter swiftFormatter = SWIFTFormatterUtil.findSWIFTFormatter(bomessage);
-        final PricingEnv pricingEnv = DSConnection.getDefault().getRemoteMarketData().getPricingEnv(pricingEnvName);
-        final AdviceDocument doc = swiftFormatter.generate(pricingEnv, bomessage, true, DSConnection.getDefault());
-        final StringBuffer output = doc.getDocument();
-
-        final SwiftMessage result = new SwiftMessage();
-        result.parseSwiftText(output.toString(), false);
-        return result;
     }
 
     /**
@@ -617,11 +584,8 @@ public class ATMessage {
     }
 
     /**
-     * Reload a message from database
+     * Reload a message from database.
      *
-     * @param msg
-     *            the msg
-     * @return the AT message
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
@@ -641,5 +605,28 @@ public class ATMessage {
             return "";
         }
         return bomessage.toString();
+    }
+
+    /**
+     * Generate swift document.
+     *
+     * @param pricingEnvName
+     *            the pricing env name
+     * @return the swift message
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     * @throws MessageFormatException
+     *             the message format exception
+     */
+    private SwiftMessage generateSwiftDocument(final String pricingEnvName)
+            throws CalypsoServiceException, MessageFormatException {
+        final SWIFTFormatter swiftFormatter = SWIFTFormatterUtil.findSWIFTFormatter(bomessage);
+        final PricingEnv pricingEnv = DSConnection.getDefault().getRemoteMarketData().getPricingEnv(pricingEnvName);
+        final AdviceDocument doc = swiftFormatter.generate(pricingEnv, bomessage, true, DSConnection.getDefault());
+        final StringBuffer output = doc.getDocument();
+
+        final SwiftMessage result = new SwiftMessage();
+        result.parseSwiftText(output.toString(), false);
+        return result;
     }
 }

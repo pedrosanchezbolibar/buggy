@@ -31,8 +31,8 @@ public class ATWorkflows {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public int addManualAction(final String fromStatus, final String action, final String toStatus, final String eventClass,
-            final String productType, final String wfSubType) throws CalypsoServiceException {
+    public int addManualAction(final String fromStatus, final String action, final String toStatus,
+            final String eventClass, final String productType, final String wfSubType) throws CalypsoServiceException {
         final TaskWorkflowConfig taskWfConfig = new TaskWorkflowConfig();
         taskWfConfig.setId(9999);
         taskWfConfig.setVersion(1);
@@ -49,12 +49,13 @@ public class ATWorkflows {
     }
 
     /**
-     * delete action in a workflow
+     * delete action in a workflow.
      *
      * @param transitionId
      *            transition to delete
      * @return OK if everything was fine
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public boolean deleteAction(final String transitionId) throws CalypsoServiceException {
         final TaskWorkflowConfig transitionToDelete = DSConnection.getDefault().getRemoteBackOffice()

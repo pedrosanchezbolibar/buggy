@@ -19,13 +19,12 @@ public class ATCres {
     /**
      * Delete cres by event type.
      *
-     * @param tradeId
-     *            the trade id
+     * @param trade
+     *            the trade
      * @param eventType
      *            the event type
-     * @return true, if successful
-     * @throws RemoteException
-     *             the remote exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public void deleteCres(final ATTrade trade, final String eventType) throws CalypsoServiceException {
         final String where = String.format("bo_cre_type = '%s' and trade_id = %s", eventType, trade.getId());

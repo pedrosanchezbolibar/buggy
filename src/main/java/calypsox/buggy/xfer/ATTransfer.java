@@ -18,7 +18,7 @@ import calypsox.buggy.refdata.ATLegalEntity;
 import calypsox.buggy.ui.ATAmount;
 
 /**
- * The Class ATTransfer.
+ * Encapsulate a BOTransfer object
  */
 public class ATTransfer {
 
@@ -41,10 +41,29 @@ public class ATTransfer {
         botransfer = boTransfer;
     }
 
+    /**
+     * Instantiates a new AT transfer.
+     *
+     * @param transferLongId
+     *            the transfer long id
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
     public ATTransfer(final long transferLongId) throws CalypsoServiceException {
         botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(transferLongId);
     }
 
+    /**
+     * Apply action.
+     *
+     * @param action
+     *            the action
+     * @return true, if successful
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
     public boolean applyAction(final String action) throws CloneNotSupportedException, CalypsoServiceException {
         return applyAction(action, null);
     }
@@ -52,11 +71,9 @@ public class ATTransfer {
     /**
      * Apply action to transfer.
      *
-     * @param transfer
-     *            the transfer
      * @param action
      *            the action
-     * @param userName
+     * @param username
      *            the username
      * @return true, if successful
      * @throws CloneNotSupportedException
@@ -1005,11 +1022,23 @@ public class ATTransfer {
         return botransfer.getVersion();
     }
 
+    /**
+     * Reload.
+     *
+     * @return the AT transfer
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
     public ATTransfer reload() throws CalypsoServiceException {
         botransfer = DSConnection.getDefault().getRemoteBackOffice().getBOTransfer(botransfer.getLongId());
         return this;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         if (botransfer == null) {

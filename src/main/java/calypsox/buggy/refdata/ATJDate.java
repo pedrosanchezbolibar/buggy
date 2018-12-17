@@ -54,8 +54,6 @@ public class ATJDate {
     /**
      * To sched task runner format.
      *
-     * @param jdate
-     *            the jdate
      * @return the string
      */
     public String toSchedTaskRunnerFormat() {
