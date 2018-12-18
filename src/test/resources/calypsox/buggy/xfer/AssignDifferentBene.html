@@ -45,6 +45,7 @@
 			<span concordion:set="#template">FXSpot.xml</span> 
 			con la Contrapartida 
 			<span concordion:execute="setProperty('CPTY', #TEXT)">TEST_MANCHOICE</span>
+			aplicando la acción <span concordion:execute="setProperty('ACTION', #TEXT)">NEW</span>
 		</p>
 		<p>
 			La External Reference de la operación será 
@@ -76,23 +77,21 @@
 			Las liquidaciones generadas para la operación se detienen por prematch:
 		</p>
 		
-		<table concordion:verifyRows="#xfer : getTradeNettedXfers(#trade)">
+		<table concordion:verifyRows="#xfer : getNettedTransfers(#trade)">
 			<tr>
 				<th concordion:echo="#xfer.id">Id</th>
 				<th concordion:assertEquals="#xfer.status">Status</th>
 				<th concordion:assertEquals="#xfer.transferType">Tipo</th>
 				<th concordion:assertEquals="#xfer.settlementAmount">Cantidad</th>
-				<th concordion:assertEquals="#xfer.settlementCurrency">Divisa</th>
 				<th concordion:assertEquals="#xfer.valueDate">Fecha valor</th>
-				<th concordion:echo="#xfer.internalSettleDeliveryId">Internal SDI id</th>
-				<th concordion:echo="#xfer.externalSettleDeliveryId">External SDI id</th>
+				<th concordion:echo="#xfer.internalSettleDeliveryId">Internal SDI</th>
+				<th concordion:echo="#xfer.externalSettleDeliveryId">External SDI</th>
 			</tr>
 			<tr>
 				<td></td>
 				<td>PREMATCH</td>
 				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>USD</td>
+				<td>4,261,200.0 USD</td>
 				<td>08/05/2026</td>
 				<td></td>
 				<td></td>
@@ -101,8 +100,7 @@
 				<td></td>
 				<td>PREMATCH</td>
 				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>EUR</td>
+				<td>4,261,200.0 EUR</td>
 				<td>08/05/2026</td>
 				<td></td>
 				<td></td>
@@ -120,8 +118,8 @@
 			y externalRef <span concordion:set="#sdiExtRef">Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</span>. 
 			<span concordion:execute="#ack=importCDUF(#template)"> </span> 
 	   	</p>
-<button onclick="showMessage('ack')">Mostrar Ack completo</button>	
-<pre concordion:echo="#ack" id="ack" style="display:none"> </pre>	
+<button onclick="showMessage('sdiAck')">Mostrar Ack completo</button>	
+<pre concordion:echo="#sdiAck" id="sdiAck" style="display:none"> </pre>	
 
 <blink>Quique</blink>
 
