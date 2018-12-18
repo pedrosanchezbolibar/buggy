@@ -130,6 +130,13 @@ public class BuggyAT extends BuggyVersion {
         return new ATJDate().calculateDateByTenor(tenor, holidays, timeZone);
     }
 
+    public boolean compare(final Object expected, final Object actual) {
+        if (expected.equals(actual)) {
+            return true;
+        }
+        throw new AssertionError("Expected = '" + expected + "', Actual = '" + actual + "'");
+    }
+
     /**
      * Delete cres by event type.
      *
