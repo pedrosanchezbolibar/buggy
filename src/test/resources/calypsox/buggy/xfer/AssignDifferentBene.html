@@ -110,17 +110,20 @@
 			
 		</table>
 		
-<blink>Quique</blink>
+
 		
 		<h3>Creamos la SDI Necesaria para asignación</h3>
 		
 		<p>
-			La SDI se define en el fichero 
-			<span concordion:set="#sditemplate">/com/bbva/klyo/aat/settle/data/sdi/TEST_MANCHOICE_SDI_DIF.xml</span>
-			y externalRef <span concordion:set="#sdiExtRef">Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</span>, la cuál queda 
-			<span concordion:assertTrue="uploadCdufFile(#sditemplate)">insertada</span>en Calypso. 
-		</p>
-	
+			Cargamos la SDI que está definida en el fichero 
+			<span concordion:set="#sditemplate">TEST_MANCHOICE_SDI_DIF.xml</span>
+			y externalRef <span concordion:set="#sdiExtRef">Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</span>. 
+			<span concordion:execute="#ack=importCDUF(#template)"> </span> 
+	   	</p>
+<button onclick="showMessage('ack')">Mostrar Ack completo</button>	
+<pre concordion:echo="#ack" id="ack" style="display:none"> </pre>	
+
+<blink>Quique</blink>
 
 		<p>
 			Asignamos la SDI creada anteriormente a la Liquidación <span concordion:set="#transferType">PRINCIPAL</span>
