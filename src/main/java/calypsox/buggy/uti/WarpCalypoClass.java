@@ -1,12 +1,17 @@
 package calypsox.buggy.uti;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import com.calypso.tk.product.Cash;
+import org.hibernate.mapping.Map;
+
+import antlr.collections.List;
 
 public class WarpCalypoClass {
 
-    public static final Class<?> clazz = Cash.class;
+    public static final Class<?> clazz = com.calypso.tk.product.Repo.class;
 
     private static final String SKIP_METHOD = "getKey getClass getSourceTable getSourceClass getLockId getClassName getAllocatedLongSeed";
 
@@ -14,37 +19,42 @@ public class WarpCalypoClass {
         int count = 0;
 
         for (final Method method : clazz.getDeclaredMethods()) {
-            final String methodName = method.getName();
-            final String newMethodName = methodName.replaceAll("LongId", "Id");
-            if (methodName.startsWith("get") && method.getParameterTypes().length == 0) {
-                if (!SKIP_METHOD.contains(method.getName())) {
+            if (Modifier.isPublic(method.getModifiers())) {
+                final String methodName = method.getName();
+                final String newMethodName = methodName.replaceAll("LongId", "Id");
+                if (methodName.startsWith("get") && method.getParameterTypes().length == 0) {
+                    if (!SKIP_METHOD.contains(method.getName())) {
 
-                    final Class<?> returnType = method.getReturnType();
-                    // if (returnType == JDate.class) {
-                    // System.out.println(generateGetAT(method, "ATJDate"));
-                    // } elses
-                    if ("getBookId".equals(methodName)) {
-                        System.out.println(generateGetAT(method, "ATBook"));
-                    } else if ("getTransferId".equals(methodName)) {
-                        System.out.println(generateGetAT(method, "ATTransfer"));
-                    } else if ("getTradeId".equals(methodName)) {
-                        System.out.println(generateGetAT(method, "ATTrade"));
-                    } else if ("getLegalEntityId".equals(methodName)) {
-                        System.out.println(generateGetAT(method, "ATLegalEntity"));
-                    } else {
-                        final StringBuilder sb = new StringBuilder("public ");
-                        sb.append(method.getReturnType().getSimpleName());
-                        sb.append(' ');
-                        sb.append(newMethodName);
-                        sb.append("() { \n\treturn ");
-                        sb.append(clazz.getSimpleName().toLowerCase());
-                        sb.append('.');
-                        sb.append(methodName);
-                        sb.append("();\r}");
+                        Class<?> returnType = method.getReturnType();
+                        if (returnType == Hashtable.class) {
+                            returnType = Map.class;
+                        } else if (returnType == Vector.class) {
+                            returnType = List.class;
+                        }
 
-                        System.out.println(sb);
+                        if ("getBookId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, "ATBook"));
+                        } else if ("getTransferId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, "ATTransfer"));
+                        } else if ("getTradeId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, "ATTrade"));
+                        } else if ("getLegalEntityId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, "ATLegalEntity"));
+                        } else {
+                            final StringBuilder sb = new StringBuilder("public ");
+                            sb.append(returnType.getSimpleName());
+                            sb.append(' ');
+                            sb.append(newMethodName);
+                            sb.append("() { \n\treturn ");
+                            sb.append(clazz.getSimpleName().toLowerCase());
+                            sb.append('.');
+                            sb.append(methodName);
+                            sb.append("();\r}");
+
+                            System.out.println(sb);
+                        }
+                        count++;
                     }
-                    count++;
                 }
             }
         }
