@@ -2,6 +2,7 @@ package calypsox.buggy.uti;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -11,7 +12,7 @@ import antlr.collections.List;
 
 public class WarpCalypoClass {
 
-    public static final Class<?> clazz = com.calypso.tk.product.Repo.class;
+    public static final Class<?> clazz = com.calypso.tk.product.Swaption.class;
 
     private static final String SKIP_METHOD = "getKey getClass getSourceTable getSourceClass getLockId getClassName getAllocatedLongSeed";
 
@@ -26,7 +27,7 @@ public class WarpCalypoClass {
                     if (!SKIP_METHOD.contains(method.getName())) {
 
                         Class<?> returnType = method.getReturnType();
-                        if (returnType == Hashtable.class) {
+                        if (returnType == Hashtable.class || returnType == HashMap.class) {
                             returnType = Map.class;
                         } else if (returnType == Vector.class) {
                             returnType = List.class;
