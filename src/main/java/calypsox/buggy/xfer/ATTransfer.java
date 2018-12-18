@@ -342,9 +342,10 @@ public class ATTransfer {
      * Gets the external cash sd id.
      *
      * @return the external cash sd id
+     * @throws CalypsoServiceException
      */
-    public int getExternalCashSdId() {
-        return botransfer.getExternalCashSdId();
+    public ATSdi getExternalCashSdId() throws CalypsoServiceException {
+        return new ATSdi(botransfer.getExternalCashSdId());
     }
 
     /**
@@ -378,9 +379,10 @@ public class ATTransfer {
      * Gets the external settle delivery id.
      *
      * @return the external settle delivery id
+     * @throws CalypsoServiceException
      */
-    public int getExternalSettleDeliveryId() {
-        return botransfer.getExternalSettleDeliveryId();
+    public ATSdi getExternalSettleDeliveryId() throws CalypsoServiceException {
+        return new ATSdi(botransfer.getExternalSettleDeliveryId());
     }
 
     /**
@@ -450,9 +452,10 @@ public class ATTransfer {
      * Gets the internal cash sd id.
      *
      * @return the internal cash sd id
+     * @throws CalypsoServiceException
      */
-    public int getInternalCashSdId() {
-        return botransfer.getInternalCashSdId();
+    public ATSdi getInternalCashSdId() throws CalypsoServiceException {
+        return new ATSdi(botransfer.getInternalCashSdId());
     }
 
     /**
@@ -486,9 +489,10 @@ public class ATTransfer {
      * Gets the internal settle delivery id.
      *
      * @return the internal settle delivery id
+     * @throws CalypsoServiceException
      */
-    public int getInternalSettleDeliveryId() {
-        return botransfer.getInternalSettleDeliveryId();
+    public ATSdi getInternalSettleDeliveryId() throws CalypsoServiceException {
+        return new ATSdi(botransfer.getInternalSettleDeliveryId());
     }
 
     /**
@@ -1036,7 +1040,7 @@ public class ATTransfer {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
