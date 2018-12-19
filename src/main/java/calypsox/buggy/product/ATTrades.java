@@ -11,7 +11,6 @@ import com.calypso.tk.core.Trade;
 import com.calypso.tk.service.DSConnection;
 import com.calypso.tk.util.TradeArray;
 
-import calypsox.buggy.uploader.DUPAck;
 import calypsox.buggy.uti.CalypsoEnvironment;
 
 /**
@@ -69,19 +68,6 @@ public class ATTrades {
             tradeList.add(atTrade);
         }
         return tradeList;
-    }
-
-    /**
-     * Gets the trade.
-     *
-     * @param ack
-     *            the ack
-     * @return the trade
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    public ATTrade getTrade(final DUPAck ack) throws CalypsoServiceException {
-        return createTrade(ack.getTradeId());
     }
 
     /**

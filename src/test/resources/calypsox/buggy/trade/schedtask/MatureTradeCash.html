@@ -78,7 +78,7 @@
 	    	Comprobamos que la operacion llega al estado VERIFIED:	   
 	   	
 	   	</p>
-	   	 <table concordion:execute="#trade=getTrade(#ack)">
+	   	 <table concordion:execute="#trade=getTrade(#ack.tradeId)">
             <tr>
                 <th concordion:echo="#trade.id">Id</th>
 				<th concordion:assertEquals="#trade.status">Status</th>

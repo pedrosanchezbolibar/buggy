@@ -61,7 +61,7 @@
 		Comprobamos que se ha insertado correctamente la operación:
 	</p>
 
-	<table concordion:execute="#trade=getTrade(#ack)">
+	<table concordion:execute="#trade=getTrade(#ack.tradeId)">
 		<tr>
 			<th concordion:echo="#trade.id">Id</th>
 			<th concordion:assertEquals="#trade.productDescription">Product Description</th>

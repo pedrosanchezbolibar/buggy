@@ -71,7 +71,7 @@
 <button onclick="showMessage('ack')">Mostrar Ack completo</button>	
 <pre concordion:echo="#ack" id="ack" style="display:none"> </pre>			
 
-		<table concordion:execute="#trade = getTrade(#ack)">
+		<table concordion:execute="#trade = getTrade(#ack.tradeId)">
 			<tr>
 				<th concordion:echo="#trade.id">Trade Id</th>
 				<th concordion:assertEquals="#trade.status">Status</th>
