@@ -12,7 +12,7 @@ import antlr.collections.List;
 
 public class WarpCalypoClass {
 
-    public static final Class<?> clazz = com.calypso.tk.product.XCCySwap.class;
+    public static final Class<?> clazz = com.calypso.tk.product.FRA.class;
 
     private static final String SKIP_METHOD = "getKey getClass getSourceTable getSourceClass getLockId getClassName getAllocatedLongSeed";
 
