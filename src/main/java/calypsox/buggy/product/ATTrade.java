@@ -1,8 +1,13 @@
 package calypsox.buggy.product;
 
 import java.util.List;
+import java.util.Vector;
 
+import com.calypso.tk.bo.BOProductHandler;
 import com.calypso.tk.bo.Fee;
+import com.calypso.tk.bo.SDISelector;
+import com.calypso.tk.bo.SDISelectorUtil;
+import com.calypso.tk.bo.TradeTransferRule;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.JDate;
@@ -11,6 +16,7 @@ import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.infra.ATDSConnection;
+import calypsox.buggy.xfer.ATSdi;
 
 /**
  * The Class ATTrade.
@@ -95,6 +101,38 @@ public class ATTrade {
 
         aatDsConn.restoreRealConnection();
         return rst;
+    }
+
+    /**
+     * Assign SDI.
+     *
+     * @param sdi
+     *            the sdi
+     * @param userName
+     *            the user name
+     * @return true, if successful
+     */
+    public boolean assignSDI(final ATSdi sdi, final String userName) {
+        final ATDSConnection dsCon = new ATDSConnection(userName);
+
+        final Trade clonedTrade = trade.clone();
+        final Vector<String> exceptions = new Vector<>();
+        final List<TradeTransferRule> transferRulesOnTrade = BOProductHandler.buildTransferRules(clonedTrade,
+                exceptions, dsCon, false);
+
+        final TradeTransferRule relevantTransferRule = getRelevantTransferRule(sdi, transferRulesOnTrade);
+        final SDISelector sdiSelector = SDISelectorUtil.find(clonedTrade, relevantTransferRule);
+
+        final Vector<String> settleMethods = new Vector<String>();
+        settleMethods.add(sdi.getSettlementMethod());
+        relevantTransferRule.setSettlementMethod(sdi.getSettlementMethod());
+        sdiSelector.selectSDIs(clonedTrade, relevantTransferRule, JDate.getNow(), exceptions, settleMethods,
+                dsCon);
+
+        Quique: hasta aquí
+
+        dsCon.restoreRealConnection();
+        return true;
     }
 
     /**
