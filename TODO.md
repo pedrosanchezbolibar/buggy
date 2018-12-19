@@ -1,4 +1,5 @@
 ## TODO ##
 
-1. buscar todas las referencias a bbva en el código
-2. la clase `com.calypso.apps.util.CSVParser` está obsoleta
+1. cambiar el método <span concordion:execute="#trade=getTrade(#ack)"> </span> por algo similar a <span concordion:execute="#trade=#ack.getTrade()"> </span>
+2. asignación manual de instrucciones
+3. modificación ko/co
