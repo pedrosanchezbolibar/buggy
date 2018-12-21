@@ -495,8 +495,8 @@ public class ATSdi {
      *
      * @return the pay receive
      */
-    public int getPayReceive() {
-        return sdi.getPayReceive();
+    public String getPayReceive() {
+        return sdi.payRecToString();
     }
 
     /**
@@ -563,15 +563,6 @@ public class ATSdi {
     }
 
     /**
-     * Gets the product list size.
-     *
-     * @return the product list size
-     */
-    public int getProductListSize() {
-        return sdi.getProductListSize();
-    }
-
-    /**
      * Gets the reference.
      *
      * @return the reference
@@ -604,7 +595,7 @@ public class ATSdi {
      * @return the sensible changes
      */
     public List getSensibleChanges() {
-        return sdi.getSensibleChanges();
+        return SettleDeliveryInstruction.getSensibleChanges();
     }
 
     /**
@@ -648,8 +639,8 @@ public class ATSdi {
      *
      * @return the type
      */
-    public int getType() {
-        return sdi.getType();
+    public String getType() {
+        return sdi.typeToString();
     }
 
     /**
