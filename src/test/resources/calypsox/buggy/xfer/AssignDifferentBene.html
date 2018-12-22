@@ -121,14 +121,35 @@
 <button onclick="showMessage('sdiAck')">Mostrar Ack completo</button>	
 <pre concordion:echo="#sdiAck" id="sdiAck" style="display:none"> </pre>	
 
+		<table concordion:execute="#sdi=getSdi(#sdiAck.id)">
+			<tr>
+				<th concordion:echo="#sdi.id">Trade id</th>
+				<th concordion:assertEquals="#sdi.productType">Product Type</th>
+				<th concordion:assertEquals="#sdi.status">Status</th>
+				<th concordion:assertEquals="#sdi.tradeDate">Trade Date</th>
+				<th concordion:assertEquals="#sdi.settleDate">Settle Date</th>
+                <th concordion:assertEquals="#sdi.principalAmount">Primary Amount</th>  
+			</tr>
+			<tr>
+				<td></td>
+				<td>Cash</td>
+				<td>VERIFIED</td>
+				<td>31/05/16 09:00:00.000 o'clock CEST</td>
+				<td>02/06/2016</td>
+				<td>-1,000,000.00 USD</td>
+			</tr>
+		</table>
+		
+		<p concordion:echo="#sdi"> </p>
+
 <blink>Quique</blink>
 
 		<p>
 			Asignamos la SDI creada anteriormente a la Liquidación <span concordion:set="#transferType">PRINCIPAL</span>
 				<span concordion:set="#payRec">PAY</span> de EUR <span concordion:set="#direction">Receiver</span> 
-				<span concordion:execute="#tr=createTransferRule(#transferType,#payRec,#direction,#sdiExtRef)" ></span> 
+				<span concordion:execute="#tr=getTransferRule(#transferType,#payRec,#direction,#sdiExtRef)" ></span> 
 				y aplicamos la acción ASSIGN.
-				(<span concordion:assertEquals="assignSdisOnTransfer(#extRef, #tr)">OK</span>).			
+				(<span concordion:execute="#trade.assignSdi(#sdi, #tr)">OK</span>).			
 
 		</p>
 		

@@ -36,8 +36,8 @@ public class ATSdi {
      *
      * @return the addressee id
      */
-    public int getAddresseeId() {
-        return sdi.getAddresseeId();
+    public ATLegalEntity getAddressee() {
+        return new ATLegalEntity(sdi.getAddresseeId());
     }
 
     /**
@@ -68,21 +68,21 @@ public class ATSdi {
     }
 
     /**
-     * Gets the agent id.
-     *
-     * @return the agent id
-     */
-    public ATLegalEntity getAgentId() {
-        return new ATLegalEntity(sdi.getAgentId());
-    }
-
-    /**
      * Gets the agent identifier.
      *
      * @return the agent identifier
      */
     public String getAgentIdentifier() {
         return sdi.getAgentIdentifier();
+    }
+
+    /**
+     * Gets the agent id.
+     *
+     * @return the agent id
+     */
+    public ATLegalEntity getAgentLE() {
+        return new ATLegalEntity(sdi.getAgentId());
     }
 
     /**
@@ -140,21 +140,21 @@ public class ATSdi {
     }
 
     /**
-     * Gets the beneficiary id.
-     *
-     * @return the beneficiary id
-     */
-    public ATLegalEntity getBeneficiaryId() {
-        return new ATLegalEntity(sdi.getBeneficiaryId());
-    }
-
-    /**
      * Gets the beneficiary identifier.
      *
      * @return the beneficiary identifier
      */
     public String getBeneficiaryIdentifier() {
         return sdi.getBeneficiaryIdentifier();
+    }
+
+    /**
+     * Gets the beneficiary id.
+     *
+     * @return the beneficiary id
+     */
+    public ATLegalEntity getBeneficiaryLE() {
+        return new ATLegalEntity(sdi.getBeneficiaryId());
     }
 
     /**
@@ -329,21 +329,21 @@ public class ATSdi {
     }
 
     /**
-     * Gets the intermediary 2 id.
-     *
-     * @return the intermediary 2 id
-     */
-    public ATLegalEntity getIntermediary2Id() {
-        return new ATLegalEntity(sdi.getIntermediary2Id());
-    }
-
-    /**
      * Gets the intermediary 2 identifier.
      *
      * @return the intermediary 2 identifier
      */
     public String getIntermediary2Identifier() {
         return sdi.getIntermediary2Identifier();
+    }
+
+    /**
+     * Gets the intermediary 2 id.
+     *
+     * @return the intermediary 2 id
+     */
+    public ATLegalEntity getIntermediary2LE() {
+        return new ATLegalEntity(sdi.getIntermediary2Id());
     }
 
     /**
@@ -383,21 +383,21 @@ public class ATSdi {
     }
 
     /**
-     * Gets the intermediary id.
-     *
-     * @return the intermediary id
-     */
-    public ATLegalEntity getIntermediaryId() {
-        return new ATLegalEntity(sdi.getIntermediaryId());
-    }
-
-    /**
      * Gets the intermediary identifier.
      *
      * @return the intermediary identifier
      */
     public String getIntermediaryIdentifier() {
         return sdi.getIntermediaryIdentifier();
+    }
+
+    /**
+     * Gets the intermediary id.
+     *
+     * @return the intermediary id
+     */
+    public ATLegalEntity getIntermediaryLE() {
+        return new ATLegalEntity(sdi.getIntermediaryId());
     }
 
     /**
@@ -531,7 +531,7 @@ public class ATSdi {
      *
      * @return the processing org based id
      */
-    public ATLegalEntity getProcessingOrgBasedId() {
+    public ATLegalEntity getProcessingOrgBased() {
         return new ATLegalEntity(sdi.getProcessingOrgBasedId());
     }
 
@@ -630,7 +630,7 @@ public class ATSdi {
      *
      * @return the trade counter party id
      */
-    public ATLegalEntity getTradeCounterPartyId() {
+    public ATLegalEntity getTradeCounterParty() {
         return new ATLegalEntity(sdi.getTradeCounterPartyId());
     }
 

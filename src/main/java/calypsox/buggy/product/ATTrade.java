@@ -111,13 +111,16 @@ public class ATTrade {
      * @param userName
      *            the user name
      * @return true, if successful
+     * @throws CalypsoServiceException
      */
-    public boolean assignSDI(final ATSdi sdi, final String userName) {
+    public void assignSDI(final ATSdi sdi, final String payOrRec, final String actionToApply, final String userName)
+            throws CalypsoServiceException {
         final ATDSConnection dsCon = new ATDSConnection(userName);
 
         final Trade clonedTrade = trade.clone();
         final Vector<String> exceptions = new Vector<>();
-        final List<TradeTransferRule> transferRulesOnTrade = BOProductHandler.buildTransferRules(clonedTrade,
+        @SuppressWarnings("unchecked")
+        final Vector<TradeTransferRule> transferRulesOnTrade = BOProductHandler.buildTransferRules(clonedTrade,
                 exceptions, dsCon, false);
 
         final TradeTransferRule relevantTransferRule = getRelevantTransferRule(sdi, transferRulesOnTrade);
@@ -126,13 +129,35 @@ public class ATTrade {
         final Vector<String> settleMethods = new Vector<String>();
         settleMethods.add(sdi.getSettlementMethod());
         relevantTransferRule.setSettlementMethod(sdi.getSettlementMethod());
-        sdiSelector.selectSDIs(clonedTrade, relevantTransferRule, JDate.getNow(), exceptions, settleMethods,
-                dsCon);
+        sdiSelector.selectSDIs(clonedTrade, relevantTransferRule, JDate.getNow(), exceptions, settleMethods, dsCon);
 
-        Quique: hasta aquí
+        if ("REC".equalsIgnoreCase("")) {
+            relevantTransferRule.setPayerSDStatus("Assigned");
+            relevantTransferRule.setReceiverSDStatus("Assigned");
+            relevantTransferRule.setReceiverSDId(sdi.getId());
+
+        } else {
+            relevantTransferRule.setPayerSDStatus("Assigned");
+            relevantTransferRule.setReceiverSDStatus("Assigned");
+            relevantTransferRule.setPayerSDId(sdi.getId());
+        }
+
+        final Action action = Action.valueOf(actionToApply);
+
+        if (AccessUtil.isAuthorized(clonedTrade, actionToApply)) {
+            clonedTrade.setCustomTransferRuleB(true);
+            clonedTrade.setTransferRules(transferRulesOnTrade);
+            clonedTrade.setAction(action);
+
+            clonedTrade.setEnteredUser(dsCon.getUser());
+
+            dsCon.getRemoteTrade().save(clonedTrade);
+        } else {
+            dsCon.restoreRealConnection();
+            throw new CalypsoServiceException("Action cant be performed with user: " + userName);
+        }
 
         dsCon.restoreRealConnection();
-        return true;
     }
 
     /**
@@ -437,6 +462,12 @@ public class ATTrade {
     @Override
     public String toString() {
         return trade.toString() + " / " + trade.getProduct().getDescription();
+    }
+
+    private TradeTransferRule getRelevantTransferRule(final ATSdi sdi,
+            final List<TradeTransferRule> transferRulesOnTrade) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
