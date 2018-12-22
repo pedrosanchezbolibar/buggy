@@ -8,11 +8,15 @@ import java.util.Vector;
 
 import org.hibernate.mapping.Map;
 
+import com.calypso.tk.refdata.Account;
+
 import antlr.collections.List;
 
 public class WarpCalypoClass {
 
-    public static final Class<?> clazz = com.calypso.tk.product.FRA.class;
+    private static final String AT_LEGAL_ENTITY = "ATLegalEntity";
+
+    public static final Class<?> clazz = Account.class;
 
     private static final String SKIP_METHOD = "getKey getClass getSourceTable getSourceClass getLockId getClassName getAllocatedLongSeed";
 
@@ -39,8 +43,19 @@ public class WarpCalypoClass {
                             System.out.println(generateGetAT(method, "ATTransfer"));
                         } else if ("getTradeId".equals(methodName)) {
                             System.out.println(generateGetAT(method, "ATTrade"));
-                        } else if ("getLegalEntityId".equals(methodName)) {
-                            System.out.println(generateGetAT(method, "ATLegalEntity"));
+                        } else if ("getLegalEntityId".equals(methodName) || "getOriginalCounterParty".equals(methodName)
+                                || "getProcessingOrg".equals(methodName) || "getProcessingOrgId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, AT_LEGAL_ENTITY));
+                        } else if ("getTradeCptyId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, AT_LEGAL_ENTITY));
+                        } else if ("getCounterParty".equals(methodName)) {
+                            System.out.println(generateGetAT(method, AT_LEGAL_ENTITY));
+                        } else if ("getAccountId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, "ATAccount"));
+                        } else if ("getNettingMethodId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, "ATNettingMethod"));
+                        } else if ("getPayerSDId".equals(methodName) || "getReceiverSDId".equals(methodName)) {
+                            System.out.println(generateGetAT(method, "ATSdi"));
                         } else {
                             final StringBuilder sb = new StringBuilder("public ");
                             sb.append(returnType.getSimpleName());

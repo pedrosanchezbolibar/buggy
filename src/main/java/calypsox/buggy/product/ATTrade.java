@@ -17,6 +17,7 @@ import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.xfer.ATSdi;
+import calypsox.buggy.xfer.ATTradeTransferRule;
 
 /**
  * The Class ATTrade.
@@ -113,8 +114,9 @@ public class ATTrade {
      * @return true, if successful
      * @throws CalypsoServiceException
      */
-    public void assignSDI(final ATSdi sdi, final String payOrRec, final String actionToApply, final String userName)
-            throws CalypsoServiceException {
+    public void assignSDI(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
+            final String userName) throws CalypsoServiceException {
+        // TODO: AQUI
         final ATDSConnection dsCon = new ATDSConnection(userName);
 
         final Trade clonedTrade = trade.clone();
@@ -123,10 +125,10 @@ public class ATTrade {
         final Vector<TradeTransferRule> transferRulesOnTrade = BOProductHandler.buildTransferRules(clonedTrade,
                 exceptions, dsCon, false);
 
-        final TradeTransferRule relevantTransferRule = getRelevantTransferRule(sdi, transferRulesOnTrade);
+        final TradeTransferRule relevantTransferRule = transferRule.getRelevantTransferRule(transferRulesOnTrade);
         final SDISelector sdiSelector = SDISelectorUtil.find(clonedTrade, relevantTransferRule);
 
-        final Vector<String> settleMethods = new Vector<String>();
+        final Vector<String> settleMethods = new Vector<>();
         settleMethods.add(sdi.getSettlementMethod());
         relevantTransferRule.setSettlementMethod(sdi.getSettlementMethod());
         sdiSelector.selectSDIs(clonedTrade, relevantTransferRule, JDate.getNow(), exceptions, settleMethods, dsCon);
@@ -158,6 +160,10 @@ public class ATTrade {
         }
 
         dsCon.restoreRealConnection();
+    }
+
+    public ATTradeTransferRule createTransferRule(final String transferType, final String payRec) {
+        return new ATTradeTransferRule().withTransferType(transferType).withPayRec(payRec);
     }
 
     /**

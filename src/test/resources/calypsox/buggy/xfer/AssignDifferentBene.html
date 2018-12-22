@@ -146,10 +146,10 @@
 
 		<p>
 			Asignamos la SDI creada anteriormente a la Liquidación <span concordion:set="#transferType">PRINCIPAL</span>
-				<span concordion:set="#payRec">PAY</span> de EUR <span concordion:set="#direction">Receiver</span> 
-				<span concordion:execute="#tr=getTransferRule(#transferType,#payRec,#direction,#sdiExtRef)" ></span> 
-				y aplicamos la acción ASSIGN.
-				(<span concordion:execute="#trade.assignSdi(#sdi, #tr)">OK</span>).			
+				<span concordion:set="#payRec">PAY</span> de EUR 
+				<span concordion:execute="#tr=#trade.createTransferRule(#transferType,#payRec)" ></span> 
+				y aplicamos la acción <span concordion:set="#action">ASSIGN.</span>
+				<span concordion:execute="#trade.assignSdi(#sdi, #action, 'calypso_user')"> </span>.			
 
 		</p>
 		
