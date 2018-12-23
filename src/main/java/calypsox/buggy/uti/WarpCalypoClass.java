@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import org.hibernate.mapping.Map;
 
-import com.calypso.tk.refdata.Account;
+import com.calypso.tk.core.LegalEntity;
 
 import antlr.collections.List;
 
@@ -16,7 +16,7 @@ public class WarpCalypoClass {
 
     private static final String AT_LEGAL_ENTITY = "ATLegalEntity";
 
-    public static final Class<?> clazz = Account.class;
+    public static final Class<?> clazz = LegalEntity.class;
 
     private static final String SKIP_METHOD = "getKey getClass getSourceTable getSourceClass getLockId getClassName getAllocatedLongSeed";
 
@@ -37,7 +37,7 @@ public class WarpCalypoClass {
                             returnType = List.class;
                         }
 
-                        if ("getBookId".equals(methodName)) {
+                        if ("getBookId".equals(methodName) || "getBook".equals(methodName)) {
                             System.out.println(generateGetAT(method, "ATBook"));
                         } else if ("getTransferId".equals(methodName)) {
                             System.out.println(generateGetAT(method, "ATTransfer"));
