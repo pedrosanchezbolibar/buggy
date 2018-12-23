@@ -25,7 +25,7 @@ import calypsox.buggy.ui.ATAmount;
 /**
  * The Class ATCash.
  */
-public class ATCash extends ATTSimpleMM {
+public class ATCash extends ATSimpleMM {
 
     /** The product cash. */
     private final Cash cash;

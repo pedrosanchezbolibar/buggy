@@ -17,7 +17,7 @@ import com.calypso.tk.product.Repo;
 import com.calypso.tk.product.flow.CashFlowInterest;
 import com.calypso.tk.refdata.LegalAgreement;
 
-public class ATRepo extends ATTSimpleMM {
+public class ATRepo extends ATSimpleMM {
 
     private final Repo repo;
 

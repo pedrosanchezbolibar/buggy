@@ -16,7 +16,7 @@ import calypsox.buggy.ui.ATAmount;
 /**
  * The Class ATTSimpleMM.
  */
-public class ATTSimpleMM extends ATTrade {
+public class ATSimpleMM extends ATTrade {
 
     /** The simplemm. */
     private final SimpleMM simplemm;
@@ -27,7 +27,7 @@ public class ATTSimpleMM extends ATTrade {
      * @param trade
      *            the trade
      */
-    public ATTSimpleMM(final Trade trade) {
+    public ATSimpleMM(final Trade trade) {
         super(trade);
         simplemm = (SimpleMM) trade.getProduct();
     }
