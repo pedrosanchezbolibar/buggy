@@ -19,7 +19,7 @@ public class ATKickOffCutOff {
     private static Map<String, KickOffCutOffConfig> originalKoCoByCcy = new HashMap<>();
 
     /**
-     * Modify kick off for a list of currencies
+     * Modify kick off for a list of currencies.
      *
      * @param currencies
      *            the currencies which kick off must be updated
@@ -55,7 +55,9 @@ public class ATKickOffCutOff {
      * Restore all kick off.
      *
      * @throws CloneNotSupportedException
+     *             the clone not supported exception
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public void restoreAllKickOff() throws CloneNotSupportedException, CalypsoServiceException {
         for (final KickOffCutOffConfig aConfig : originalKoCoByCcy.values()) {

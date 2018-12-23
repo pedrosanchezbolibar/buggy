@@ -18,7 +18,7 @@ import calypsox.buggy.refdata.ATLegalEntity;
 import calypsox.buggy.ui.ATAmount;
 
 /**
- * Encapsulate a BOTransfer object
+ * Encapsulate a BOTransfer object.
  */
 public class ATTransfer {
 
@@ -343,6 +343,7 @@ public class ATTransfer {
      *
      * @return the external cash sd id
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATSdi getExternalCashSdId() throws CalypsoServiceException {
         return new ATSdi(botransfer.getExternalCashSdId());
@@ -380,6 +381,7 @@ public class ATTransfer {
      *
      * @return the external settle delivery id
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATSdi getExternalSettleDeliveryId() throws CalypsoServiceException {
         return new ATSdi(botransfer.getExternalSettleDeliveryId());
@@ -453,6 +455,7 @@ public class ATTransfer {
      *
      * @return the internal cash sd id
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATSdi getInternalCashSdId() throws CalypsoServiceException {
         return new ATSdi(botransfer.getInternalCashSdId());
@@ -490,6 +493,7 @@ public class ATTransfer {
      *
      * @return the internal settle delivery id
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATSdi getInternalSettleDeliveryId() throws CalypsoServiceException {
         return new ATSdi(botransfer.getInternalSettleDeliveryId());

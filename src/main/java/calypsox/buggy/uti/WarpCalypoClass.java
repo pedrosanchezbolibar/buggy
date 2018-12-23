@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import org.hibernate.mapping.Map;
 
-import com.calypso.tk.core.LegalEntity;
+import com.calypso.tk.refdata.NettingMethod;
 
 import antlr.collections.List;
 
@@ -16,7 +16,7 @@ public class WarpCalypoClass {
 
     private static final String AT_LEGAL_ENTITY = "ATLegalEntity";
 
-    public static final Class<?> clazz = LegalEntity.class;
+    public static final Class<?> clazz = NettingMethod.class;
 
     private static final String SKIP_METHOD = "getKey getClass getSourceTable getSourceClass getLockId getClassName getAllocatedLongSeed";
 

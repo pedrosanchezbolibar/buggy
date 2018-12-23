@@ -109,10 +109,14 @@ public class ATTrade {
      *
      * @param sdi
      *            the sdi
+     * @param transferRule
+     *            the transfer rule
+     * @param actionToApply
+     *            the action to apply
      * @param userName
      *            the user name
-     * @return true, if successful
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public void assignSDI(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
             final String userName) throws CalypsoServiceException {
