@@ -166,6 +166,11 @@ public class ATTrade {
         return new ATTradeTransferRule().withTransferType(transferType).withPayRec(payRec);
     }
 
+    public ATTradeTransferRule createTransferRule(final String transferType, final String payRec, final String ccy,
+            final String role, final String leShortName) {
+        return createTransferRule(transferType, payRec).withCurrency(ccy).withRole(role).withLegalEntity(leShortName);
+    }
+
     /**
      * Gets the accrual.
      *

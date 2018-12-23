@@ -1,12 +1,14 @@
 package calypsox.buggy.xfer;
 
 import java.util.List;
-import java.util.Vector;
 
+import com.calypso.tk.bo.BOCache;
 import com.calypso.tk.bo.TradeTransferRule;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.CashFlowSet;
 import com.calypso.tk.core.JDate;
+import com.calypso.tk.core.LegalEntity;
+import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.refdata.ATAccount;
@@ -441,8 +443,25 @@ public class ATTradeTransferRule {
         return tradetransferrule.getReceiverSDStatus();
     }
 
-    public TradeTransferRule getRelevantTransferRule(final Vector<TradeTransferRule> transferRulesOnTrade) {
-        // TODO Auto-generated method stub
+    /**
+     * Gets the Trade's Transfer Rule matching this object. This method compares the
+     * value of the following fields if they have been setup: SettlementCurrency,
+     * ReceiverLegalEntityId, PayReceive, ReceiverLegalEntityRole. TransferType.
+     *
+     * @param transferRulesOnTrade
+     *            the transfer rules on trade
+     * @return the relevant transfer rule
+     */
+    public TradeTransferRule getRelevantTransferRule(final List<TradeTransferRule> transferRulesOnTrade) {
+        for (final TradeTransferRule currentRule : transferRulesOnTrade) {
+            if (match(tradetransferrule.getSettlementCurrency(), currentRule.getSettlementCurrency())
+                    && match(tradetransferrule.getReceiverLegalEntityId(), currentRule.getReceiverLegalEntityId())
+                    && match(tradetransferrule.getPayReceive(), currentRule.getPayReceive())
+                    && match(tradetransferrule.getReceiverLegalEntityRole(), currentRule.getReceiverLegalEntityRole())
+                    && match(tradetransferrule.getTransferType(), currentRule.getTransferType())) {
+                return currentRule;
+            }
+        }
         return null;
     }
 
@@ -547,14 +566,46 @@ public class ATTradeTransferRule {
         return tradetransferrule.getTransferType();
     }
 
+    public ATTradeTransferRule withCurrency(final String ccy) {
+        tradetransferrule.setSettlementCurrency(ccy);
+        return this;
+    }
+
+    public ATTradeTransferRule withLegalEntity(final String leShortName) {
+        final LegalEntity legalEntity = BOCache.getLegalEntity(DSConnection.getDefault(), leShortName);
+        tradetransferrule.setReceiverLegalEntityId(legalEntity.getId());
+        return this;
+    }
+
     public ATTradeTransferRule withPayRec(final String payRec) {
         tradetransferrule.setPayReceive(payRec);
+        return this;
+    }
+
+    public ATTradeTransferRule withRole(final String role) {
+        tradetransferrule.setReceiverLegalEntityRole(role);
         return this;
     }
 
     public ATTradeTransferRule withTransferType(final String transferType) {
         tradetransferrule.setTransferType(transferType);
         return this;
+    }
+
+    private boolean match(final int expected, final int actual) {
+        if (expected == 0) {
+            return true;
+        } else {
+            return expected == actual;
+        }
+    }
+
+    private boolean match(final String expected, final String actual) {
+        if (expected == null) {
+            // don't need to check this
+            return true;
+        }
+        return expected.equals(actual);
     }
 
 }
