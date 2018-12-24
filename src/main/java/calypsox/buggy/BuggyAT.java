@@ -130,6 +130,15 @@ public class BuggyAT extends BuggyVersion {
         return new ATJDate().calculateDateByTenor(tenor, holidays, timeZone);
     }
 
+    /**
+     * Compare two objects
+     *
+     * @param expected
+     *            the expected result
+     * @param actual
+     *            the actual result
+     * @return true, if objects are equals
+     */
     public boolean compare(final Object expected, final Object actual) {
         if (expected.equals(actual)) {
             return true;
@@ -259,16 +268,32 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Gets the image.
+     * Embed a resource image.
      *
      * @param resource
      *            the resource
      * @return the image
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @see ImgResource
      */
     public String getImage(final String resource) throws IOException {
         return new ImgResource().getImage(this, resource);
+    }
+
+    /**
+     * Gets the message by event type.
+     *
+     * @param trade
+     *            the trade
+     * @param eventType
+     *            the event type
+     * @return the message by event type
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATMessage getMessageByEventType(final ATTrade trade, final String eventType) throws CalypsoServiceException {
+        return new ATMessages().getMessageByEventType(trade, eventType);
     }
 
     /**
@@ -287,19 +312,67 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Gets the message by template name.
+     *
+     * @param trade
+     *            the trade
+     * @param templateName
+     *            the template name
+     * @return the message by template name
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATMessage getMessageByTemplateName(final ATTrade trade, final String templateName)
+            throws CalypsoServiceException {
+        return new ATMessages().getMessageByTemplateName(trade, templateName);
+    }
+
+    /**
      * Gets the messages by event types.
+     *
+     * @param trade
+     *            the trade
+     * @param eventTypes
+     *            the msg types
+     * @return the message by event types
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATMessage> getMessagesByEventTypes(final ATTrade trade, final List<String> eventTypes)
+            throws CalypsoServiceException {
+        return new ATMessages().getMessagesByEventTypes(trade, eventTypes);
+    }
+
+    /**
+     * Gets the message by msg types.
      *
      * @param trade
      *            the trade
      * @param msgTypes
      *            the msg types
-     * @return the messages by event types
+     * @return the message by msg types
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public List<ATMessage> getMessagesByEventTypes(final ATTrade trade, final List<String> msgTypes)
+    public List<ATMessage> getMessagesByMsgTypes(final ATTrade trade, final List<String> msgTypes)
             throws CalypsoServiceException {
-        return new ATMessages().getMessageByEventTypes(trade, msgTypes);
+        return new ATMessages().getMessagesByMsgTypes(trade, msgTypes);
+    }
+
+    /**
+     * Gets the messages by template name.
+     *
+     * @param trade
+     *            the trade
+     * @param templateName
+     *            the template name
+     * @return the messages by template name
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATMessage> getMessagesByTemplateName(final ATTrade trade, final List<String> templateName)
+            throws CalypsoServiceException {
+        return new ATMessages().getMessagesByTemplateName(trade, templateName);
     }
 
     /**

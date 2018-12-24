@@ -15,29 +15,27 @@ import com.calypso.tk.util.MessageArray;
 import calypsox.buggy.product.ATTrade;
 
 /**
- * Search and manipulates BOMessage and ATMessage
+ * Search and manipulates BOMessage and ATMessage.
  */
 public class ATMessages {
 
     /** The Constant ORDER_BY. */
-    private static final String ORDER_BY = "MESSAGE_TYPE , EVENT_TYPE , TEMPLATE_NAME , ADDRESS_METHOD , MESSAGE_ID ";;
+    private static final String ORDER_BY = "MESSAGE_TYPE , EVENT_TYPE , TEMPLATE_NAME , ADDRESS_METHOD , MESSAGE_ID ";
 
     /**
-     * Gets the message by event types.
+     * Gets the message by event type.
      *
      * @param trade
      *            the trade
-     * @param msgTypes
-     *            the msg types
-     * @return the message by event types
+     * @param eventType
+     *            the event type
+     * @return the message by event type
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public List<ATMessage> getMessageByEventTypes(final ATTrade trade, final List<String> msgTypes)
-            throws CalypsoServiceException {
-        final String where = String.format("trade_id = %d and event_type in ('%s')", trade.getId(),
-                StringUtils.join(msgTypes, "','"));
-        return getMessagesOrdered(where);
+    public ATMessage getMessageByEventType(final ATTrade trade, final String eventType) throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and event_type = '%s'", trade.getId(), eventType);
+        return new ATMessage(getFirstMessage(where));
     }
 
     /**
@@ -57,6 +55,41 @@ public class ATMessages {
     }
 
     /**
+     * Gets the message by template name.
+     *
+     * @param trade
+     *            the trade
+     * @param templateName
+     *            the template name
+     * @return the message by template name
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATMessage getMessageByTemplateName(final ATTrade trade, final String templateName)
+            throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and template_name = '%s'", trade.getId(), templateName);
+        return new ATMessage(getFirstMessage(where));
+    }
+
+    /**
+     * Gets the message by event types.
+     *
+     * @param trade
+     *            the trade
+     * @param eventTypes
+     *            the msg types
+     * @return the message by event types
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATMessage> getMessagesByEventTypes(final ATTrade trade, final List<String> eventTypes)
+            throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and event_type in ('%s')", trade.getId(),
+                StringUtils.join(eventTypes, "','"));
+        return getMessagesOrdered(where);
+    }
+
+    /**
      * Gets the message by msg types.
      *
      * @param trade
@@ -67,10 +100,28 @@ public class ATMessages {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public List<ATMessage> getMessageByMsgTypes(final ATTrade trade, final List<String> msgTypes)
+    public List<ATMessage> getMessagesByMsgTypes(final ATTrade trade, final List<String> msgTypes)
             throws CalypsoServiceException {
         final String where = String.format("trade_id = %d and message_type in ('%s')", trade.getId(),
                 StringUtils.join(msgTypes, "','"));
+        return getMessagesOrdered(where);
+    }
+
+    /**
+     * Gets the messages by template name.
+     *
+     * @param trade
+     *            the trade
+     * @param templateName
+     *            the template name
+     * @return the messages by template name
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATMessage> getMessagesByTemplateName(final ATTrade trade, final List<String> templateName)
+            throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and template_name in ('%s')", trade.getId(),
+                StringUtils.join(templateName, "','"));
         return getMessagesOrdered(where);
     }
 

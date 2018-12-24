@@ -1,5 +1,7 @@
 /**
- * Automatic Tests for Calypso. Main package
+ * Main package. Automatic Tests for Calypso.
+ *
+ * @see calypsox.buggy.BuggyAT
  *
  */
 package calypsox.buggy;
