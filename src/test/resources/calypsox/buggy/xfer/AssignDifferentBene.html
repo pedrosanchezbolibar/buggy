@@ -114,9 +114,9 @@
 		
 		<p>
 			Cargamos la SDI que está definida en el fichero 
-			<span concordion:set="#sditemplate">TEST_MANCHOICE_SDI_DIF.xml</span>
-			y externalRef <span concordion:set="#sdiExtRef">Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</span>. 
-			<span concordion:execute="#ack=importCDUF(#template)"> </span> 
+			<span concordion:set="#sdiTemplate">TEST_MANCHOICE_SDI_DIF.xml</span>
+			y externalRef <span concordion:execute="setProperty('EXTERNAL_REFERENCE', #TEXT)">Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</span>. 
+			<span concordion:execute="#sdiAck=importCDUF(#sdiTemplate)"> </span> 
 	   	</p>
 <button onclick="showMessage('sdiAck')">Mostrar Ack completo</button>	
 <pre concordion:echo="#sdiAck" id="sdiAck" style="display:none"> </pre>	

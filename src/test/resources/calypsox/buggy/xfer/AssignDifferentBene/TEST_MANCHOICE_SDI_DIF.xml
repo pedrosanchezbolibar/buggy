@@ -37,6 +37,6 @@
         <MessageToIntermediary2>false</MessageToIntermediary2>
         <LinkSDI>false</LinkSDI>
         <Attributes/>
-        <Reference>Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</Reference>
+        <Reference>@REFERENCE@</Reference>
     </CalypsoSDI>
     </CalypsoUploadDocument>
