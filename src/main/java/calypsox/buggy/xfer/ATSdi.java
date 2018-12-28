@@ -1,6 +1,9 @@
 package calypsox.buggy.xfer;
 
+import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.GDIdentifiers;
@@ -197,11 +200,23 @@ public class ATSdi {
     }
 
     /**
+     * Gets the currencies.
+     *
+     * @return the currencies
+     */
+    public String getCurrencies() {
+        final List<String> ccyList = getCurrencyList();
+        Collections.sort(ccyList);
+        return StringUtils.join(ccyList, ", ");
+    }
+
+    /**
      * Gets the currency list.
      *
      * @return the currency list
      */
-    public List getCurrencyList() {
+    @SuppressWarnings("unchecked")
+    public List<String> getCurrencyList() {
         return sdi.getCurrencyList();
     }
 
@@ -498,7 +513,8 @@ public class ATSdi {
      *
      * @return the original product list
      */
-    public List getOriginalProductList() {
+    @SuppressWarnings("unchecked")
+    public List<String> getOriginalProductList() {
         return sdi.getOriginalProductList();
     }
 
@@ -570,8 +586,20 @@ public class ATSdi {
      *
      * @return the product list
      */
-    public List getProductList() {
+    @SuppressWarnings("unchecked")
+    public List<String> getProductList() {
         return sdi.getProductList();
+    }
+
+    /**
+     * Gets the products.
+     *
+     * @return the products
+     */
+    public String getProducts() {
+        final List<String> prodList = getProductList();
+        Collections.sort(prodList);
+        return StringUtils.join(prodList, ", ");
     }
 
     /**
