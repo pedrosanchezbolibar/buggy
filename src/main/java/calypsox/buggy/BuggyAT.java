@@ -31,6 +31,8 @@ import calypsox.buggy.product.ATTrades;
 import calypsox.buggy.refdata.ATCurrencies;
 import calypsox.buggy.refdata.ATCurrency;
 import calypsox.buggy.refdata.ATJDate;
+import calypsox.buggy.refdata.ATMarginCallConfig;
+import calypsox.buggy.refdata.ATMarginCallConfigs;
 import calypsox.buggy.refdata.ATUsers;
 import calypsox.buggy.sched.ATScheduledTask;
 import calypsox.buggy.sched.ATScheduledTasks;
@@ -311,6 +313,22 @@ public class BuggyAT extends BuggyVersion {
      */
     public String getImage(final String resource) throws IOException {
         return new ImgResource().getImage(this, resource);
+    }
+
+    /**
+     * Gets the margin call configs.
+     *
+     * @param procOrg
+     *            the proc org
+     * @param cpty
+     *            the cpty
+     * @return the margin call configs
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATMarginCallConfig> getMarginCallConfigs(final String procOrg, final String cpty)
+            throws CalypsoServiceException {
+        return new ATMarginCallConfigs().getContracts(procOrg, cpty);
     }
 
     /**
