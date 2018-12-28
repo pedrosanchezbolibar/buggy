@@ -28,6 +28,8 @@ import calypsox.buggy.msg.ATMessage;
 import calypsox.buggy.msg.ATMessages;
 import calypsox.buggy.product.ATTrade;
 import calypsox.buggy.product.ATTrades;
+import calypsox.buggy.refdata.ATCurrencies;
+import calypsox.buggy.refdata.ATCurrency;
 import calypsox.buggy.refdata.ATJDate;
 import calypsox.buggy.refdata.ATUsers;
 import calypsox.buggy.sched.ATScheduledTask;
@@ -282,6 +284,19 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATCre> getCres(final ATTrade trade) throws CalypsoServiceException {
         return new ATCres().getCres(trade);
+    }
+
+    /**
+     * Gets the currency.
+     *
+     * @param ccyCode
+     *            the ccy code
+     * @return the currency
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATCurrency getCurrency(final String ccyCode) throws CalypsoServiceException {
+        return new ATCurrencies().get(ccyCode);
     }
 
     /**
