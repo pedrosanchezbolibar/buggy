@@ -542,7 +542,7 @@
 			y comentario '<span concordion:set="#taskComment">Filter
 				_isNotMessageSentSTP rejects Message/[CheckKickOff]</span>':	
 		</p>
-		<table concordion:verifyRows="#task : getTasksByEventType(#trade, {'MAN_CHOICE_PAYMENT','VERIFIED_RECEIPTMSG'})">
+		<table concordion:verifyRows="#task : getTasksByEventTypes(#trade, {'MAN_CHOICE_PAYMENT','VERIFIED_RECEIPTMSG'})">
 			<tr>
 				<th concordion:echo="#task.id">Task Id</th>
 				<th concordion:echo="#task.trade">Trade</th>

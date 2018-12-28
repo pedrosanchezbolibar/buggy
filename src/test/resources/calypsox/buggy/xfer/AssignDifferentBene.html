@@ -164,24 +164,22 @@
 			Se comprueba adicionalmente que la SDI de Contrapartida asignada al Nuevo Transfer es la que se ha creado 
 			durante la prueba, en la columna "External SDI Id" de la tabla:
 		</p>
-		<table concordion:verifyRows="#xfer : getTradeNettedXfers(#extRef)">
+		<table concordion:verifyRows="#xfer : getNettedTransfers(#trade)">
 			<tr>
-				<th concordion:echo="#xfer.longId">Id</th>
+				<th concordion:echo="#xfer.id">Id</th>
 				<th concordion:assertEquals="#xfer.status">Status</th>
 				<th concordion:assertEquals="#xfer.transferType">Tipo</th>
 				<th concordion:assertEquals="#xfer.settlementAmount">Cantidad</th>
-				<th concordion:assertEquals="#xfer.settlementCurrency">Divisa</th>
 				<th concordion:assertEquals="#xfer.valueDate">Fecha valor</th>
-				<th concordion:echo="#xfer.internalSettleDeliveryId">Internal SDI id</th>
-				<th concordion:echo="#xfer.externalSettleDeliveryId">External SDI id</th>
+				<th concordion:assertEquals="#xfer.internalSettleDelivery.reference">Internal SDI reference</th>
+				<th concordion:assertEquals="#xfer.externalSettleDelivery.reference">External SDI reference</th>
 			</tr>
 			
 			<tr>
 				<td></td>
 				<td>CANCELED</td>
 				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>USD</td>
+				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
 				<td></td>
 				<td></td>
@@ -190,8 +188,7 @@
 				<td></td>
 				<td>CREATED</td>
 				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>USD</td>
+				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
 				<td></td>
 				<td></td>
@@ -200,8 +197,7 @@
 				<td></td>
 				<td>PREMATCH</td>
 				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>EUR</td>
+				<td>4,261,200.00 EUR</td>
 				<td>08/05/2026</td>
 				<td></td>
 				<td></td>
@@ -211,8 +207,38 @@
 		<p>
 			Comprobamos que existe una tarea de tipo <span concordion:set="#taskType">CREATED_PAYMENT</span>			
 			que aparecerá en la pestaña de Xfer CREATED/BD/SPLIT/ASSIGN para la validación 4-eyes. 
-			(<span concordion:assertEquals="checkTradeTaskExists(#extRef,#taskType,'')">OK</span>)
 		</p>	
+		
+		<table concordion:verifyRows="#task : getTasksByEventTypes(#trade, { #taskType })">
+			<tr>
+				<th concordion:echo="#task.id">Task Id</th>
+				<th concordion:echo="#task.trade">Trade</th>
+				<th concordion:assertEquals="#task.eventType">Event Type</th>
+				<th concordion:assertEquals="#task.comment">Task comment</th>
+				<th concordion:assertEquals="#task.status">Task Status</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td>MAN_CHOICE_PAYMENT</td>
+				<td></td>
+				<td>NEW</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td>VERIFIED_RECEIPTMSG</td>
+				<td>Filter _isNotMessageSentSTP rejects Message</td>
+				<td>NEW</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td>VERIFIED_RECEIPTMSG</td>
+				<td>[CheckKickOff]</td>
+				<td>COMPLETED</td>
+			</tr>
+		</table>
 	
 		
 		<h2>Resultado</h2>

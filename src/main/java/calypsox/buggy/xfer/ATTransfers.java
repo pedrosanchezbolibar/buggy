@@ -38,83 +38,6 @@ public class ATTransfers {
     }
 
     /**
-     * Gets the netted transfer.
-     *
-     * @param trade
-     *            the trade
-     * @param amount
-     *            the amount
-     * @param ccy
-     *            the ccy
-     * @param eventType
-     *            the event type
-     * @param status
-     *            the status
-     * @return the netted transfer
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    public ATTransfer getNettedTransfer(final ATTrade trade, final double amount, final String ccy,
-            final String eventType, final String status) throws CalypsoServiceException {
-        if (trade != null) {
-            final String where = String.format(
-                    "trade_id = %d and event_type='%s' and transfer_status = '%s' and amount = %d and amount_ccy = '%s' and netted_transfer_id = 0",
-                    trade.getId(), eventType, status, amount, ccy);
-            return getFirstBOTransfer(null, where);
-        }
-        return null;
-    }
-
-    /**
-     * Gets the BO transfers.
-     *
-     * @param trade
-     *            the trade
-     * @return the BO transfers
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    public List<ATTransfer> getNettedTransfers(final ATTrade trade) throws CalypsoServiceException {
-        if (trade != null) {
-            final String where = String.format("trade_id = %d and netted_transfer_id = 0", trade.getId());
-            return getBOTransfers(null, where);
-        }
-        return new ArrayList<>();
-    }
-
-    public List<ATTransfer> getNettedTransfers(final ATTrade trade, final double amount, final String ccy,
-            final String eventType, final String status) throws CalypsoServiceException {
-        if (trade != null) {
-            final String where = String.format(
-                    "trade_id = %d and event_type='%s' and transfer_status = '%s' and amount = %d and amount_ccy = '%s' and netted_transfer_id = 0",
-                    trade.getId(), eventType, status, amount, ccy);
-            return getBOTransfers(null, where);
-        }
-        return null;
-    }
-
-    /**
-     * Gets the netted transfers with status.
-     *
-     * @param trade
-     *            the trade
-     * @param status
-     *            the status
-     * @return the netted transfers with status
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    public List<ATTransfer> getNettedTransfersWithStatus(final ATTrade trade, final String status)
-            throws CalypsoServiceException {
-        if (trade != null) {
-            final String where = String.format("trade_id = %d and netted_transfer_id = 0 and transfer_status = '%s'",
-                    trade.getId(), status);
-            return getBOTransfers(null, where);
-        }
-        return new ArrayList<>();
-    }
-
-    /**
      * Gets the BO transfers.
      *
      * @param fromClause
@@ -155,5 +78,99 @@ public class ATTransfers {
             throw new IllegalArgumentException("The get method returns more than one element");
         }
         return new ATTransfer(array.get(0));
+    }
+
+    /**
+     * Gets the netted transfer.
+     *
+     * @param trade
+     *            the trade
+     * @param amount
+     *            the amount
+     * @param ccy
+     *            the ccy
+     * @param eventType
+     *            the event type
+     * @param status
+     *            the status
+     * @return the netted transfer
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATTransfer getNettedTransfer(final ATTrade trade, final double amount, final String ccy,
+            final String eventType, final String status) throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format(
+                    "trade_id = %d and event_type='%s' and transfer_status = '%s' and amount = %f and amount_ccy = '%s' and netted_transfer_id = 0",
+                    trade.getId(), eventType, status, amount, ccy);
+            return getFirstBOTransfer(null, where);
+        }
+        return null;
+    }
+
+    /**
+     * Gets the BO transfers.
+     *
+     * @param trade
+     *            the trade
+     * @return the BO transfers
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTransfer> getNettedTransfers(final ATTrade trade) throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format("trade_id = %d and netted_transfer_id = 0", trade.getId());
+            return getBOTransfers(null, where);
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * Gets the netted transfers.
+     *
+     * @param trade
+     *            the trade
+     * @param amount
+     *            the amount
+     * @param ccy
+     *            the ccy
+     * @param eventType
+     *            the event type
+     * @param status
+     *            the status
+     * @return the netted transfers
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTransfer> getNettedTransfers(final ATTrade trade, final double amount, final String ccy,
+            final String eventType, final String status) throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format(
+                    "trade_id = %d and event_type='%s' and transfer_status = '%s' and amount = %f and amount_ccy = '%s' and netted_transfer_id = 0",
+                    trade.getId(), eventType, status, amount, ccy);
+            return getBOTransfers(null, where);
+        }
+        return null;
+    }
+
+    /**
+     * Gets the netted transfers with status.
+     *
+     * @param trade
+     *            the trade
+     * @param status
+     *            the status
+     * @return the netted transfers with status
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTransfer> getNettedTransfersWithStatus(final ATTrade trade, final String status)
+            throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format("trade_id = %d and netted_transfer_id = 0 and transfer_status = '%s'",
+                    trade.getId(), status);
+            return getBOTransfers(null, where);
+        }
+        return new ArrayList<>();
     }
 }

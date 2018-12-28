@@ -489,9 +489,9 @@ public class BuggyAT extends BuggyVersion {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public List<ATTask> getNonCompletedTasksByEventType(final ATTrade trade, final List<String> eventTypes)
+    public List<ATTask> getNonCompletedTasksByEventTypes(final ATTrade trade, final List<String> eventTypes)
             throws CalypsoServiceException {
-        return new ATTasks().getNonCompletedTasksByEventType(trade, eventTypes);
+        return new ATTasks().getNonCompletedTasksByEventTypes(trade, eventTypes);
     }
 
     /**
@@ -542,9 +542,9 @@ public class BuggyAT extends BuggyVersion {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public List<ATTask> getTasksByEventType(final ATTrade trade, final List<String> eventTypes)
+    public List<ATTask> getTasksByEventTypes(final ATTrade trade, final List<String> eventTypes)
             throws CalypsoServiceException {
-        return new ATTasks().getTasksByEventType(trade, eventTypes);
+        return new ATTasks().getTasksByEventTypes(trade, eventTypes);
     }
 
     /**
@@ -610,6 +610,29 @@ public class BuggyAT extends BuggyVersion {
      */
     public int importCMLTrade(final String template) throws IOException {
         return new CMLImporter().importTrade(this, template, testProperties);
+    }
+
+    /**
+     * Invoke.
+     *
+     * @param obj
+     *            the obj
+     * @param methodName
+     *            the method name
+     * @param param
+     *            the param
+     * @return the string
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     */
+    private String invoke(final Object obj, final String methodName, final Object param)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final Method method = obj.getClass().getMethod(methodName, param.getClass());
+        return String.valueOf(method.invoke(obj, param));
     }
 
     /**
@@ -679,28 +702,5 @@ public class BuggyAT extends BuggyVersion {
      */
     public int waitForEngine(final String engine) throws InterruptedException {
         return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
-    }
-
-    /**
-     * Invoke.
-     *
-     * @param obj
-     *            the obj
-     * @param methodName
-     *            the method name
-     * @param param
-     *            the param
-     * @return the string
-     * @throws NoSuchMethodException
-     *             the no such method exception
-     * @throws IllegalAccessException
-     *             the illegal access exception
-     * @throws InvocationTargetException
-     *             the invocation target exception
-     */
-    private String invoke(final Object obj, final String methodName, final Object param)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final Method method = obj.getClass().getMethod(methodName, param.getClass());
-        return String.valueOf(method.invoke(obj, param));
     }
 }

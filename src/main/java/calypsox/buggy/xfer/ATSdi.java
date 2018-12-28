@@ -706,12 +706,14 @@ public class ATSdi {
 
     /**
      * Removes the calypso SDI
+     * 
+     * @return
      *
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public void remove() throws CalypsoServiceException {
-        DSConnection.getDefault().getRemoteReferenceData().remove(sdi);
+    public boolean remove() throws CalypsoServiceException {
+        return DSConnection.getDefault().getRemoteReferenceData().remove(sdi);
     }
 
     /*

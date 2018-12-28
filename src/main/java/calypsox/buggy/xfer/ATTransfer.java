@@ -377,13 +377,13 @@ public class ATTransfer {
     }
 
     /**
-     * Gets the external settle delivery id.
+     * Gets the external settle delivery instruction.
      *
      * @return the external settle delivery id
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public ATSdi getExternalSettleDeliveryId() throws CalypsoServiceException {
+    public ATSdi getExternalSettleDelivery() throws CalypsoServiceException {
         return new ATSdi(botransfer.getExternalSettleDeliveryId());
     }
 
@@ -457,7 +457,7 @@ public class ATTransfer {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public ATSdi getInternalCashSdId() throws CalypsoServiceException {
+    public ATSdi getInternalCashSdi() throws CalypsoServiceException {
         return new ATSdi(botransfer.getInternalCashSdId());
     }
 
@@ -489,13 +489,13 @@ public class ATTransfer {
     }
 
     /**
-     * Gets the internal settle delivery id.
+     * Gets the internal settle delivery instruction.
      *
-     * @return the internal settle delivery id
+     * @return the internal settle delivery
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public ATSdi getInternalSettleDeliveryId() throws CalypsoServiceException {
+    public ATSdi getInternalSettleDelivery() throws CalypsoServiceException {
         return new ATSdi(botransfer.getInternalSettleDeliveryId());
     }
 

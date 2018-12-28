@@ -21,6 +21,21 @@ public class ATTasks {
     private static final String ORDER_BY = "event_type, int_reference, object_status, comments, task_status, task_id";
 
     /**
+     * Creates the tasks.
+     *
+     * @param tasks
+     *            the tasks
+     * @return the list
+     */
+    private List<ATTask> createTasks(final TaskArray tasks) {
+        final List<ATTask> tradeTasks = new ArrayList<>();
+        for (final Task task : tasks) {
+            tradeTasks.add(new ATTask(task));
+        }
+        return tradeTasks;
+    }
+
+    /**
      * Get non completed tasks associated to the trade with external reference
      * ordered by event type.
      *
@@ -47,7 +62,7 @@ public class ATTasks {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public List<ATTask> getNonCompletedTasksByEventType(final ATTrade trade, final List<String> eventTypes)
+    public List<ATTask> getNonCompletedTasksByEventTypes(final ATTrade trade, final List<String> eventTypes)
             throws CalypsoServiceException {
         final String where = String.format("trade_id = %d and event_type in ('%s') and task_status != %d",
                 trade.getId(), StringUtils.join(eventTypes, "','"), Task.COMPLETED);
@@ -66,27 +81,12 @@ public class ATTasks {
      * @throws CalypsoServiceException
      *             the remote exception
      */
-    public List<ATTask> getTasksByEventType(final ATTrade trade, final List<String> eventTypes)
+    public List<ATTask> getTasksByEventTypes(final ATTrade trade, final List<String> eventTypes)
             throws CalypsoServiceException {
         final String where = String.format("trade_id = %d and event_type in ('%s')", trade.getId(),
                 StringUtils.join(eventTypes, "','"));
         final TaskArray tasks = DSConnection.getDefault().getRemoteBackOffice().getTasks(where, null, ORDER_BY);
         return createTasks(tasks);
-    }
-
-    /**
-     * Creates the tasks.
-     *
-     * @param tasks
-     *            the tasks
-     * @return the list
-     */
-    private List<ATTask> createTasks(final TaskArray tasks) {
-        final List<ATTask> tradeTasks = new ArrayList<>();
-        for (final Task task : tasks) {
-            tradeTasks.add(new ATTask(task));
-        }
-        return tradeTasks;
     }
 
 }
