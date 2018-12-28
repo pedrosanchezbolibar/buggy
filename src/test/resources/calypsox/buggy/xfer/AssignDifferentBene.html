@@ -284,7 +284,7 @@
 
 		<h3>Limpieza de datos de pruebas</h3>
 		<p>
-			<span concordion:assertTrue="removeSdi(#sdi)">Borramos la SDI</span> creada anteriormente con external_Ref 
+			<span concordion:assertTrue="#sdi.remove()">Borramos la SDI</span> creada anteriormente con external_Ref 
 			<span concordion:echo="#sdi.reference"> </span>.
 		</p>	
 	</body>

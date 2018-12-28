@@ -577,18 +577,6 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Removes the sdi.
-     *
-     * @param sdi
-     *            the sdi
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    public void removeSdi(final ATSdi sdi) throws CalypsoServiceException {
-        sdi.remove();
-    }
-
-    /**
      * Repeat the execution of a method in a list of objects.
      *
      * @param objects
