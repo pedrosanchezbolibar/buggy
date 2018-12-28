@@ -393,6 +393,28 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Gets the transfer.
+     *
+     * @param trade
+     *            the trade
+     * @param amount
+     *            the amount
+     * @param ccy
+     *            the ccy
+     * @param eventType
+     *            the event type
+     * @param status
+     *            the status
+     * @return the transfer
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATTransfer getNettedTransfer(final ATTrade trade, final double amount, final String ccy,
+            final String eventType, final String status) throws CalypsoServiceException {
+        return new ATTransfers().getNettedTransfer(trade, amount, ccy, eventType, status);
+    }
+
+    /**
      * Gets the netting transfers of the trade.
      *
      * @param trade
@@ -403,6 +425,28 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATTransfer> getNettedTransfers(final ATTrade trade) throws CalypsoServiceException {
         return new ATTransfers().getNettedTransfers(trade);
+    }
+
+    /**
+     * Gets the netted transfers.
+     *
+     * @param trade
+     *            the trade
+     * @param amount
+     *            the amount
+     * @param ccy
+     *            the ccy
+     * @param eventType
+     *            the event type
+     * @param status
+     *            the status
+     * @return the netted transfers
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTransfer> getNettedTransfers(final ATTrade trade, final double amount, final String ccy,
+            final String eventType, final String status) throws CalypsoServiceException {
+        return new ATTransfers().getNettedTransfers(trade, amount, ccy, eventType, status);
     }
 
     /**

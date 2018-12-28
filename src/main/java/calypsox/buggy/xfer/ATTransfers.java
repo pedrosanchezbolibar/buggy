@@ -38,22 +38,31 @@ public class ATTransfers {
     }
 
     /**
-     * Gets the BO transfers.
+     * Gets the netted transfer.
      *
-     * @param fromClause
-     *            the from clause
-     * @param whereClause
-     *            the where clause
-     * @return the BO transfers
+     * @param trade
+     *            the trade
+     * @param amount
+     *            the amount
+     * @param ccy
+     *            the ccy
+     * @param eventType
+     *            the event type
+     * @param status
+     *            the status
+     * @return the netted transfer
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    private List<ATTransfer> getBOTransfers(final String fromClause, final String whereClause)
-            throws CalypsoServiceException {
-        new ATCache().clearCache("Transfer");
-        final TransferArray array = DSConnection.getDefault().getRemoteBackOffice().getBOTransfers(fromClause,
-                whereClause, ORDER_BY, MAX_ROW_COUNT);
-        return toATTransferList(array);
+    public ATTransfer getNettedTransfer(final ATTrade trade, final double amount, final String ccy,
+            final String eventType, final String status) throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format(
+                    "trade_id = %d and event_type='%s' and transfer_status = '%s' and amount = %d and amount_ccy = '%s' and netted_transfer_id = 0",
+                    trade.getId(), eventType, status, amount, ccy);
+            return getFirstBOTransfer(null, where);
+        }
+        return null;
     }
 
     /**
@@ -71,6 +80,17 @@ public class ATTransfers {
             return getBOTransfers(null, where);
         }
         return new ArrayList<>();
+    }
+
+    public List<ATTransfer> getNettedTransfers(final ATTrade trade, final double amount, final String ccy,
+            final String eventType, final String status) throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format(
+                    "trade_id = %d and event_type='%s' and transfer_status = '%s' and amount = %d and amount_ccy = '%s' and netted_transfer_id = 0",
+                    trade.getId(), eventType, status, amount, ccy);
+            return getBOTransfers(null, where);
+        }
+        return null;
     }
 
     /**
@@ -92,5 +112,48 @@ public class ATTransfers {
             return getBOTransfers(null, where);
         }
         return new ArrayList<>();
+    }
+
+    /**
+     * Gets the BO transfers.
+     *
+     * @param fromClause
+     *            the from clause
+     * @param whereClause
+     *            the where clause
+     * @return the BO transfers
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    private List<ATTransfer> getBOTransfers(final String fromClause, final String whereClause)
+            throws CalypsoServiceException {
+        new ATCache().clearCache("Transfer");
+        final TransferArray array = DSConnection.getDefault().getRemoteBackOffice().getBOTransfers(fromClause,
+                whereClause, ORDER_BY, MAX_ROW_COUNT);
+        return toATTransferList(array);
+    }
+
+    /**
+     * Gets the first BO transfer.
+     *
+     * @param fromClause
+     *            the from clause
+     * @param whereClause
+     *            the where clause
+     * @return the first BO transfer
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    private ATTransfer getFirstBOTransfer(final String fromClause, final String whereClause)
+            throws CalypsoServiceException {
+        final TransferArray array = DSConnection.getDefault().getRemoteBackOffice().getBOTransfers(fromClause,
+                whereClause, ORDER_BY, MAX_ROW_COUNT);
+        if (array.isEmpty()) {
+            return null;
+        }
+        if (array.size() > 1) {
+            throw new IllegalArgumentException("The get method returns more than one element");
+        }
+        return new ATTransfer(array.get(0));
     }
 }

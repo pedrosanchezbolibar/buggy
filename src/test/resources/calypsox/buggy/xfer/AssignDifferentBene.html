@@ -155,7 +155,7 @@
 			con eventType <span concordion:set="#eventType">PAYMENT</span> de 
 			<span concordion:set="#amount">4261200.0</span> 
 			<span concordion:set="#ccy">USD</span>. 
-			<span concordion:execute="#transfer1=getTransfers(#trade, #amount, #ccy, #eventType, #status)"> </span>
+			<span concordion:execute="#transfer1=getTransfer(#trade, #amount, #ccy, #eventType, #status)"> </span>
 			(<span concordion:assertTrue="assertNotNull(#transfer1)">OK</span>
 			<span concordion:echo="#transfer1.id"> </span>)
 		</p>
