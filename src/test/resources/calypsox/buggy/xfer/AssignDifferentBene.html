@@ -116,7 +116,7 @@
 			Cargamos la SDI que está definida en el fichero 
 			<span concordion:set="#sdiTemplate">TEST_MANCHOICE_SDI_DIF.xml</span>
 			y externalRef <span concordion:set="#sdiRef">Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</span>
-			<span concordion:execute="setProperty('REFERENCE', #sdiRef)">. 
+			<span concordion:execute="setProperty('REFERENCE', #sdiRef)"> </span>. 
 			<span concordion:execute="#sdiAck=importCDUF(#sdiTemplate)"> </span> 
 	   	</p>
 <button onclick="showMessage('sdiAck')">Mostrar Ack completo</button>	
@@ -127,30 +127,26 @@
 				<th concordion:echo="#sdi.id">SDI id</th>
 				<th concordion:assertEquals="#sdi.description">Description</th>
 				<th concordion:assertEquals="#sdi.products">Propducts</th>
-				<th concordion:assertEquals="#sdi.getBeneficiaryLE">Beneficiary</th>
+				<th concordion:assertEquals="#sdi.beneficiaryLE">Beneficiary</th>
 				<th concordion:assertEquals="#sdi.role">Role</th>
                 <th concordion:assertEquals="#sdi.currencies">Currencies</th>  
 			</tr>
 			<tr>
 				<td></td>
-				<td>Cash</td>
-				<td>VERIFIED</td>
-				<td>31/05/16 09:00:00.000 o'clock CEST</td>
-				<td>02/06/2016</td>
-				<td>-1,000,000.00 USD</td>
+				<td>SWIFT/CITIUSNYC2/36141469</td>
+				<td>ANY</td>
+				<td>TEST_MANCHOICE</td>
+				<td>CounterParty</td>
+				<td>USD</td>
 			</tr>
 		</table>
-		
-		<p concordion:echo="#sdi"> </p>
-
-<blink>Quique</blink>
 
 		<p>
 			Asignamos la SDI creada anteriormente a la Liquidación <span concordion:set="#transferType">PRINCIPAL</span>
 				<span concordion:set="#payRec">PAY</span> de EUR 
-				<span concordion:execute="#tr=#trade.createTransferRule(#transferType,#payRec)" ></span> 
-				y aplicamos la acción <span concordion:set="#action">ASSIGN.</span>
-				<span concordion:execute="#trade.assignSdi(#sdi, #action, 'calypso_user')"> </span>.			
+				<span concordion:execute="#tr=#trade.createTransferRule(#transferType,#payRec)" > </span> 
+				y aplicamos la acción <span concordion:set="#action">ASSIGN</span>.
+				<span concordion:execute="#trade.assignSdi(#sdi, #tr, #action, 'calypso_user')"> </span>.			
 
 		</p>
 		
@@ -288,8 +284,8 @@
 
 		<h3>Limpieza de datos de pruebas</h3>
 		<p>
-			<span concordion:assertTrue="removeSDI(#sdiExtRef)">Borramos la SDI</span> creada anteriormente con external_Ref 
-			<span concordion:echo="#sdiExtRef"> </span>.
+			<span concordion:assertTrue="removeSdi(#sdi)">Borramos la SDI</span> creada anteriormente con external_Ref 
+			<span concordion:echo="#sdi.reference"> </span>.
 		</p>	
 	</body>
 

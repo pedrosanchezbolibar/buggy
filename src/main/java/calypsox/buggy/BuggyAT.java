@@ -133,7 +133,7 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Compare two objects
+     * Compare two objects.
      *
      * @param expected
      *            the expected result
@@ -460,7 +460,7 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Retrieve a SDI using its reference
+     * Retrieve a SDI using its reference.
      *
      * @param reference
      *            the reference
@@ -554,6 +554,41 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Invoke.
+     *
+     * @param obj
+     *            the obj
+     * @param methodName
+     *            the method name
+     * @param param
+     *            the param
+     * @return the string
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     */
+    private String invoke(final Object obj, final String methodName, final Object param)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final Method method = obj.getClass().getMethod(methodName, param.getClass());
+        return String.valueOf(method.invoke(obj, param));
+    }
+
+    /**
+     * Removes the sdi.
+     *
+     * @param sdi
+     *            the sdi
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public void removeSdi(final ATSdi sdi) throws CalypsoServiceException {
+        sdi.remove();
+    }
+
+    /**
      * Repeat the execution of a method in a list of objects.
      *
      * @param objects
@@ -620,28 +655,5 @@ public class BuggyAT extends BuggyVersion {
      */
     public int waitForEngine(final String engine) throws InterruptedException {
         return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
-    }
-
-    /**
-     * Invoke.
-     *
-     * @param obj
-     *            the obj
-     * @param methodName
-     *            the method name
-     * @param param
-     *            the param
-     * @return the string
-     * @throws NoSuchMethodException
-     *             the no such method exception
-     * @throws IllegalAccessException
-     *             the illegal access exception
-     * @throws InvocationTargetException
-     *             the invocation target exception
-     */
-    private String invoke(final Object obj, final String methodName, final Object param)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final Method method = obj.getClass().getMethod(methodName, param.getClass());
-        return String.valueOf(method.invoke(obj, param));
     }
 }

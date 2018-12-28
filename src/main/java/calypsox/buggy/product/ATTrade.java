@@ -118,7 +118,7 @@ public class ATTrade {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public void assignSDI(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
+    public void assignSdi(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
             final String userName) throws CalypsoServiceException {
         // TODO: AQUI
         final ATDSConnection dsCon = new ATDSConnection(userName);
@@ -367,6 +367,12 @@ public class ATTrade {
         return trade.getQuantity();
     }
 
+    private TradeTransferRule getRelevantTransferRule(final ATSdi sdi,
+            final List<TradeTransferRule> transferRulesOnTrade) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     /**
      * Gets the sales person.
      *
@@ -477,12 +483,6 @@ public class ATTrade {
     @Override
     public String toString() {
         return trade.toString() + " / " + trade.getProduct().getDescription();
-    }
-
-    private TradeTransferRule getRelevantTransferRule(final ATSdi sdi,
-            final List<TradeTransferRule> transferRulesOnTrade) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

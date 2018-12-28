@@ -598,6 +598,9 @@ public class ATSdi {
      */
     public String getProducts() {
         final List<String> prodList = getProductList();
+        if (prodList.isEmpty()) {
+            return "ANY";
+        }
         Collections.sort(prodList);
         return StringUtils.join(prodList, ", ");
     }
@@ -699,6 +702,16 @@ public class ATSdi {
      */
     public int getVersion() {
         return sdi.getVersion();
+    }
+
+    /**
+     * Removes the calypso SDI
+     *
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public void remove() throws CalypsoServiceException {
+        DSConnection.getDefault().getRemoteReferenceData().remove(sdi);
     }
 
     /*
