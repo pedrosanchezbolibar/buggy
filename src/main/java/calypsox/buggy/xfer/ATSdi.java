@@ -717,10 +717,9 @@ public class ATSdi {
     }
 
     /**
-     * Removes the calypso SDI
+     * Removes the calypso SDI.
      *
-     * @return
-     *
+     * @return true, if successful
      * @throws CalypsoServiceException
      *             the calypso service exception
      */

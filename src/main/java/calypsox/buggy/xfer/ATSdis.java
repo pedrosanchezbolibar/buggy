@@ -11,7 +11,7 @@ import com.calypso.tk.service.DSConnection;
 import com.calypso.tk.service.RemoteReferenceData;
 
 /**
- * Search and manipulate Calypso SDIs
+ * Search and manipulate Calypso SDIs.
  */
 public class ATSdis {
 
@@ -19,12 +19,13 @@ public class ATSdis {
     private static final String BENEFICIARY_FIELD = "bene_le = ";
 
     /**
-     * Gets the sdi using the reference
+     * Gets the sdi using the reference.
      *
      * @param reference
      *            the reference
      * @return the AT sdi
      * @throws CalypsoServiceException
+     *             the calypso service exception
      */
     public ATSdi get(final String reference) throws CalypsoServiceException {
         return new ATSdi(reference);
@@ -54,7 +55,7 @@ public class ATSdis {
      *
      * @param legalEntityName
      *            the legal entity name
-     * @param ccy
+     * @param currency
      *            the currency
      * @return the SD is by beneficiary
      * @throws CalypsoServiceException
