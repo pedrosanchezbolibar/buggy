@@ -115,13 +115,14 @@
 		<p>
 			Cargamos la SDI que está definida en el fichero 
 			<span concordion:set="#sdiTemplate">TEST_MANCHOICE_SDI_DIF.xml</span>
-			y externalRef <span concordion:execute="setProperty('EXTERNAL_REFERENCE', #TEXT)">Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</span>. 
+			y externalRef <span concordion:set="#sdiRef">Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</span>
+			<span concordion:execute="setProperty('REFERENCE', #sdiRef)">. 
 			<span concordion:execute="#sdiAck=importCDUF(#sdiTemplate)"> </span> 
 	   	</p>
 <button onclick="showMessage('sdiAck')">Mostrar Ack completo</button>	
 <pre concordion:echo="#sdiAck" id="sdiAck" style="display:none"> </pre>	
 
-		<table concordion:execute="#sdi=getSdi(#sdiAck.id)">
+		<table concordion:execute="#sdi=getSdi(#sdiRef)">
 			<tr>
 				<th concordion:echo="#sdi.id">Trade id</th>
 				<th concordion:assertEquals="#sdi.productType">Product Type</th>

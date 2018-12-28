@@ -39,6 +39,8 @@ import calypsox.buggy.uploader.DUPImporter;
 import calypsox.buggy.uti.CalypsoEnvironment;
 import calypsox.buggy.uti.ImgResource;
 import calypsox.buggy.uti.References;
+import calypsox.buggy.xfer.ATSdi;
+import calypsox.buggy.xfer.ATSdis;
 import calypsox.buggy.xfer.ATTransfer;
 import calypsox.buggy.xfer.ATTransfers;
 
@@ -455,6 +457,19 @@ public class BuggyAT extends BuggyVersion {
      */
     public ATScheduledTask getScheduledTask(final String stExternalRef) throws CalypsoServiceException {
         return new ATScheduledTasks().getScheduledTask(stExternalRef);
+    }
+
+    /**
+     * Retrieve a SDI using its reference
+     *
+     * @param reference
+     *            the reference
+     * @return the sdi
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATSdi getSdi(final String reference) throws CalypsoServiceException {
+        return new ATSdis().get(reference);
     }
 
     /**

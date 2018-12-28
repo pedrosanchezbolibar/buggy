@@ -32,6 +32,18 @@ public class ATSdi {
     }
 
     /**
+     * Instantiates a new AT sdi.
+     *
+     * @param reference
+     *            the reference
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATSdi(final String reference) throws CalypsoServiceException {
+        sdi = DSConnection.getDefault().getRemoteReferenceData().getSettleDeliveryInstruction(reference);
+    }
+
+    /**
      * Gets the addressee id.
      *
      * @return the addressee id
