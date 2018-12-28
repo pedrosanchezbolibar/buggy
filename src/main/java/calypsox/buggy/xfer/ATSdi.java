@@ -37,6 +37,18 @@ public class ATSdi {
     /**
      * Instantiates a new AT sdi.
      *
+     * @param settleDelivery
+     *            the settle delivery
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATSdi(final SettleDeliveryInstruction settleDelivery) throws CalypsoServiceException {
+        sdi = settleDelivery;
+    }
+
+    /**
+     * Instantiates a new AT sdi.
+     *
      * @param reference
      *            the reference
      * @throws CalypsoServiceException
@@ -706,7 +718,7 @@ public class ATSdi {
 
     /**
      * Removes the calypso SDI
-     * 
+     *
      * @return
      *
      * @throws CalypsoServiceException

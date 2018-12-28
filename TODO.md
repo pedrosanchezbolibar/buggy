@@ -1,4 +1,4 @@
 ## TODO ##
 
-1. asignación manual de instrucciones
-2. modificación ko/co
+1. asignación manual de instrucciones -> Falta testing
+2. modificación ko/co -> falta testing

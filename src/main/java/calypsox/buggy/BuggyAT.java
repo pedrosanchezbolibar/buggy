@@ -532,6 +532,36 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Gets the SD is by beneficiary.
+     *
+     * @param legalEntityName
+     *            the legal entity name
+     * @return the SD is by beneficiary
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATSdi> getSDIsByBeneficiary(final String legalEntityName) throws CalypsoServiceException {
+        return new ATSdis().getSDIsByBeneficiary(legalEntityName);
+    }
+
+    /**
+     * Gets the SDI is by beneficiary and ccy.
+     *
+     * @param legalEntityName
+     *            the legal entity name
+     * @param currency
+     *            the currency
+     * @return the SD is by beneficiary
+     * @throws CalypsoServiceException
+     *             the remote exception
+     */
+    @SuppressWarnings("unchecked")
+    public List<ATSdi> getSDIsByBeneficiaryAndCcy(final String legalEntityName, final String currency)
+            throws CalypsoServiceException {
+        return new ATSdis().getSDIsByBeneficiaryAndCcy(legalEntityName, currency);
+    }
+
+    /**
      * Gets the tasks by event type.
      *
      * @param trade
@@ -613,26 +643,17 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Invoke.
+     * Removes the SD is by beneficiary.
      *
-     * @param obj
-     *            the obj
-     * @param methodName
-     *            the method name
-     * @param param
-     *            the param
-     * @return the string
-     * @throws NoSuchMethodException
-     *             the no such method exception
-     * @throws IllegalAccessException
-     *             the illegal access exception
-     * @throws InvocationTargetException
-     *             the invocation target exception
+     * @param legalEntityName
+     *            the legal entity name
+     * @return true, if successful
+     * @throws CalypsoServiceException
+     *             the calypso service exception
      */
-    private String invoke(final Object obj, final String methodName, final Object param)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final Method method = obj.getClass().getMethod(methodName, param.getClass());
-        return String.valueOf(method.invoke(obj, param));
+    @SuppressWarnings("unchecked")
+    public boolean removeSDIsByBeneficiary(final String legalEntityName) throws CalypsoServiceException {
+        return new ATSdis().removeSDIsByBeneficiary(legalEntityName);
     }
 
     /**
@@ -702,5 +723,28 @@ public class BuggyAT extends BuggyVersion {
      */
     public int waitForEngine(final String engine) throws InterruptedException {
         return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
+    }
+
+    /**
+     * Invoke.
+     *
+     * @param obj
+     *            the obj
+     * @param methodName
+     *            the method name
+     * @param param
+     *            the param
+     * @return the string
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     */
+    private String invoke(final Object obj, final String methodName, final Object param)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final Method method = obj.getClass().getMethod(methodName, param.getClass());
+        return String.valueOf(method.invoke(obj, param));
     }
 }
