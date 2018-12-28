@@ -105,6 +105,37 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Compare two objects.
+     *
+     * @param expected
+     *            the expected result
+     * @param actual
+     *            the actual result
+     * @return true, if objects are equals
+     */
+    public boolean assertEquals(final Object expected, final Object actual) {
+        if (expected.equals(actual)) {
+            return true;
+        }
+        throw new AssertionError("Expected = '" + expected + "', Actual = '" + actual + "'");
+    }
+
+    /**
+     * Assert not null.
+     *
+     * @param actual
+     *            the actual
+     * @return true, if successful
+     */
+    public boolean assertNotNull(final Object actual) {
+        if (actual != null) {
+            return true;
+        }
+
+        throw new AssertionError("Object is null");
+    }
+
+    /**
      * Calculate date by tenor.
      *
      * @param tenor
@@ -130,22 +161,6 @@ public class BuggyAT extends BuggyVersion {
      */
     public JDate calculateDateByTenor(final String tenor, final List<String> holidays, final String timeZone) {
         return new ATJDate().calculateDateByTenor(tenor, holidays, timeZone);
-    }
-
-    /**
-     * Compare two objects.
-     *
-     * @param expected
-     *            the expected result
-     * @param actual
-     *            the actual result
-     * @return true, if objects are equals
-     */
-    public boolean compare(final Object expected, final Object actual) {
-        if (expected.equals(actual)) {
-            return true;
-        }
-        throw new AssertionError("Expected = '" + expected + "', Actual = '" + actual + "'");
     }
 
     /**
@@ -554,29 +569,6 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
-     * Invoke.
-     *
-     * @param obj
-     *            the obj
-     * @param methodName
-     *            the method name
-     * @param param
-     *            the param
-     * @return the string
-     * @throws NoSuchMethodException
-     *             the no such method exception
-     * @throws IllegalAccessException
-     *             the illegal access exception
-     * @throws InvocationTargetException
-     *             the invocation target exception
-     */
-    private String invoke(final Object obj, final String methodName, final Object param)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        final Method method = obj.getClass().getMethod(methodName, param.getClass());
-        return String.valueOf(method.invoke(obj, param));
-    }
-
-    /**
      * Repeat the execution of a method in a list of objects.
      *
      * @param objects
@@ -643,5 +635,28 @@ public class BuggyAT extends BuggyVersion {
      */
     public int waitForEngine(final String engine) throws InterruptedException {
         return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
+    }
+
+    /**
+     * Invoke.
+     *
+     * @param obj
+     *            the obj
+     * @param methodName
+     *            the method name
+     * @param param
+     *            the param
+     * @return the string
+     * @throws NoSuchMethodException
+     *             the no such method exception
+     * @throws IllegalAccessException
+     *             the illegal access exception
+     * @throws InvocationTargetException
+     *             the invocation target exception
+     */
+    private String invoke(final Object obj, final String methodName, final Object param)
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final Method method = obj.getClass().getMethod(methodName, param.getClass());
+        return String.valueOf(method.invoke(obj, param));
     }
 }

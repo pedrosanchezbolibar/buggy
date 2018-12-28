@@ -155,10 +155,11 @@
 			con eventType <span concordion:set="#eventType">PAYMENT</span> de 
 			<span concordion:set="#amount">4261200.0</span> 
 			<span concordion:set="#ccy">USD</span>. 
-			<span concordion:execute="#transfer1=getTradeXfer(#extRef,#amount,#ccy,#eventType,#status)"> </span>
+			<span concordion:execute="#transfer1=getTransfers(#trade, #amount, #ccy, #eventType, #status)"> </span>
 			(<span concordion:assertTrue="checkNotNull(#transfer1)">OK</span>
-			<span concordion:echo="#transfer1.longId"> </span>)
+			<span concordion:echo="#transfer1.id"> </span>)
 		</p>
+			
 		<p>
 			Se comprueba adicionalmente que la SDI de Contrapartida asignada al Nuevo Transfer es la que se ha creado 
 			durante la prueba, en la columna "External SDI Id" de la tabla:
