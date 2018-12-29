@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<calypso.home>${basedir}/../../klyo15/calypso_home</calypso.home>
+		<calypso.home>${basedir}/../../calypso_home</calypso.home>
 	</properties>
 
 <!--
