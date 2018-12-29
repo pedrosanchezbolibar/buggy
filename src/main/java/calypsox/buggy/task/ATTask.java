@@ -615,7 +615,7 @@ public class ATTask {
      *             the calypso service exception
      */
     public void reload() throws CalypsoServiceException {
-        new ATCache().clearCache("Task");
+        ATCache.getInstance().clearCache("Task");
         task = DSConnection.getDefault().getRemoteBackOffice().getTask(task.getId());
     }
 

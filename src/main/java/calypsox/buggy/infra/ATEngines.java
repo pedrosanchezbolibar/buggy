@@ -19,93 +19,115 @@ import com.calypso.tk.util.ConnectException;
  */
 public class ATEngines {
 
-	/**
-	 * Restart an engine
-	 *
-	 * @param engineName
-	 *            the engine name
-	 * @param wait
-	 *            time in milliseconds between stop an start the engine
-	 * @throws InterruptedException
-	 *             the interrupted exception
-	 * @throws ConnectException
-	 *             the connect exception
-	 * @throws PSException
-	 *             the PS exception
-	 * @throws SerializationException
-	 *             the serialization exception
-	 */
-	public void restart(final String engineName, final long wait)
-			throws InterruptedException, ConnectException, PSException, SerializationException {
-		final PSEventEngineRequest ad = new PSEventEngineRequest();
-		ad.setType(PSEventEngineRequest.SUSPEND);
-		ad.setMessage(engineName);
-		final PSConnection psConnection = ESStarter.startConnection((PSSubscriber) null, (Class[]) null);
-		psConnection.publish(ad);
+    /** The instance. */
+    private static ATEngines instance;
 
-		Thread.sleep(wait);
+    /**
+     * Gets the single instance of ATEngines.
+     *
+     * @return single instance of ATEngines
+     */
+    public static synchronized ATEngines getInstance() {
+        if (instance == null) {
+            instance = new ATEngines();
+        }
+        return instance;
+    }
 
-		ad.setType(PSEventEngineRequest.REQUEST_RESTART);
-		psConnection.publish(ad);
-	}
+    /**
+     * Instantiates a new AT engines.
+     */
+    private ATEngines() {
+        // prevent to instantiate this class
+    }
 
-	/**
-	 * Wait engine.
-	 *
-	 * @param engineName
-	 *            the engine name
-	 * @param millis
-	 *            the millis
-	 * @param times
-	 *            the times
-	 * @return number of pending events
-	 * @throws InterruptedException
-	 *             the interrupted exception
-	 */
-	public int waitForEngine(final String engineName, final long millis, final int times) throws InterruptedException {
-		int count = 0;
-		for (int i = 0; i < times; i++) {
-			count = countPendingProcessing(DSConnection.getDefault(), engineName);
-			if (count == 0) {
-				return 0;
-			}
-			Thread.sleep(millis);
-		}
-		return count;
-	}
+    /**
+     * Restart an engine.
+     *
+     * @param engineName
+     *            the engine name
+     * @param wait
+     *            time in milliseconds between stop an start the engine
+     * @throws InterruptedException
+     *             the interrupted exception
+     * @throws ConnectException
+     *             the connect exception
+     * @throws PSException
+     *             the PS exception
+     * @throws SerializationException
+     *             the serialization exception
+     */
+    public void restart(final String engineName, final long wait)
+            throws InterruptedException, ConnectException, PSException, SerializationException {
+        final PSEventEngineRequest ad = new PSEventEngineRequest();
+        ad.setType(PSEventEngineRequest.SUSPEND);
+        ad.setMessage(engineName);
+        final PSConnection psConnection = ESStarter.startConnection((PSSubscriber) null, (Class[]) null);
+        psConnection.publish(ad);
 
-	/**
-	 * Count pending processing.
-	 *
-	 * @param ds
-	 *            the ds
-	 * @param engineName
-	 *            the engine name
-	 * @return the int
-	 */
-	private int countPendingProcessing(final DSConnection ds, final String engineName) {
-		Hashtable<String, Integer> h;
-		try {
-			h = ds.getRemoteAccess().getPendingProcessingCount(engineName);
+        Thread.sleep(wait);
 
-			if (h == null || h.size() == 0) {
-				return 0;
-			}
+        ad.setType(PSEventEngineRequest.REQUEST_RESTART);
+        psConnection.publish(ad);
+    }
 
-			int count = 0;
-			final Enumeration<Integer> e = h.elements();
-			while (e.hasMoreElements()) {
-				final Integer it = e.nextElement();
-				if (it.intValue() > 0) {
-					count += it.intValue();
-				}
-			}
-			return count;
+    /**
+     * Wait engine.
+     *
+     * @param engineName
+     *            the engine name
+     * @param millis
+     *            the millis
+     * @param times
+     *            the times
+     * @return number of pending events
+     * @throws InterruptedException
+     *             the interrupted exception
+     */
+    public int waitForEngine(final String engineName, final long millis, final int times) throws InterruptedException {
+        int count = 0;
+        for (int i = 0; i < times; i++) {
+            count = countPendingProcessing(DSConnection.getDefault(), engineName);
+            if (count == 0) {
+                return 0;
+            }
+            Thread.sleep(millis);
+        }
+        return count;
+    }
 
-		} catch (final CalypsoServiceException exception) {
-			Log.error(this, exception);
-			return -1;
-		}
-	}
+    /**
+     * Count pending processing.
+     *
+     * @param ds
+     *            the ds
+     * @param engineName
+     *            the engine name
+     * @return the int
+     */
+    private int countPendingProcessing(final DSConnection ds, final String engineName) {
+        Hashtable<String, Integer> h;
+        try {
+            h = ds.getRemoteAccess().getPendingProcessingCount(engineName);
+
+            if (h == null || h.size() == 0) {
+                return 0;
+            }
+
+            int count = 0;
+            final Enumeration<Integer> e = h.elements();
+            while (e.hasMoreElements()) {
+                final Integer it = e.nextElement();
+                if (it.intValue() > 0) {
+                    count += it.intValue();
+                }
+            }
+            return count;
+
+        } catch (final CalypsoServiceException exception) {
+            Log.error(this, exception);
+            return -1;
+        }
+    }
 
 }

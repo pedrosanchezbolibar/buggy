@@ -12,9 +12,31 @@ import com.calypso.tk.util.CreArray;
 import calypsox.buggy.product.ATTrade;
 
 /**
- * Retrieve and apply actions on CRE
+ * Retrieve and apply actions on CRE.
  */
 public class ATCres {
+
+    /** The instance. */
+    private static ATCres instance;
+
+    /**
+     * Gets the single instance of ATCres.
+     *
+     * @return single instance of ATCres
+     */
+    public static synchronized ATCres getInstance() {
+        if (instance == null) {
+            instance = new ATCres();
+        }
+        return instance;
+    }
+
+    /**
+     * Instantiates a new AT cres.
+     */
+    private ATCres() {
+        // prevent to instantiate this class
+    }
 
     /**
      * Delete cres by event type.
@@ -49,7 +71,7 @@ public class ATCres {
     }
 
     /**
-     * Gets one CRE based on the cre type and valuation date
+     * Gets one CRE based on the cre type and valuation date.
      *
      * @param trade
      *            the trade

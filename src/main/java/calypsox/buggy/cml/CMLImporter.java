@@ -20,60 +20,90 @@ import calypsox.buggy.prototype.Prototype;
  */
 public class CMLImporter {
 
+    /** The instance. */
+    private static CMLImporter instance;
+
+    /**
+     * Gets the single instance of CMLImporter.
+     *
+     * @return single instance of CMLImporter
+     */
+    public static synchronized CMLImporter getInstance() {
+        if (instance == null) {
+            instance = new CMLImporter();
+        }
+        return instance;
+    }
+
     /** The import handler. */
-    private static TradeExportImportXMLHandler importHandler;
+    private TradeExportImportXMLHandler importHandler;
+
+    /**
+     * Instantiates a new CML importer.
+     */
+    private CMLImporter() {
+        // prevent to instantiate this class
+    }
 
     /**
      * Import trade.
      *
-     * @param owner the owner
-     * @param template the template
-     * @param params the params
+     * @param owner
+     *            the owner
+     * @param template
+     *            the template
+     * @param params
+     *            the params
      * @return the list
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public int importTrade(final Object owner, final String template, final Properties params) throws IOException {
-	final File tempFile = createTempFile(owner, template, params);
-	initTradeAdapter();
-	final List<Trade> importedTrades = importHandler.importAllData(tempFile.getAbsolutePath());
+        final File tempFile = createTempFile(owner, template, params);
+        initTradeAdapter();
+        final List<Trade> importedTrades = importHandler.importAllData(tempFile.getAbsolutePath());
 
-	if (importedTrades.size() > 1) {
-	    throw new IllegalArgumentException("Error importing CML : more than one Trade was imported");
-	}
+        if (importedTrades.size() > 1) {
+            throw new IllegalArgumentException("Error importing CML : more than one Trade was imported");
+        }
 
-	final Trade trade = importedTrades.get(0);
-	final RemoteTrade remote = DSConnection.getDefault().getRemoteTrade();
-	final int tradeId = remote.save(trade);
-	Log.info(this, "Trade imported with tradeId = " + tradeId);
-	return tradeId;
+        final Trade trade = importedTrades.get(0);
+        final RemoteTrade remote = DSConnection.getDefault().getRemoteTrade();
+        final int tradeId = remote.save(trade);
+        Log.info(this, "Trade imported with tradeId = " + tradeId);
+        return tradeId;
     }
 
     /**
      * Creates the temp file.
      *
-     * @param owner the owner
-     * @param template the template
-     * @param params the params
+     * @param owner
+     *            the owner
+     * @param template
+     *            the template
+     * @param params
+     *            the params
      * @return the file
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     private File createTempFile(final Object owner, final String template, final Properties params) throws IOException {
-	final String messageText = new Prototype().getPrototype(owner, template, params);
-	final File tempFile = File.createTempFile(template, ".xml");
-	tempFile.deleteOnExit();
-	try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-	    writer.write(messageText);
-	}
-	return tempFile;
+        final String messageText = new Prototype().getPrototype(owner, template, params);
+        final File tempFile = File.createTempFile(template, ".xml");
+        tempFile.deleteOnExit();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+            writer.write(messageText);
+        }
+        return tempFile;
     }
 
     /**
      * Inits the trade adapter.
      */
-    private static void initTradeAdapter() {
-	if (importHandler == null) {
-	    importHandler = new TradeExportImportXMLHandler();
-	    importHandler.initialize(DSConnection.getDefault());
-	}
+    private void initTradeAdapter() {
+        if (importHandler == null) {
+            importHandler = new TradeExportImportXMLHandler();
+            importHandler.initialize(DSConnection.getDefault());
+        }
     }
 }

@@ -19,8 +19,30 @@ import calypsox.buggy.product.ATTrade;
  */
 public class ATMessages {
 
+    /** The instance. */
+    private static ATMessages instance;
+
     /** The Constant ORDER_BY. */
     private static final String ORDER_BY = "MESSAGE_TYPE , EVENT_TYPE , TEMPLATE_NAME , ADDRESS_METHOD , MESSAGE_ID ";
+
+    /**
+     * Gets the single instance of ATMessages.
+     *
+     * @return single instance of ATMessages
+     */
+    public static synchronized ATMessages getInstance() {
+        if (instance == null) {
+            instance = new ATMessages();
+        }
+        return instance;
+    }
+
+    /**
+     * Instantiates a new AT messages.
+     */
+    private ATMessages() {
+        // prevent to instantiate this class
+    }
 
     /**
      * Gets the message by event type.

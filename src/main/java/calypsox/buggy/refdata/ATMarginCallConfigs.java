@@ -14,6 +14,28 @@ import com.calypso.tk.service.RemoteReferenceData;
  */
 public class ATMarginCallConfigs {
 
+    /** The instance. */
+    private static ATMarginCallConfigs instance;
+
+    /**
+     * Gets the single instance of ATMarginCallConfigs.
+     *
+     * @return single instance of ATMarginCallConfigs
+     */
+    public static synchronized ATMarginCallConfigs getInstance() {
+        if (instance == null) {
+            instance = new ATMarginCallConfigs();
+        }
+        return instance;
+    }
+
+    /**
+     * Instantiates a new AT margin call configs.
+     */
+    private ATMarginCallConfigs() {
+        // prevent to instantiate this class
+    }
+
     /**
      * Gets the contracts between PO and cpty.
      *

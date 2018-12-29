@@ -7,9 +7,31 @@ import com.calypso.tk.core.Status;
 import com.calypso.tk.service.DSConnection;
 
 /**
- * Manipulate Calypso Workflows
+ * Manipulate Calypso Workflows.
  */
 public class ATWorkflows {
+
+    /** The instance. */
+    private static ATWorkflows instance;
+
+    /**
+     * Gets the single instance of ATWorkflows.
+     *
+     * @return single instance of ATWorkflows
+     */
+    public static synchronized ATWorkflows getInstance() {
+        if (instance == null) {
+            instance = new ATWorkflows();
+        }
+        return instance;
+    }
+
+    /**
+     * Instantiates a new AT workflows.
+     */
+    private ATWorkflows() {
+        // prevent to instantiate this class
+    }
 
     /**
      * Adds an Action between two statuses. This can be useful to skip some

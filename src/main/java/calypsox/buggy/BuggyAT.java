@@ -105,7 +105,8 @@ public class BuggyAT extends BuggyVersion {
      */
     public int addManualWorkflowAction(final String fromStatus, final String action, final String toStatus,
             final String eventClass, final String productType, final String wfSubType) throws CalypsoServiceException {
-        return new ATWorkflows().addManualAction(fromStatus, action, toStatus, eventClass, productType, wfSubType);
+        return ATWorkflows.getInstance().addManualAction(fromStatus, action, toStatus, eventClass, productType,
+                wfSubType);
     }
 
     /**
@@ -178,7 +179,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public void deleteCresByEventType(final ATTrade trade, final String eventType) throws CalypsoServiceException {
-        new ATCres().deleteCres(trade, eventType);
+        ATCres.getInstance().deleteCres(trade, eventType);
     }
 
     /**
@@ -191,7 +192,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public boolean deleteWorkflowAction(final String transitionId) throws CalypsoServiceException {
-        return new ATWorkflows().deleteAction(transitionId);
+        return ATWorkflows.getInstance().deleteAction(transitionId);
     }
 
     /**
@@ -239,7 +240,7 @@ public class BuggyAT extends BuggyVersion {
      * @return the string
      */
     public String generateExternalRef() {
-        return new References().generateExternalRef();
+        return References.getInstance().generateExternalRef();
     }
 
     /**
@@ -254,7 +255,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public ATCre getCreByEventType(final ATTrade trade, final String creType) throws CalypsoServiceException {
-        return new ATCres().getCre(trade, creType);
+        return ATCres.getInstance().getCre(trade, creType);
     }
 
     /**
@@ -272,7 +273,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public ATCre getCreByEventTypeAndValuationDate(final ATTrade trade, final String creType, final String valDate)
             throws CalypsoServiceException {
-        return new ATCres().getCre(trade, creType, valDate);
+        return ATCres.getInstance().getCre(trade, creType, valDate);
     }
 
     /**
@@ -285,7 +286,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public List<ATCre> getCres(final ATTrade trade) throws CalypsoServiceException {
-        return new ATCres().getCres(trade);
+        return ATCres.getInstance().getCres(trade);
     }
 
     /**
@@ -298,7 +299,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public ATCurrency getCurrency(final String ccyCode) throws CalypsoServiceException {
-        return new ATCurrencies().get(ccyCode);
+        return ATCurrencies.getInstance().get(ccyCode);
     }
 
     /**
@@ -328,7 +329,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATMarginCallConfig> getMarginCallConfigs(final String procOrg, final String cpty)
             throws CalypsoServiceException {
-        return new ATMarginCallConfigs().getContracts(procOrg, cpty);
+        return ATMarginCallConfigs.getInstance().getContracts(procOrg, cpty);
     }
 
     /**
@@ -343,7 +344,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public ATMessage getMessageByEventType(final ATTrade trade, final String eventType) throws CalypsoServiceException {
-        return new ATMessages().getMessageByEventType(trade, eventType);
+        return ATMessages.getInstance().getMessageByEventType(trade, eventType);
     }
 
     /**
@@ -358,7 +359,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public ATMessage getMessageByMsgType(final ATTrade trade, final String msgType) throws CalypsoServiceException {
-        return new ATMessages().getMessageByMsgType(trade, msgType);
+        return ATMessages.getInstance().getMessageByMsgType(trade, msgType);
     }
 
     /**
@@ -374,7 +375,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public ATMessage getMessageByTemplateName(final ATTrade trade, final String templateName)
             throws CalypsoServiceException {
-        return new ATMessages().getMessageByTemplateName(trade, templateName);
+        return ATMessages.getInstance().getMessageByTemplateName(trade, templateName);
     }
 
     /**
@@ -390,7 +391,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATMessage> getMessagesByEventTypes(final ATTrade trade, final List<String> eventTypes)
             throws CalypsoServiceException {
-        return new ATMessages().getMessagesByEventTypes(trade, eventTypes);
+        return ATMessages.getInstance().getMessagesByEventTypes(trade, eventTypes);
     }
 
     /**
@@ -406,7 +407,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATMessage> getMessagesByMsgTypes(final ATTrade trade, final List<String> msgTypes)
             throws CalypsoServiceException {
-        return new ATMessages().getMessagesByMsgTypes(trade, msgTypes);
+        return ATMessages.getInstance().getMessagesByMsgTypes(trade, msgTypes);
     }
 
     /**
@@ -422,7 +423,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATMessage> getMessagesByTemplateName(final ATTrade trade, final List<String> templateName)
             throws CalypsoServiceException {
-        return new ATMessages().getMessagesByTemplateName(trade, templateName);
+        return ATMessages.getInstance().getMessagesByTemplateName(trade, templateName);
     }
 
     /**
@@ -444,7 +445,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public ATTransfer getNettedTransfer(final ATTrade trade, final double amount, final String ccy,
             final String eventType, final String status) throws CalypsoServiceException {
-        return new ATTransfers().getNettedTransfer(trade, amount, ccy, eventType, status);
+        return ATTransfers.getInstance().getNettedTransfer(trade, amount, ccy, eventType, status);
     }
 
     /**
@@ -457,7 +458,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public List<ATTransfer> getNettedTransfers(final ATTrade trade) throws CalypsoServiceException {
-        return new ATTransfers().getNettedTransfers(trade);
+        return ATTransfers.getInstance().getNettedTransfers(trade);
     }
 
     /**
@@ -479,7 +480,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATTransfer> getNettedTransfers(final ATTrade trade, final double amount, final String ccy,
             final String eventType, final String status) throws CalypsoServiceException {
-        return new ATTransfers().getNettedTransfers(trade, amount, ccy, eventType, status);
+        return ATTransfers.getInstance().getNettedTransfers(trade, amount, ccy, eventType, status);
     }
 
     /**
@@ -495,7 +496,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATTransfer> getNettedTransfersWithStatus(final ATTrade trade, final String status)
             throws CalypsoServiceException {
-        return new ATTransfers().getNettedTransfersWithStatus(trade, status);
+        return ATTransfers.getInstance().getNettedTransfersWithStatus(trade, status);
     }
 
     /**
@@ -508,7 +509,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public List<ATTask> getNonCompletedTasks(final ATTrade trade) throws CalypsoServiceException {
-        return new ATTasks().getNonCompletedTasks(trade);
+        return ATTasks.getInstance().getNonCompletedTasks(trade);
     }
 
     /**
@@ -524,7 +525,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATTask> getNonCompletedTasksByEventTypes(final ATTrade trade, final List<String> eventTypes)
             throws CalypsoServiceException {
-        return new ATTasks().getNonCompletedTasksByEventTypes(trade, eventTypes);
+        return ATTasks.getInstance().getNonCompletedTasksByEventTypes(trade, eventTypes);
     }
 
     /**
@@ -548,7 +549,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public ATScheduledTask getScheduledTask(final String stExternalRef) throws CalypsoServiceException {
-        return new ATScheduledTasks().getScheduledTask(stExternalRef);
+        return ATScheduledTasks.getInstance().getScheduledTask(stExternalRef);
     }
 
     /**
@@ -561,7 +562,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public ATSdi getSdi(final String reference) throws CalypsoServiceException {
-        return new ATSdis().get(reference);
+        return ATSdis.getInstance().get(reference);
     }
 
     /**
@@ -574,7 +575,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public List<ATSdi> getSDIsByBeneficiary(final String legalEntityName) throws CalypsoServiceException {
-        return new ATSdis().getSDIsByBeneficiary(legalEntityName);
+        return ATSdis.getInstance().getSDIsByBeneficiary(legalEntityName);
     }
 
     /**
@@ -591,7 +592,7 @@ public class BuggyAT extends BuggyVersion {
     @SuppressWarnings("unchecked")
     public List<ATSdi> getSDIsByBeneficiaryAndCcy(final String legalEntityName, final String currency)
             throws CalypsoServiceException {
-        return new ATSdis().getSDIsByBeneficiaryAndCcy(legalEntityName, currency);
+        return ATSdis.getInstance().getSDIsByBeneficiaryAndCcy(legalEntityName, currency);
     }
 
     /**
@@ -607,7 +608,7 @@ public class BuggyAT extends BuggyVersion {
      */
     public List<ATTask> getTasksByEventTypes(final ATTrade trade, final List<String> eventTypes)
             throws CalypsoServiceException {
-        return new ATTasks().getTasksByEventTypes(trade, eventTypes);
+        return ATTasks.getInstance().getTasksByEventTypes(trade, eventTypes);
     }
 
     /**
@@ -620,7 +621,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public ATTrade getTrade(final int tradeId) throws CalypsoServiceException {
-        return new ATTrades().getTrade(tradeId);
+        return ATTrades.getInstance().getTrade(tradeId);
     }
 
     /**
@@ -633,7 +634,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public List<ATTrade> getTrades(final String extRef) throws CalypsoServiceException {
-        return new ATTrades().getTrades(extRef);
+        return ATTrades.getInstance().getTrades(extRef);
     }
 
     /**
@@ -646,7 +647,7 @@ public class BuggyAT extends BuggyVersion {
      *             the calypso service exception
      */
     public String getUserName(final List<String> groups) throws CalypsoServiceException {
-        return new ATUsers().getUserName(groups);
+        return ATUsers.getInstance().getUserName(groups);
     }
 
     /**
@@ -659,7 +660,7 @@ public class BuggyAT extends BuggyVersion {
      *             the exception
      */
     public DUPAck importCDUF(final String template) throws Exception {
-        return new DUPImporter().insert(this, template, testProperties);
+        return DUPImporter.getInstance().insert(this, template, testProperties);
     }
 
     /**
@@ -672,7 +673,7 @@ public class BuggyAT extends BuggyVersion {
      *             Signals that an I/O exception has occurred.
      */
     public int importCMLTrade(final String template) throws IOException {
-        return new CMLImporter().importTrade(this, template, testProperties);
+        return CMLImporter.getInstance().importTrade(this, template, testProperties);
     }
 
     /**
@@ -686,7 +687,7 @@ public class BuggyAT extends BuggyVersion {
      */
     @SuppressWarnings("unchecked")
     public boolean removeSDIsByBeneficiary(final String legalEntityName) throws CalypsoServiceException {
-        return new ATSdis().removeSDIsByBeneficiary(legalEntityName);
+        return ATSdis.getInstance().removeSDIsByBeneficiary(legalEntityName);
     }
 
     /**
@@ -755,7 +756,7 @@ public class BuggyAT extends BuggyVersion {
      *             the interrupted exception
      */
     public int waitForEngine(final String engine) throws InterruptedException {
-        return new ATEngines().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
+        return ATEngines.getInstance().waitForEngine(engine, DEFAULT_WAIT_INTERVAL, DEFAULT_CHECK_TIMES);
     }
 
     /**

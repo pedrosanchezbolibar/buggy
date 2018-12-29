@@ -10,6 +10,28 @@ import com.calypso.tk.service.LocalCache;
  */
 public class ATCache {
 
+    /** The instance. */
+    private static ATCache instance;
+
+    /**
+     * Gets the single instance of ATCache.
+     *
+     * @return single instance of ATCache
+     */
+    public static synchronized ATCache getInstance() {
+        if (instance == null) {
+            instance = new ATCache();
+        }
+        return instance;
+    }
+
+    /**
+     * Instantiates a new AT cache.
+     */
+    private ATCache() {
+        // prevent to instantiate this class
+    }
+
     /**
      * Clear the specific cache plus BOCache and LocalCache.
      *

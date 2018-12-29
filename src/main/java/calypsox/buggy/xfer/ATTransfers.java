@@ -16,11 +16,26 @@ import calypsox.buggy.product.ATTrade;
  */
 public class ATTransfers {
 
+    /** The instance. */
+    private static ATTransfers instance;
+
     /** The Constant ORDER_BY. */
     private static final String ORDER_BY = "value_date, event_type, amount_ccy, amount, transfer_status, transfer_id";
 
     /** The Constant MAX_ROW_COUNT. */
     private static final int MAX_ROW_COUNT = 5000;
+
+    /**
+     * Gets the single instance of ATTransfers.
+     *
+     * @return single instance of ATTransfers
+     */
+    public static synchronized ATTransfers getInstance() {
+        if (instance == null) {
+            instance = new ATTransfers();
+        }
+        return instance;
+    }
 
     /**
      * To AT transfer list.
@@ -38,46 +53,10 @@ public class ATTransfers {
     }
 
     /**
-     * Gets the BO transfers.
-     *
-     * @param fromClause
-     *            the from clause
-     * @param whereClause
-     *            the where clause
-     * @return the BO transfers
-     * @throws CalypsoServiceException
-     *             the calypso service exception
+     * Instantiates a new AT transfers.
      */
-    private List<ATTransfer> getBOTransfers(final String fromClause, final String whereClause)
-            throws CalypsoServiceException {
-        new ATCache().clearCache("Transfer");
-        final TransferArray array = DSConnection.getDefault().getRemoteBackOffice().getBOTransfers(fromClause,
-                whereClause, ORDER_BY, MAX_ROW_COUNT);
-        return toATTransferList(array);
-    }
-
-    /**
-     * Gets the first BO transfer.
-     *
-     * @param fromClause
-     *            the from clause
-     * @param whereClause
-     *            the where clause
-     * @return the first BO transfer
-     * @throws CalypsoServiceException
-     *             the calypso service exception
-     */
-    private ATTransfer getFirstBOTransfer(final String fromClause, final String whereClause)
-            throws CalypsoServiceException {
-        final TransferArray array = DSConnection.getDefault().getRemoteBackOffice().getBOTransfers(fromClause,
-                whereClause, ORDER_BY, MAX_ROW_COUNT);
-        if (array.isEmpty()) {
-            return null;
-        }
-        if (array.size() > 1) {
-            throw new IllegalArgumentException("The get method returns more than one element");
-        }
-        return new ATTransfer(array.get(0));
+    private ATTransfers() {
+        // prevent to instantiate this class
     }
 
     /**
@@ -172,5 +151,48 @@ public class ATTransfers {
             return getBOTransfers(null, where);
         }
         return new ArrayList<>();
+    }
+
+    /**
+     * Gets the BO transfers.
+     *
+     * @param fromClause
+     *            the from clause
+     * @param whereClause
+     *            the where clause
+     * @return the BO transfers
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    private List<ATTransfer> getBOTransfers(final String fromClause, final String whereClause)
+            throws CalypsoServiceException {
+        ATCache.getInstance().clearCache("Transfer");
+        final TransferArray array = DSConnection.getDefault().getRemoteBackOffice().getBOTransfers(fromClause,
+                whereClause, ORDER_BY, MAX_ROW_COUNT);
+        return toATTransferList(array);
+    }
+
+    /**
+     * Gets the first BO transfer.
+     *
+     * @param fromClause
+     *            the from clause
+     * @param whereClause
+     *            the where clause
+     * @return the first BO transfer
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    private ATTransfer getFirstBOTransfer(final String fromClause, final String whereClause)
+            throws CalypsoServiceException {
+        final TransferArray array = DSConnection.getDefault().getRemoteBackOffice().getBOTransfers(fromClause,
+                whereClause, ORDER_BY, MAX_ROW_COUNT);
+        if (array.isEmpty()) {
+            return null;
+        }
+        if (array.size() > 1) {
+            throw new IllegalArgumentException("The get method returns more than one element");
+        }
+        return new ATTransfer(array.get(0));
     }
 }

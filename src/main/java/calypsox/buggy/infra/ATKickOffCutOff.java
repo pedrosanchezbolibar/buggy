@@ -15,8 +15,30 @@ import com.calypso.tk.service.RemoteBackOffice;
  */
 public class ATKickOffCutOff {
 
+    /** The instance. */
+    private static ATKickOffCutOff instance;
+
+    /**
+     * Gets the single instance of ATKickOffCutOff.
+     *
+     * @return single instance of ATKickOffCutOff
+     */
+    public static synchronized ATKickOffCutOff getInstance() {
+        if (instance == null) {
+            instance = new ATKickOffCutOff();
+        }
+        return instance;
+    }
+
     /** The original ko co by ccy. */
-    private static Map<String, KickOffCutOffConfig> originalKoCoByCcy = new HashMap<>();
+    private final Map<String, KickOffCutOffConfig> originalKoCoByCcy;
+
+    /**
+     * Instantiates a new AT kick off cut off.
+     */
+    private ATKickOffCutOff() {
+        originalKoCoByCcy = new HashMap<>();
+    }
 
     /**
      * Modify kick off for a list of currencies.

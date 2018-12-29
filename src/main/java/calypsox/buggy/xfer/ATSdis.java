@@ -15,8 +15,30 @@ import com.calypso.tk.service.RemoteReferenceData;
  */
 public class ATSdis {
 
+    /** The instance. */
+    private static ATSdis instance;
+
     /** The Constant BENEFICIARY_FIELD. */
     private static final String BENEFICIARY_FIELD = "bene_le = ";
+
+    /**
+     * Gets the single instance of ATSdis.
+     *
+     * @return single instance of ATSdis
+     */
+    public static synchronized ATSdis getInstance() {
+        if (instance == null) {
+            instance = new ATSdis();
+        }
+        return instance;
+    }
+
+    /**
+     * Instantiates a new AT sdis.
+     */
+    private ATSdis() {
+        // prevent to instantiate this class
+    }
 
     /**
      * Gets the sdi using the reference.

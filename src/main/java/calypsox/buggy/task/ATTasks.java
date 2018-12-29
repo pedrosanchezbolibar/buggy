@@ -13,26 +13,33 @@ import com.calypso.tk.util.TaskArray;
 import calypsox.buggy.product.ATTrade;
 
 /**
- * Retrieve and manipulate Calypso Tasks
+ * Retrieve and manipulate Calypso Tasks.
  */
 public class ATTasks {
 
     /** The Constant ORDER_BY. */
     private static final String ORDER_BY = "event_type, int_reference, object_status, comments, task_status, task_id";
 
+    /** The instance. */
+    private static ATTasks instance;
+
     /**
-     * Creates the tasks.
+     * Gets the single instance of ATTasks.
      *
-     * @param tasks
-     *            the tasks
-     * @return the list
+     * @return single instance of ATTasks
      */
-    private List<ATTask> createTasks(final TaskArray tasks) {
-        final List<ATTask> tradeTasks = new ArrayList<>();
-        for (final Task task : tasks) {
-            tradeTasks.add(new ATTask(task));
+    public static synchronized ATTasks getInstance() {
+        if (instance == null) {
+            instance = new ATTasks();
         }
-        return tradeTasks;
+        return instance;
+    }
+
+    /**
+     * Instantiates a new AT tasks.
+     */
+    private ATTasks() {
+        // prevent to instantiate this class
     }
 
     /**
@@ -87,6 +94,21 @@ public class ATTasks {
                 StringUtils.join(eventTypes, "','"));
         final TaskArray tasks = DSConnection.getDefault().getRemoteBackOffice().getTasks(where, null, ORDER_BY);
         return createTasks(tasks);
+    }
+
+    /**
+     * Creates the tasks.
+     *
+     * @param tasks
+     *            the tasks
+     * @return the list
+     */
+    private List<ATTask> createTasks(final TaskArray tasks) {
+        final List<ATTask> tradeTasks = new ArrayList<>();
+        for (final Task task : tasks) {
+            tradeTasks.add(new ATTask(task));
+        }
+        return tradeTasks;
     }
 
 }

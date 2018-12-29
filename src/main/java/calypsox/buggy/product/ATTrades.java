@@ -14,10 +14,41 @@ import com.calypso.tk.util.TradeArray;
 import calypsox.buggy.uti.CalypsoEnvironment;
 
 /**
- * Retrieve and apply actions over Calypso Trades
+ * Retrieve and apply actions over Calypso Trades.
  */
 public class ATTrades {
 
+    /** The instance. */
+    private static ATTrades instance;
+
+    /**
+     * Gets the single instance of ATTrades.
+     *
+     * @return single instance of ATTrades
+     */
+    public static synchronized ATTrades getInstance() {
+        if (instance == null) {
+            instance = new ATTrades();
+        }
+        return instance;
+    }
+
+    /**
+     * Instantiates a new AT trades.
+     */
+    private ATTrades() {
+        // prevent to instantiate this class
+    }
+
+    /**
+     * Creates the trade.
+     *
+     * @param tradeId
+     *            the trade id
+     * @return the AT trade
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
     public ATTrade createTrade(final int tradeId) throws CalypsoServiceException {
         final DSConnection dscon = CalypsoEnvironment.getInstance().getDSConnection();
         final Trade trade = dscon.getRemoteTrade().getTrade(tradeId);

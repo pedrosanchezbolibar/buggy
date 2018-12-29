@@ -524,7 +524,7 @@ public class ATMessage {
      *             the calypso service exception
      */
     public ATTrade getTrade() throws CalypsoServiceException {
-        return new ATTrades().createTrade(bomessage.getTradeId());
+        return ATTrades.getInstance().createTrade(bomessage.getTradeId());
     }
 
     /**
