@@ -64,7 +64,7 @@ public class ATTask {
      * @param username
      *            the username
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("unchecked")
     public void applyTaskAction(final String action, final String username) {
         final ATDSConnection dsCon = new ATDSConnection(username);
         final RemoteTrade remoteTrade = dsCon.getRemoteTrade();

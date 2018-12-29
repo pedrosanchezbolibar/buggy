@@ -589,10 +589,73 @@ public class BuggyAT extends BuggyVersion {
      * @throws CalypsoServiceException
      *             the remote exception
      */
-    @SuppressWarnings("unchecked")
+
     public List<ATSdi> getSDIsByBeneficiaryAndCcy(final String legalEntityName, final String currency)
             throws CalypsoServiceException {
         return ATSdis.getInstance().getSDIsByBeneficiaryAndCcy(legalEntityName, currency);
+    }
+
+    /**
+     * Gets the tasks.
+     *
+     * @param msg
+     *            the msg
+     * @param includeCompleted
+     *            the include completed
+     * @return the tasks
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getTasks(final ATMessage msg, final boolean includeCompleted) throws CalypsoServiceException {
+        return ATTasks.getInstance().getTasks(msg, includeCompleted);
+    }
+
+    /**
+     * Gets the tasks.
+     *
+     * @param trade
+     *            the trade
+     * @param includeCompleted
+     *            the include completed
+     * @return the tasks
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getTasks(final ATTrade trade, final boolean includeCompleted) throws CalypsoServiceException {
+        return ATTasks.getInstance().getTasks(trade, includeCompleted);
+    }
+
+    /**
+     * Gets the tasks.
+     *
+     * @param xfer
+     *            the xfer
+     * @param includeCompleted
+     *            the include completed
+     * @return the tasks
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getTasks(final ATTransfer xfer, final boolean includeCompleted) throws CalypsoServiceException {
+        return ATTasks.getInstance().getTasks(xfer, includeCompleted);
+    }
+
+    /**
+     * Gets the tasks by event types.
+     *
+     * @param msg
+     *            the msg
+     * @param eventTypes
+     *            the event types
+     * @param includeCompleted
+     *            the include completed
+     * @return the tasks by event types
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getTasksByEventTypes(final ATMessage msg, final List<String> eventTypes,
+            final boolean includeCompleted) throws CalypsoServiceException {
+        return ATTasks.getInstance().getTasksByEventTypes(msg, eventTypes, includeCompleted);
     }
 
     /**
@@ -602,13 +665,33 @@ public class BuggyAT extends BuggyVersion {
      *            the trade
      * @param eventTypes
      *            the event types
+     * @param includeCompleted
+     *            the include completed
      * @return the tasks by event type
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public List<ATTask> getTasksByEventTypes(final ATTrade trade, final List<String> eventTypes)
-            throws CalypsoServiceException {
-        return ATTasks.getInstance().getTasksByEventTypes(trade, eventTypes);
+    public List<ATTask> getTasksByEventTypes(final ATTrade trade, final List<String> eventTypes,
+            final boolean includeCompleted) throws CalypsoServiceException {
+        return ATTasks.getInstance().getTasksByEventTypes(trade, eventTypes, includeCompleted);
+    }
+
+    /**
+     * Gets the tasks by event types.
+     *
+     * @param xfer
+     *            the xfer
+     * @param eventTypes
+     *            the event types
+     * @param includeCompleted
+     *            the include completed
+     * @return the tasks by event types
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getTasksByEventTypes(final ATTransfer xfer, final List<String> eventTypes,
+            final boolean includeCompleted) throws CalypsoServiceException {
+        return ATTasks.getInstance().getTasksByEventTypes(xfer, eventTypes, includeCompleted);
     }
 
     /**
@@ -685,7 +768,6 @@ public class BuggyAT extends BuggyVersion {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    @SuppressWarnings("unchecked")
     public boolean removeSDIsByBeneficiary(final String legalEntityName) throws CalypsoServiceException {
         return ATSdis.getInstance().removeSDIsByBeneficiary(legalEntityName);
     }
