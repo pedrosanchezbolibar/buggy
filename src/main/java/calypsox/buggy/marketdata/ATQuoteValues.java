@@ -121,7 +121,7 @@ public class ATQuoteValues {
     @SuppressWarnings("unchecked")
     public List<ATQuoteValue> getQuotes(final String quoteDate, final List<String> quoteNames)
             throws CalypsoServiceException {
-        final String where = String.format("quote_name in '%s' AND quote_date = to_date('%s', 'dd/MM/yyyy')",
+        final String where = String.format("quote_name in ('%s') AND quote_date = to_date('%s', 'dd/MM/yyyy')",
                 StringUtils.join(quoteNames, "','"), quoteDate);
 
         final List<QuoteValue> quotes = DSConnection.getDefault().getRemoteMarketData().getQuoteValues(where);

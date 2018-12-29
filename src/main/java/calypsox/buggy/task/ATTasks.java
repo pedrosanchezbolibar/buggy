@@ -136,6 +136,28 @@ public class ATTasks {
     }
 
     /**
+     * Gets the trade tasks by event type and int reference.
+     *
+     * @param trade
+     *            the trade
+     * @param eventTypes
+     *            the event types
+     * @param internalReference
+     *            the internal reference
+     * @param includeCompleted
+     *            the include completed
+     * @return the trade tasks by event type and int reference
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getTasksByEventTypeAndIntReference(final ATTrade trade, final List<String> eventTypes,
+            final String internalReference, final boolean includeCompleted) throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and event_type in ('%s') and internal_reference = '%s'",
+                trade.getId(), StringUtils.join(eventTypes, "','"), internalReference);
+        return getTasksFromDS(where, includeCompleted);
+    }
+
+    /**
      * Gets the tasks by event types.
      *
      * @param msg
@@ -197,6 +219,25 @@ public class ATTasks {
     }
 
     /**
+     * Gets the tasks by object status.
+     *
+     * @param trade
+     *            the trade
+     * @param status
+     *            the status
+     * @param includeCompleted
+     *            the include completed
+     * @return the tasks by object status
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATTask> getTasksByObjectStatus(final ATTrade trade, final String status, final boolean includeCompleted)
+            throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and object_status = '%s'", trade.getId(), status);
+        return getTasksFromDS(where, includeCompleted);
+    }
+
+    /**
      * Creates the tasks.
      *
      * @param tasks
@@ -231,5 +272,4 @@ public class ATTasks {
         final TaskArray tasks = DSConnection.getDefault().getRemoteBackOffice().getTasks(whereClause, null, ORDER_BY);
         return createTasks(tasks);
     }
-
 }

@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import com.calypso.tk.bo.BOCache;
 import com.calypso.tk.bo.Task;
+import com.calypso.tk.bo.TaskWorkflowConfig;
 import com.calypso.tk.bo.util.ProcessTaskUtil.ObjectDesc;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
@@ -178,7 +180,7 @@ public class ATTask {
         if (comment == null) {
             comment = "";
         }
-        return comment;
+        return comment.replaceAll("<li>", "/");
     }
 
     /**
@@ -508,12 +510,22 @@ public class ATTask {
     }
 
     /**
-     * Gets the task workflow config id.
+     * Get task action.
      *
-     * @return the task workflow config id
+     * @return the action
      */
-    public int getTaskWorkflowConfigId() {
-        return task.getTaskWorkflowConfigId();
+    public String getTaskAction() {
+        TaskWorkflowConfig config = null;
+        String possibleAction = "";
+
+        final int wfwtransition = task.getTaskWorkflowConfigId();
+
+        if (wfwtransition != 0) {
+            config = BOCache.getTaskWorkflowConfig(DSConnection.getDefault(), wfwtransition);
+            possibleAction = config.getPossibleAction().toString();
+        }
+
+        return possibleAction;
     }
 
     /**
@@ -620,7 +632,7 @@ public class ATTask {
     }
 
     /**
-     * Gets the where clause for the apply task action method
+     * Gets the where clause for the apply task action method.
      *
      * @return the where clause
      */
