@@ -1,4 +1,4 @@
 /**
- * Developper tools
+ * Developer tools
  */
 package calypsox.buggy.devel;
