@@ -1,5 +1,7 @@
 package calypsox.buggy.uti;
 
+import java.io.File;
+
 import com.calypso.tk.core.Log;
 import com.calypso.tk.publish.jaxb.CalypsoAcknowledgement;
 import com.calypso.tk.util.DataUploaderUtil;
@@ -52,6 +54,24 @@ public class CdufFile {
     }
 
     /**
+     * Gets the type.
+     *
+     * @return the type
+     */
+    public String getType() {
+        int startFileName = fileName.lastIndexOf(File.separator) + 1;
+        if (startFileName < 0) {
+            startFileName = 1;
+        }
+        final int index = fileName.indexOf('_');
+        if (index > 0) {
+            return fileName.substring(startFileName, index);
+        } else {
+            return "";
+        }
+    }
+
+    /**
      * Gets the uploaded.
      *
      * @return the uploaded
@@ -65,8 +85,14 @@ public class CdufFile {
      */
     public void importFile() {
         try {
-            final StringBuilder messageText = new Prototype().readResource(this, getFileName());
-            final CalypsoAcknowledgement ack = DataUploaderUtil.uploadXML(messageText.toString());
+            final StringBuilder messageText = new Prototype().readResource(this, fileName);
+            final CalypsoAcknowledgement ack;
+            if (fileName.endsWith(".xml")) {
+                ack = DataUploaderUtil.uploadXML(messageText.toString());
+            } else {
+                final String type = getType();
+                ack = DataUploaderUtil.uploadCSV(messageText.toString(), type, ",", "UTF-8", "UTF-8");
+            }
 
             setRejected(ack.getRejected());
             setUploaded(ack.getUploaded());
