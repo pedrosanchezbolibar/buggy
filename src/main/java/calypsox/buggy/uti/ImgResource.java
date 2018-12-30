@@ -1,10 +1,9 @@
 package calypsox.buggy.uti;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 
 import com.calypso.tk.util.email.Base64;
 
@@ -73,7 +72,7 @@ public class ImgResource extends ResourceReader {
         if (inputStream == null) {
             throw new FileNotFoundException("Image file not found " + resource);
         } else {
-            final byte[] bytes = IOUtils.toByteArray(inputStream);
+            final byte[] bytes = toByteArray(inputStream);
             final String code = Base64.encodeBytes(bytes);
             if (width == null) {
                 return String.format(HTML, code);
@@ -81,5 +80,18 @@ public class ImgResource extends ResourceReader {
                 return String.format(HTML_SIZE, width, height, resource);
             }
         }
+    }
+
+    private byte[] toByteArray(final InputStream inputStream) throws IOException {
+        final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        int nRead;
+        final byte[] data = new byte[16384];
+
+        while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
+        }
+
+        return buffer.toByteArray();
     }
 }

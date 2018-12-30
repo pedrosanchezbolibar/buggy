@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>calypsox</groupId>
+	<artifactId>buggy</artifactId>
+	<version>0.0.3</version>
+	<name>Buggy</name>
+	<description>Calypso Automatic Acceptance and Functional Test API</description>
+
+	<!-- Properties Section -->
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<calypso.home>${basedir}/@CALYPSO_HOME@</calypso.home>
+	</properties>
+
+<!--
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+ -->
+
+	<dependencies>
+
+		<!-- concordion -->
+		<dependency>
+			<groupId>org.concordion</groupId>
+			<artifactId>concordion</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.concordion</groupId>
+			<artifactId>concordion-timestamp-formatter-extension</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.concordion</groupId>
+			<artifactId>concordion-embed-extension</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.concordion</groupId>
+			<artifactId>concordion-executeonlyif-extension</artifactId>
+			<version>0.3.0</version>
+		</dependency>
+
+		<!-- jboss -->
+		
+		<dependency>
+			<groupId>com.calypso</groupId>
+			<artifactId>jboss-client</artifactId>
+			<version>7.0.9.0</version>
+			<scope>system</scope>
+			<systemPath>${calypso.home}/jboss/@JBOSS_VERSION@/bin/client/jboss-client.jar</systemPath>
+		</dependency>
+
+		<!-- calypso -->
+		
+@CALYPSO_DEPENDENCIES@
+	</dependencies>
+</project>
