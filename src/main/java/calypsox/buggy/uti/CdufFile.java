@@ -54,20 +54,16 @@ public class CdufFile {
     }
 
     /**
-     * Gets the type.
+     * Gets the simple name.
      *
-     * @return the type
+     * @return the simple name
      */
-    public String getType() {
-        int startFileName = fileName.lastIndexOf(File.separator) + 1;
+    public String getSimpleName() {
+        final int startFileName = fileName.lastIndexOf(File.separator) + 1;
         if (startFileName < 0) {
-            startFileName = 1;
-        }
-        final int index = fileName.indexOf('_');
-        if (index > 0) {
-            return fileName.substring(startFileName, index);
+            return fileName;
         } else {
-            return "";
+            return fileName.substring(startFileName, fileName.length());
         }
     }
 
@@ -90,8 +86,8 @@ public class CdufFile {
             if (fileName.endsWith(".xml")) {
                 ack = DataUploaderUtil.uploadXML(messageText.toString());
             } else {
-                final String type = getType();
-                ack = DataUploaderUtil.uploadCSV(messageText.toString(), type, ",", "UTF-8", "UTF-8");
+                final String simpleName = getSimpleName();
+                ack = DataUploaderUtil.uploadCSV(messageText.toString(), simpleName, ",", "UTF-8", "UTF-8");
             }
 
             setRejected(ack.getRejected());
