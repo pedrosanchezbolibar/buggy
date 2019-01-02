@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+dependencies {
+	compile project(':custom-client')
+	compile fileTree(dir: "${rootProject.calypsoHome}/client/lib", include: "*.jar")
+	compile files(project.file("${rootProject.calypsoHome}/client/resources").path)
+	
+    compile 'org.concordion:concordion:2.2.0'
+	compile 'org.concordion:concordion-timestamp-formatter-extension:1.1.2'
+	compile 'org.concordion:concordion-embed-extension:1.2.0'
+	compile 'org.concordion:concordion-executeonlyif-extension:0.3.0'
+}
+
+ext.deployment="buggy"
