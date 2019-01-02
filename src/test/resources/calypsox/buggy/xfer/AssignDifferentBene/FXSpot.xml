@@ -20,7 +20,7 @@
 		<Action>@ACTION@</Action>
 		<TradeCounterParty>@CPTY@</TradeCounterParty>
 		<CounterPartyRole>CounterParty</CounterPartyRole>
-		<TradeBook>TESORMAD</TradeBook>
+		<TradeBook>BUGGY_BOOK</TradeBook>
 		<TradeBundleType/>
 		<TradeBundleName/>
 		<TradeCurrency>USD</TradeCurrency>

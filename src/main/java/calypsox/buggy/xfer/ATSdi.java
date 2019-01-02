@@ -31,7 +31,9 @@ public class ATSdi {
      *             the calypso service exception
      */
     public ATSdi(final int settleDeliveryId) throws CalypsoServiceException {
-        sdi = DSConnection.getDefault().getRemoteReferenceData().getSettleDeliveryInstruction(settleDeliveryId);
+        final SettleDeliveryInstruction tempSdi = DSConnection.getDefault().getRemoteReferenceData()
+                .getSettleDeliveryInstruction(settleDeliveryId);
+        sdi = checkSdi(tempSdi);
     }
 
     /**
@@ -43,7 +45,7 @@ public class ATSdi {
      *             the calypso service exception
      */
     public ATSdi(final SettleDeliveryInstruction settleDelivery) throws CalypsoServiceException {
-        sdi = settleDelivery;
+        sdi = checkSdi(settleDelivery);
     }
 
     /**
@@ -735,5 +737,14 @@ public class ATSdi {
     @Override
     public String toString() {
         return sdi.toString();
+    }
+
+    private SettleDeliveryInstruction checkSdi(final SettleDeliveryInstruction settleDelivery) {
+        if (settleDelivery == null) {
+            final SettleDeliveryInstruction result = new SettleDeliveryInstruction();
+            result.setDescription("Null SDI");
+            return result;
+        }
+        return settleDelivery;
     }
 }

@@ -52,6 +52,9 @@ public class ATTrades {
     public ATTrade createTrade(final int tradeId) throws CalypsoServiceException {
         final DSConnection dscon = CalypsoEnvironment.getInstance().getDSConnection();
         final Trade trade = dscon.getRemoteTrade().getTrade(tradeId);
+        if (trade == null) {
+            throw new IllegalArgumentException("Can't retrive a trade with id = " + tradeId);
+        }
         return createTrade(trade);
     }
 

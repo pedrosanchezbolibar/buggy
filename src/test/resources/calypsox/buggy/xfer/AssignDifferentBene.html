@@ -44,7 +44,7 @@
 			Insertamos un FXSpot utilizando el template 
 			<span concordion:set="#template">FXSpot.xml</span> 
 			con la Contrapartida 
-			<span concordion:execute="setProperty('CPTY', #TEXT)">TEST_MANCHOICE</span>
+			<span concordion:execute="setProperty('CPTY', #TEXT)">CALBO</span>
 			aplicando la acción <span concordion:execute="setProperty('ACTION', #TEXT)">NEW</span>
 		</p>
 		<p>
@@ -61,10 +61,10 @@
 <pre concordion:echo="#ack" id="ack" style="display:none"> </pre>	
 		
 		<p>
-			La operación insertada es:
-			<span style="visibility: hidden;" concordion:set="#img">FXSpot.png</span>
-			<span ext:embed="getImage(#img)"> </span>
 			<span concordion:execute="#trade=getTrade(#ack.tradeId)"> </span>
+			La operación insertada (<span concordion:echo="#trade"> </span>) es similar a esta:
+			<span style="visibility: hidden;" concordion:set="#img">FXSpot.png</span>
+			<span ext:embed="getImage(#img)"> </span>			
 		</p>
 			
 		<p>
@@ -84,26 +84,26 @@
 				<th concordion:assertEquals="#xfer.transferType">Tipo</th>
 				<th concordion:assertEquals="#xfer.settlementAmount">Cantidad</th>
 				<th concordion:assertEquals="#xfer.valueDate">Fecha valor</th>
-				<th concordion:echo="#xfer.internalSettleDelivery.reference">Internal SDI</th>
-				<th concordion:echo="#xfer.externalSettleDelivery.reference">External SDI</th>
+				<th concordion:assertEquals="#xfer.internalSettleDelivery.reference">Internal SDI</th>
+				<th concordion:assertEquals="#xfer.externalSettleDelivery.reference">External SDI</th>
 			</tr>
 			<tr>
 				<td></td>
-				<td>PREMATCH</td>
+				<td>VERIFIED</td>
 				<td>PRINCIPAL</td>
-				<td>4,261,200.00 USD</td>
+				<td>4.261.200,00 USD</td>
 				<td>08/05/2026</td>
-				<td>RDR_791645</td>
-				<td>Test_TEST_MANCHOICE_SWIFTUSD_BOTH_1</td>
+				<td>(null)</td>
+				<td>(null)</td>
 			</tr>
 			<tr>
 				<td></td>
-				<td>PREMATCH</td>
+				<td>VERIFIED</td>
 				<td>PRINCIPAL</td>
-				<td>4,261,200.00 EUR</td>
+				<td>4.261.200,00 EUR</td>
 				<td>08/05/2026</td>
-				<td>RDR_3136726</td>
-				<td>Test_TEST_MANCHOICE_TARGET2EUR_BOTH_1</td>
+				<td>(null)</td>
+				<td>(null)</td>
 			</tr>
 			
 		</table>

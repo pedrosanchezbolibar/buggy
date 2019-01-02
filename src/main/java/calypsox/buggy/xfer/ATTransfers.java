@@ -79,9 +79,10 @@ public class ATTransfers {
     public ATTransfer getNettedTransfer(final ATTrade trade, final double amount, final String ccy,
             final String eventType, final String status) throws CalypsoServiceException {
         if (trade != null) {
+            final String strAmount = Double.toString(amount);
             final String where = String.format(
-                    "trade_id = %d and event_type='%s' and transfer_status = '%s' and amount = %f and amount_ccy = '%s' and netted_transfer_id = 0",
-                    trade.getId(), eventType, status, amount, ccy);
+                    "trade_id = %d and event_type='%s' and transfer_status = '%s' and amount = %s and amount_ccy = '%s' and netted_transfer_id = 0",
+                    trade.getId(), eventType, status, strAmount, ccy);
             return getFirstBOTransfer(null, where);
         }
         return null;
