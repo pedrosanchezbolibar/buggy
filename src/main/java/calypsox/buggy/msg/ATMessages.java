@@ -13,6 +13,7 @@ import com.calypso.tk.service.RemoteBackOffice;
 import com.calypso.tk.util.MessageArray;
 
 import calypsox.buggy.product.ATTrade;
+import calypsox.buggy.xfer.ATTransfer;
 
 /**
  * Search and manipulates BOMessage and ATMessage.
@@ -45,6 +46,24 @@ public class ATMessages {
     }
 
     /**
+     * Gets the first message.
+     *
+     * @param where
+     *            the where clause
+     * @return the message
+     * @throws CalypsoServiceException
+     *             the remote exception
+     */
+    private ATMessage getMessage(final String where) throws CalypsoServiceException {
+        final MessageArray messages = DSConnection.getDefault().getRemoteBackOffice().getMessages(where);
+        if (messages.size() > 1 || messages.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Can't get one message, search returns " + messages.size() + " elements");
+        }
+        return new ATMessage(messages.get(0));
+    }
+
+    /**
      * Gets the message by event type.
      *
      * @param trade
@@ -57,7 +76,47 @@ public class ATMessages {
      */
     public ATMessage getMessageByEventType(final ATTrade trade, final String eventType) throws CalypsoServiceException {
         final String where = String.format("trade_id = %d and event_type = '%s'", trade.getId(), eventType);
-        return new ATMessage(getFirstMessage(where));
+        return getMessage(where);
+    }
+
+    /**
+     * Gets the message by event type address method.
+     *
+     * @param trade
+     *            the trade
+     * @param eventTypes
+     *            the event types
+     * @param addCode
+     *            the add code
+     * @return the message by event type address method
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATMessage getMessageByEventTypeAddressMethod(final ATTrade trade, final String eventTypes,
+            final String addCode) throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and event_type = '%s' and address_method = '%s'",
+                trade.getId(), eventTypes, addCode);
+        return getMessage(where);
+    }
+
+    /**
+     * Gets the message by event type and template.
+     *
+     * @param trade
+     *            the trade
+     * @param templateName
+     *            the template name
+     * @param eventType
+     *            the event type
+     * @return the message by event type and template
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATMessage getMessageByEventTypeAndTemplate(final ATTrade trade, final String templateName,
+            final String eventType) throws CalypsoServiceException {
+        final String where = String.format("trade_id = %d and template_name = '%s' and EVENT_TYPE = '%s'",
+                trade.getId(), templateName, eventType);
+        return getMessage(where);
     }
 
     /**
@@ -73,7 +132,51 @@ public class ATMessages {
      */
     public ATMessage getMessageByMsgType(final ATTrade trade, final String msgType) throws CalypsoServiceException {
         final String where = String.format("trade_id = %d and MESSAGE_TYPE = '%s'", trade.getId(), msgType);
-        return new ATMessage(getFirstMessage(where));
+        return getMessage(where);
+    }
+
+    /**
+     * Gets the message by template and receiver.
+     *
+     * @param trade
+     *            the trade
+     * @param templateName
+     *            the template name
+     * @param receiver
+     *            the receiver
+     * @return the message by template and receiver
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATMessage getMessageByTemplateAndReceiver(final ATTrade trade, final String templateName,
+            final String receiver) throws CalypsoServiceException {
+        final String where = String.format(
+                "trade_id = %d and template_name = '%s' and receiver_id = (select LEGAL_ENTITY.LEGAL_ENTITY_ID from LEGAL_ENTITY where short_name = '%s')",
+                trade.getId(), templateName, receiver);
+        return getMessage(where);
+    }
+
+    /**
+     * Gets the message by template and receiver and status.
+     *
+     * @param trade
+     *            the trade
+     * @param templateName
+     *            the template name
+     * @param receiver
+     *            the receiver
+     * @param msgStatus
+     *            the msg status
+     * @return the message by template and receiver and status
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATMessage getMessageByTemplateAndReceiverAndStatus(final ATTrade trade, final String templateName,
+            final String receiver, final String msgStatus) throws CalypsoServiceException {
+        final String where = String.format(
+                "trade_id = %d and template_name = '%s' and receiver_id = (select LEGAL_ENTITY.LEGAL_ENTITY_ID from LEGAL_ENTITY where short_name = '%s' and message_status='%s')",
+                trade.getId(), templateName, receiver, msgStatus);
+        return getMessage(where);
     }
 
     /**
@@ -90,7 +193,25 @@ public class ATMessages {
     public ATMessage getMessageByTemplateName(final ATTrade trade, final String templateName)
             throws CalypsoServiceException {
         final String where = String.format("trade_id = %d and template_name = '%s'", trade.getId(), templateName);
-        return new ATMessage(getFirstMessage(where));
+        return getMessage(where);
+    }
+
+    /**
+     * Gets the message by template name.
+     *
+     * @param transfer
+     *            the transfer
+     * @param templateName
+     *            the template name
+     * @return the message by template name
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATMessage getMessageByTemplateName(final ATTransfer transfer, final String templateName)
+            throws CalypsoServiceException {
+        final String where = String.format("transfer_id = '%s' and template_name = '%s' ", transfer.getId(),
+                templateName);
+        return getMessage(where);
     }
 
     /**
@@ -148,20 +269,21 @@ public class ATMessages {
     }
 
     /**
-     * Gets the first message.
+     * Gets the messages by template name.
      *
-     * @param where
-     *            the where clause
-     * @return the message
+     * @param transfer
+     *            the transfer
+     * @param templateName
+     *            the template name
+     * @return the messages by template name
      * @throws CalypsoServiceException
-     *             the remote exception
+     *             the calypso service exception
      */
-    private BOMessage getFirstMessage(final String where) throws CalypsoServiceException {
-        final MessageArray messages = DSConnection.getDefault().getRemoteBackOffice().getMessages(where);
-        if (!messages.isEmpty()) {
-            return messages.get(0);
-        }
-        return null;
+    public List<ATMessage> getMessagesByTemplateName(final ATTransfer transfer, final List<String> templateName)
+            throws CalypsoServiceException {
+        final String where = String.format("transfer_id = '%s' and template_name = '%s' ", transfer.getId(),
+                templateName);
+        return getMessagesOrdered(where);
     }
 
     /**

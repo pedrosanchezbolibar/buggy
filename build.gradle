@@ -15,6 +15,7 @@ dependencies {
 	compile 'org.concordion:concordion-timestamp-formatter-extension:1.1.2'
 	compile 'org.concordion:concordion-embed-extension:1.2.0'
 	compile 'org.concordion:concordion-executeonlyif-extension:0.3.0'
+	testCompile 'junit:junit:4.12'	
 }
 
 ext.deployment="buggy"
