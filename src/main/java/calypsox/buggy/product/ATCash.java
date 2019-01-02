@@ -3,10 +3,13 @@ package calypsox.buggy.product;
 import java.util.List;
 import java.util.Vector;
 
+import com.calypso.tk.core.CalypsoServiceException;
+import com.calypso.tk.core.CashFlow;
 import com.calypso.tk.core.CashFlowSet;
 import com.calypso.tk.core.DateRoll;
 import com.calypso.tk.core.DateRule;
 import com.calypso.tk.core.DayCount;
+import com.calypso.tk.core.FlowGenerationException;
 import com.calypso.tk.core.Frequency;
 import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.PeriodRule;
@@ -14,11 +17,13 @@ import com.calypso.tk.core.RoundingMethod;
 import com.calypso.tk.core.StubRule;
 import com.calypso.tk.core.Tenor;
 import com.calypso.tk.core.Trade;
+import com.calypso.tk.marketdata.PricingEnv;
 import com.calypso.tk.product.Cash;
 import com.calypso.tk.product.EventTypeAction;
 import com.calypso.tk.product.flow.CashFlowInterest;
 import com.calypso.tk.product.flow.IndexCalculator;
 import com.calypso.tk.product.util.InterpStyle;
+import com.calypso.tk.service.DSConnection;
 
 import calypsox.buggy.ui.ATAmount;
 
@@ -963,4 +968,67 @@ public class ATCash extends ATSimpleMM {
         return cash.getWithholdingTaxRate();
     }
 
+    /**
+     * Update flow settle date.
+     *
+     * @param setDate
+     *            the set date
+     * @param pricingEnv
+     *            the pricing env
+     * @param flowNumber
+     *            the flow number
+     * @param action
+     *            the action
+     * @param username
+     *            the username
+     * @return true, if successful
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     * @throws FlowGenerationException
+     *             the flow generation exception
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
+     */
+    public boolean updateFlowSettleDate(final JDate setDate, final String pricingEnv, final int flowNumber,
+            final String action, final String username)
+            throws CalypsoServiceException, FlowGenerationException, CloneNotSupportedException {
+        CashFlowInterest result;
+        final Trade clonedTrade = trade.clone();
+        final CashFlowSet cfSet = getCashFlowSet(pricingEnv);
+        final CashFlowSet cfSetBis = new CashFlowSet();
+        for (int i = 0; i < cfSet.size(); i++) {
+            final CashFlow flow = cfSet.elementAt(i);
+            if (flowNumber == i) {
+                result = (CashFlowInterest) flow.clone();
+                result.setDate(setDate);
+                cfSetBis.add(result);
+            } else {
+                cfSetBis.add(flow);
+            }
+
+            ((Cash) clonedTrade.getProduct()).setFlows(cfSetBis);
+        }
+        return applyAction(clonedTrade, action, username);
+    }
+
+    /**
+     * Gets the cash flow set.
+     *
+     * @param pricingEnv
+     *            the pricing env
+     * @return the cash flow set
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     * @throws FlowGenerationException
+     *             the flow generation exception
+     */
+    private CashFlowSet getCashFlowSet(final String pricingEnv)
+            throws CalypsoServiceException, FlowGenerationException {
+        if (!cash.getCustomFlowsB()) {
+            cash.generateFlows(trade.getMaturityDate());
+            final PricingEnv environment = DSConnection.getDefault().getRemoteMarketData().getPricingEnv(pricingEnv);
+            cash.calculate(trade, environment, trade.getMaturityDate());
+        }
+        return cash.getFlows();
+    }
 }

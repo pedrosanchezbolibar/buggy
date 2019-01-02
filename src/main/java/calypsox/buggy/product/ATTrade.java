@@ -12,6 +12,7 @@ import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.JDate;
 import com.calypso.tk.core.Trade;
+import com.calypso.tk.product.Cash;
 import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
 
@@ -77,31 +78,9 @@ public class ATTrade {
      *             the calypso service exception
      */
     public boolean applyAction(final String action, final String userName) throws CalypsoServiceException {
-        boolean rst = false;
+        final Trade tradeCloned = trade.clone();
 
-        String userNameParam = userName;
-        if (userNameParam == null) {
-            // TODO: calypso_user debe leerse de configuración
-            userNameParam = "calypso_user";
-        }
-
-        final ATDSConnection aatDsConn = new ATDSConnection(userNameParam);
-
-        final Trade tradeChange = trade.clone();
-        if (AccessUtil.isAuthorized(tradeChange, action)) {
-            tradeChange.setAction(Action.valueOf(action));
-            tradeChange.setEnteredUser(userNameParam);
-
-            DSConnection.getDefault().getRemoteTrade().save(tradeChange);
-            rst = true;
-
-        } else {
-            aatDsConn.restoreRealConnection();
-            throw new SecurityException("Action can't be performed with user " + userNameParam);
-        }
-
-        aatDsConn.restoreRealConnection();
-        return rst;
+        return applyAction(tradeCloned, action, userName);
     }
 
     /**
@@ -120,7 +99,6 @@ public class ATTrade {
      */
     public void assignSdi(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
             final String userName) throws CalypsoServiceException {
-        // TODO: AQUI
         final ATDSConnection dsCon = new ATDSConnection(userName);
 
         final Trade clonedTrade = trade.clone();
@@ -166,10 +144,34 @@ public class ATTrade {
         dsCon.restoreRealConnection();
     }
 
+    /**
+     * Creates the transfer rule.
+     *
+     * @param transferType
+     *            the transfer type
+     * @param payRec
+     *            the pay rec
+     * @return the AT trade transfer rule
+     */
     public ATTradeTransferRule createTransferRule(final String transferType, final String payRec) {
         return new ATTradeTransferRule().withTransferType(transferType).withPayRec(payRec);
     }
 
+    /**
+     * Creates the transfer rule.
+     *
+     * @param transferType
+     *            the transfer type
+     * @param payRec
+     *            the pay rec
+     * @param ccy
+     *            the ccy
+     * @param role
+     *            the role
+     * @param leShortName
+     *            the le short name
+     * @return the AT trade transfer rule
+     */
     public ATTradeTransferRule createTransferRule(final String transferType, final String payRec, final String ccy,
             final String role, final String leShortName) {
         return createTransferRule(transferType, payRec).withCurrency(ccy).withRole(role).withLegalEntity(leShortName);
@@ -367,12 +369,6 @@ public class ATTrade {
         return trade.getQuantity();
     }
 
-    private TradeTransferRule getRelevantTransferRule(final ATSdi sdi,
-            final List<TradeTransferRule> transferRulesOnTrade) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     /**
      * Gets the sales person.
      *
@@ -485,4 +481,154 @@ public class ATTrade {
         return trade.toString() + " / " + trade.getProduct().getDescription();
     }
 
+    /**
+     * Update amount.
+     *
+     * @param trade
+     *            the trade
+     * @param amount
+     *            the amount
+     * @param action
+     *            the action
+     * @param username
+     *            the username
+     * @return true, if successful
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public boolean updateAmount(final Trade trade, final Double amount, final String action, final String username)
+            throws CalypsoServiceException {
+
+        final Trade clonedTrade = trade.clone();
+        clonedTrade.getProduct().setPrincipal(amount);
+
+        return applyAction(clonedTrade, action, username);
+    }
+
+    /**
+     * Update comment.
+     *
+     * @param trade
+     *            the trade
+     * @param comment
+     *            the comment
+     * @param action
+     *            the action
+     * @param username
+     *            the username
+     * @return the string
+     * @throws CalypsoServiceException
+     *             the remote exception
+     */
+    public boolean updateComment(final Trade trade, final String comment, final String action, final String username)
+            throws CalypsoServiceException {
+
+        final Trade clonedTrade = trade.clone();
+        clonedTrade.setComment(comment);
+        return applyAction(clonedTrade, action, username);
+    }
+
+    /**
+     * Update quantity.
+     *
+     * @param quantity
+     *            the quantity
+     * @param action
+     *            the action
+     * @param username
+     *            the username
+     * @return true, if successful
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public boolean updateQuantity(final double quantity, final String action, final String username)
+            throws CalypsoServiceException {
+
+        final Trade clonedTrade = trade.clone();
+        if (clonedTrade.getProduct() instanceof Cash) {
+            final Cash cash = (Cash) clonedTrade.getProduct();
+            cash.setPrincipal(quantity);
+        } else {
+            clonedTrade.setQuantity(quantity);
+        }
+        return applyAction(clonedTrade, action, username);
+    }
+
+    /**
+     * Update settle date.
+     *
+     * @param setDate
+     *            the set date
+     * @param action
+     *            the action
+     * @param username
+     *            the username
+     * @return true, if successful
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public boolean updateSettleDate(final JDate setDate, final String action, final String username)
+            throws CalypsoServiceException {
+
+        final Trade clonedTrade = trade.clone();
+        clonedTrade.setSettleDate(setDate);
+
+        return applyAction(clonedTrade, action, username);
+    }
+
+    /**
+     * Apply action.
+     *
+     * @param tradeChange
+     *            the trade change
+     * @param action
+     *            the action
+     * @param userName
+     *            the user name
+     * @return true, if successful
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    protected boolean applyAction(final Trade tradeChange, final String action, final String userName)
+            throws CalypsoServiceException {
+        boolean rst = false;
+
+        String userNameParam = userName;
+        if (userNameParam == null) {
+            userNameParam = DSConnection.getDefault().getUser();
+        }
+
+        final ATDSConnection aatDsConn = new ATDSConnection(userNameParam);
+
+        if (AccessUtil.isAuthorized(tradeChange, action)) {
+            tradeChange.setAction(Action.valueOf(action));
+            tradeChange.setEnteredUser(userNameParam);
+
+            DSConnection.getDefault().getRemoteTrade().save(tradeChange);
+            rst = true;
+
+        } else {
+            aatDsConn.restoreRealConnection();
+            throw new SecurityException("Action can't be performed with user " + userNameParam);
+        }
+
+        aatDsConn.restoreRealConnection();
+        return rst;
+    }
+
+    /**
+     * Gets the relevant transfer rule.
+     *
+     * @param sdi
+     *            the sdi
+     * @param transferRulesOnTrade
+     *            the transfer rules on trade
+     * @return the relevant transfer rule
+     */
+    private TradeTransferRule getRelevantTransferRule(final ATSdi sdi,
+            final List<TradeTransferRule> transferRulesOnTrade) {
+        // TODO Auto-generated method stub
+        throw new IllegalArgumentException("Method not implemented");
+        // return null;
+    }
 }
