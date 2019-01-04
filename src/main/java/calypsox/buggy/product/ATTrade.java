@@ -29,6 +29,7 @@ import calypsox.buggy.xfer.ATTradeTransferRule;
  */
 public class ATTrade {
 
+    /** The Constant SD_STATUS_ASSIGNED. */
     private static final String SD_STATUS_ASSIGNED = "Assigned";
     /** The Constant ASSIGNED_STATUS. */
     private static final String ASSIGNED_STATUS = "Xfer Assigned";
@@ -108,7 +109,6 @@ public class ATTrade {
     public void assignSdiOnTrade(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
             final String userName) throws CalypsoServiceException {
         final ATDSConnection dsCon = new ATDSConnection(userName);
-        // TODO: transferRule debe ser una lista
         final Trade clonedTrade = trade.clone();
         final Vector<String> exceptions = new Vector<>();
         @SuppressWarnings("unchecked")
@@ -661,6 +661,21 @@ public class ATTrade {
         return rst;
     }
 
+    /**
+     * Assign sdi.
+     *
+     * @param dsCon
+     *            the ds con
+     * @param payerSdi
+     *            the payer sdi
+     * @param recSdi
+     *            the rec sdi
+     * @param transferToCancel
+     *            the transfer to cancel
+     * @return the BO transfer
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
+     */
     private BOTransfer assignSdi(final ATDSConnection dsCon, final ATSdi payerSdi, final ATSdi recSdi,
             final BOTransfer transferToCancel) throws CloneNotSupportedException {
         final BOTransfer amendedTransfer = (BOTransfer) transferToCancel.clone();
@@ -684,8 +699,8 @@ public class ATTrade {
             amendedTransfer.setReceiverSDStatus(ASSIGNED_STATUS);
         }
 
-        amendedTransfer.setExternalSDStatus("Xfer Assigned");
-        amendedTransfer.setInternalSDStatus("Xfer Assigned");
+        amendedTransfer.setExternalSDStatus(ASSIGNED_STATUS);
+        amendedTransfer.setInternalSDStatus(ASSIGNED_STATUS);
 
         amendedTransfer.setAction(Action.NEW);
         amendedTransfer.setStatus(Status.S_NONE);
@@ -771,7 +786,7 @@ public class ATTrade {
 
         final SDISelector sdiSelector = SDISelectorUtil.find(trade, rule);
 
-        final Vector<String> settleMethods = new Vector<String>();
+        final Vector<String> settleMethods = new Vector<>();
         settleMethods.add(rule.getSettlementMethod());
 
         sdiSelector.selectSDIs(trade, rule, JDate.getNow(), new Vector<String>(), settleMethods,
@@ -781,8 +796,8 @@ public class ATTrade {
         underliying.setReceiverSDId(amendedTransfer.getReceiverSDId());
         underliying.setPayerSDStatus(ASSIGNED_STATUS);
         underliying.setReceiverSDStatus(ASSIGNED_STATUS);
-        underliying.setExternalSDStatus("Xfer Assigned");
-        underliying.setInternalSDStatus("Xfer Assigned");
+        underliying.setExternalSDStatus(ASSIGNED_STATUS);
+        underliying.setInternalSDStatus(ASSIGNED_STATUS);
 
         underliying.setAction(Action.NEW);
         underliying.setStatus(Status.S_NONE);
