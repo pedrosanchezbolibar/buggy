@@ -20,7 +20,7 @@
 		<Action>@ACTION@</Action>
 		<TradeCounterParty>@CPTY@</TradeCounterParty>
 		<CounterPartyRole>CounterParty</CounterPartyRole>
-		<TradeBook>BUGGY_BOOK</TradeBook>
+		<TradeBook>TESORMAD</TradeBook>
 		<TradeBundleType/>
 		<TradeBundleName/>
 		<TradeCurrency>USD</TradeCurrency>
@@ -30,7 +30,7 @@
 		<TradeDateTime>2026-05-06T10:14:26.108+02:00</TradeDateTime>
 		<TradeSettleDate>2026-05-08T10:14:26.108+02:00</TradeSettleDate>
 		<StartDate>2026-05-06T10:14:26.108+02:00</StartDate>
-		<TraderName>stress32</TraderName>
+		<TraderName>CENTRO</TraderName>
 		<SalesPerson>NONE</SalesPerson>
 		<Comment>OP_085</Comment>
 		<TemplateName/>
