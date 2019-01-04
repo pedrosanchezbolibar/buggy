@@ -46,24 +46,6 @@ public class ATMessages {
     }
 
     /**
-     * Gets the first message.
-     *
-     * @param where
-     *            the where clause
-     * @return the message
-     * @throws CalypsoServiceException
-     *             the remote exception
-     */
-    private ATMessage getMessage(final String where) throws CalypsoServiceException {
-        final MessageArray messages = DSConnection.getDefault().getRemoteBackOffice().getMessages(where);
-        if (messages.size() > 1 || messages.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Can't get one message, search returns " + messages.size() + " elements");
-        }
-        return new ATMessage(messages.get(0));
-    }
-
-    /**
      * Gets the message by event type.
      *
      * @param trade
@@ -215,6 +197,32 @@ public class ATMessages {
     }
 
     /**
+     * Gets the trade messages.
+     *
+     * @param trade
+     *            the trade
+     * @return the messages
+     * @throws CalypsoServiceException
+     */
+    public List<ATMessage> getMessages(final ATTrade trade) throws CalypsoServiceException {
+        final String where = String.format("trade_id = '%s'", trade.getId());
+        return getMessagesOrdered(where);
+    }
+
+    /**
+     * Gets the transfer messages.
+     *
+     * @param transfer
+     *            the transfer
+     * @return the messages
+     * @throws CalypsoServiceException
+     */
+    public List<ATMessage> getMessages(final ATTransfer transfer) throws CalypsoServiceException {
+        final String where = String.format("transfer_id = '%s'", transfer.getId());
+        return getMessagesOrdered(where);
+    }
+
+    /**
      * Gets the message by event types.
      *
      * @param trade
@@ -284,6 +292,24 @@ public class ATMessages {
         final String where = String.format("transfer_id = '%s' and template_name = '%s' ", transfer.getId(),
                 templateName);
         return getMessagesOrdered(where);
+    }
+
+    /**
+     * Gets the first message.
+     *
+     * @param where
+     *            the where clause
+     * @return the message
+     * @throws CalypsoServiceException
+     *             the remote exception
+     */
+    private ATMessage getMessage(final String where) throws CalypsoServiceException {
+        final MessageArray messages = DSConnection.getDefault().getRemoteBackOffice().getMessages(where);
+        if (messages.size() > 1 || messages.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Can't get one message, search returns " + messages.size() + " elements");
+        }
+        return new ATMessage(messages.get(0));
     }
 
     /**

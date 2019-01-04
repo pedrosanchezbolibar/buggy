@@ -1,6 +1,7 @@
 package calypsox.buggy.ui;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import com.calypso.tk.refdata.CurrencyDefault;
 import com.calypso.tk.service.LocalCache;
@@ -69,7 +70,7 @@ public class ATAmount {
             decimals = (int) ccyDefault.getRounding();
         }
 
-        final DecimalFormat format = new DecimalFormat();
+        final NumberFormat format = DecimalFormat.getInstance();
         format.setMaximumFractionDigits(decimals);
         format.setMinimumFractionDigits(decimals);
 

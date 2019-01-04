@@ -10,7 +10,226 @@
 	<body>
 		<h1>Insert a trade using CML</h1>		
 		
+		<head>
+			<title>Ejemplo básico para una operación importada con CML</title>
+			<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+			<script>
+		            function showMessage(elementId) {
+			            var x = document.getElementById(elementId);
+			            if (x.style.display === "none") {
+			                x.style.display = "block";
+			            } else {
+			                x.style.display = "none";
+			            }
+		            }
+		    </script>
+		</head>
+	
+		<h2>Descripción</h2>
+	
+		<p>
+			Ejemplo básico para una operación importada con CML
+		</p>
+
+		<h2>Datos de Referencia</h2>
+
+		<p>
+			Insertar una nueva operacion de Depósito Cash mediante la acción
+			<span concordion:execute="setProperty('ACTION', #TEXT)">NEW</span>,
+			con external reference
+			<span concordion:echo="#extRef=generateExternalRef()"> </span>  
+			<span concordion:execute="setProperty('EXTERNAL_REFERENCE', #extRef)"> </span>
+			y con contrapartida 
+			<span concordion:execute="setProperty('CPTY', #TEXT)">NONFINANCIAL_SWIFT_2</span>.
+		</p>
+			
+	
+		<h2>Proceso de Prueba</h2>
+
+		<p>
+			Utilizaremos el template 
+			<span concordion:set="#template">Cash.xml</span>        	
+			para  
+			<span concordion:execute="#tradeId=importCMLTrade(#template)">insertar</span>
+			la operación.
+		</p>
+
+		<p>
+			El trade insertado es similar a este:
+			<span style="visibility: hidden;" concordion:set="#img">Cash.png</span>
+			<span ext:embed="getImage(#img)"> </span>
+		</p>
 		
+		<p>
+			Comprobamos los datos financieros de la operación en la tabla:
+		</p>
+		<table concordion:execute="#trade=getTrade(#tradeId)">
+			<tr>
+				<th concordion:echo="#trade.id">Trade id</th>
+				<th concordion:assertEquals="#trade.counterParty">Trade CounteParty</th>
+				<th concordion:assertEquals="#trade.productType">Product Type</th>				
+				<th concordion:assertEquals="#trade.status">Status</th>
+				<th concordion:assertEquals="#trade.tradeDate">Trade Date</th>
+				<th concordion:assertEquals="#trade.settleDate">Settle Date</th>
+                <th concordion:assertEquals="#trade.principalAmount">Primary Amount</th>  
+			</tr>
+			<tr>
+				<td></td>
+				<td>NONFINANCIAL_SWIFT_2</td>
+				<td>Cash</td>
+				<td>VERIFIED</td>
+				<td>31/05/16 09H00' CEST</td>
+				<td>02/06/2016</td>
+				<td>-1.000.000,00 USD</td>
+			</tr>
+		</table>
+			
+		<p>
+			Esperamos hasta que Calypso genere las transferencias comprobando que el 
+			<span concordion:set="#engine">TransferEngine</span> no tenga eventos pendientes.
+			(<span concordion:echo="waitForEngine(#engine)"> </span> eventos pendientes)		
+		</p>
+
+		
+		<p>
+			Comprobamos las liquidaciones del Deposito:
+		</p>
+		<table concordion:verifyRows="#transfer : getNettedTransfers(#trade)">
+			<tr>
+				<th concordion:echo="#transfer.id">Id</th>
+				<th concordion:assertEquals="#transfer.settlementMethod">Settle Method</th>
+				<th concordion:assertEquals="#transfer.settlementAmount">Amount</th>
+				<th concordion:assertEquals="#transfer.eventType">Event Type</th>
+				<th concordion:assertEquals="#transfer.status">Status</th>
+				<th concordion:assertEquals="#transfer.valueDate">Value Date</th>
+				<th concordion:assertEquals="#transfer.nettingType">Netting Type</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td>SWIFT</td>
+				<td>1.000.000,00 USD</td>
+				<td>PAYMENT</td>
+				<td>VERIFIED</td>
+				<td>02/06/2016</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>SWIFT</td>
+				<td>48.688,89 USD</td>
+				<td>RECEIPT</td>
+				<td>VERIFIED</td>
+				<td>02/06/2022</td>
+				<td>None</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>SWIFT</td>
+				<td>1.000.000,00 USD</td>
+				<td>RECEIPT</td>
+				<td>VERIFIED</td>
+				<td>02/06/2022</td>
+				<td>None</td>
+			</tr>
+		</table>
+
+		<p>
+			Esperamos hasta que Calypso genere los Mensajes comprobando que el 
+			<span concordion:set="#engine">MessageEngine</span> no tenga eventos pendientes.
+			(<span concordion:echo="waitForEngine(#engine)"> </span> eventos pendientes)		
+		</p>
+	
+		<table concordion:verifyRows="#msg : getMessages(#trade)">
+			<tr>
+				<th concordion:echo="#msg.id">Id</th>
+				<th concordion:assertEquals="#msg.templateName">Plantilla del mensaje</th>
+				<th concordion:assertEquals="#msg.eventType">Tipo de Evento</th>
+				<th concordion:echo="#msg.transfer">Transfer</th>
+				<th concordion:assertEquals="#msg.status">Estado</th>
+				<th concordion:assertEquals="#msg.subAction">Sub Action</th>
+				<th concordion:echo="#msg.linkedMessage">Mensaje relacionado</th>
+			</tr>
+			<tr>
+				<td></td>
+				<td>MT103</td>
+				<td>VERIFIED_PAYMENT</td>
+				<td></td>
+				<td>VERIFIED</td>
+				<td>NONE</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>MT210</td>
+				<td>VERIFIED_RECEIPT</td>
+				<td></td>
+				<td>VERIFIED</td>
+				<td>NONE</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>MT210</td>
+				<td>VERIFIED_RECEIPT</td>
+				<td></td>
+				<td>VERIFIED</td>
+				<td>NONE</td>
+				<td></td>
+			</tr>
+		</table>
+ 		
+ 		<p>
+			Esperamos hasta que Calypso genere las CREs comprobando que el 
+			<span concordion:set="#engine">CreEngine</span> no tenga eventos pendientes.
+			(<span concordion:echo="waitForEngine(#engine)"> </span> eventos pendientes)		
+		</p>
+
+		<p>
+			Se muestran los Cres en la Tabla ordenados por Effective Date: 
+		</p>
+		                       
+	    <table concordion:verifyRows="#boCre : getCres(#trade)">
+	        <tr>
+	            <th concordion:assertEquals="#boCre.effectiveDate">Effective Date</th>
+	            <th concordion:assertEquals="#boCre.creType">Cre Type</th>
+	            <th concordion:assertEquals="#boCre.eventType">Event Type</th>
+	            <th concordion:assertEquals="#boCre.originalEventType">Original Event Type</th>
+	            <th concordion:assertEquals="#boCre.getCreAmount(0)">Amount 1</th>
+	            <th concordion:assertEquals="#boCre.getCreAmount(1)">Amount 2</th>
+	        </tr>
+	        <tr>
+	        	<td>09/01/2028</td>
+	        	<td>NEW</td>
+	        	<td>COTFX</td>
+	        	<td>VERIFIED_TRADE</td>
+	        	<td>-29,751.52 EUR</td>
+	        	<td>26,347.95 GBP</td>
+	        </tr>
+	        <tr>
+	        	<td>11/01/2028</td>
+	        	<td>NEW</td>
+	        	<td>COTFX_REV</td>
+	        	<td>VERIFIED_TRADE</td>
+	        	<td>-29,751.52 EUR</td>
+	        	<td>26,347.95 GBP</td>
+	        </tr>
+	        <tr>
+	        	<td>11/01/2028</td>
+	        	<td>NEW</td>
+	        	<td>CST</td>
+	        	<td>VERIFIED_PAYMENT</td>
+	        	<td>-29,751.52 EUR</td>
+	        	<td>EMPTY</td>
+	        </tr>
+	        <tr>
+	        	<td>11/01/2028</td>
+	        	<td>NEW</td>
+	        	<td>CST</td>
+	        	<td>VERIFIED_RECEIPT</td>
+	        	<td>26,347.95 GBP</td>
+	        	<td>EMPTY</td>
+	        </tr>
+	    </table>
 
 	</body>
 </html>

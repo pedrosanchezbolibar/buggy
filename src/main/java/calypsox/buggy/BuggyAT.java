@@ -379,6 +379,32 @@ public class BuggyAT extends BuggyVersion {
     }
 
     /**
+     * Gets the messages.
+     *
+     * @param trade
+     *            the trade
+     * @return the messages
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATMessage> getMessages(final ATTrade trade) throws CalypsoServiceException {
+        return ATMessages.getInstance().getMessages(trade);
+    }
+
+    /**
+     * Gets the messages.
+     *
+     * @param transfer
+     *            the transfer
+     * @return the messages
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public List<ATMessage> getMessages(final ATTransfer transfer) throws CalypsoServiceException {
+        return ATMessages.getInstance().getMessages(transfer);
+    }
+
+    /**
      * Gets the messages by event types.
      *
      * @param trade
