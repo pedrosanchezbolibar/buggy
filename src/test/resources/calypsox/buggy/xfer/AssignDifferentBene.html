@@ -154,7 +154,7 @@
 				<span concordion:echo="#transfer"> </span>
 				<span concordion:execute="#tr=createTransferRule(#transferType, 'PAY')" > </span> 
 				y aplicamos la acción <span concordion:set="#action">ASSIGN</span>.
-				<span concordion:execute="#transfer.assignSdi({#sdi}, #tr, #action, 'calypso_user')"> </span>.			
+				<span concordion:execute="#trade.assignSdiOnTransfer(#sdi, #tr, #action, 'calypso_user')"> </span>.			
 
 		</p>
 		
@@ -185,31 +185,31 @@
 				<td></td>
 				<td>CANCELED</td>
 				<td>PRINCIPAL</td>
-				<td>PRINCIPAL</td>
+				<td>PAYMENT</td>
 				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
-				<td></td>
-				<td></td>
+				<td>RDR_791645</td>
+				<td>Test_TEST_MANCHOICE_SWIFTUSD_BOTH_1</td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>CREATED</td>
 				<td>PRINCIPAL</td>
-				<td>PRINCIPAL</td>
+				<td>PAYMENT</td>
 				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
-				<td></td>
-				<td></td>
+				<td>Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</td>
+				<td>Test_TEST_MANCHOICE_SWIFTUSD_BOTH_1</td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>PREMATCH</td>
 				<td>PRINCIPAL</td>
-				<td>PRINCIPAL</td>
+				<td>RECEIPT</td>
 				<td>4,261,200.00 EUR</td>
 				<td>08/05/2026</td>
-				<td></td>
-				<td></td>
+				<td>RDR_3136726</td>
+				<td>Test_TEST_MANCHOICE_TARGET2EUR_BOTH_1</td>
 			</tr>
 		</table>
 

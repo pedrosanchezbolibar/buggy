@@ -134,20 +134,6 @@ public class ATTransfer {
         return rst;
     }
 
-    public void assignSdi(final List<ATSdi> sdi, final ATTradeTransferRule transferRule, final String actionToApply,
-            final String userName) throws CalypsoServiceException {
-        final ATDSConnection dsCon = new ATDSConnection(userName);
-
-        if (AccessUtil.isAuthorized(botransfer, actionToApply)) {
-
-        } else {
-            dsCon.restoreRealConnection();
-            throw new CalypsoServiceException("Action cant be performed with user: " + userName);
-        }
-
-        dsCon.restoreRealConnection();
-    }
-
     /**
      * Gets the action.
      *

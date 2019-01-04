@@ -1,9 +1,11 @@
 package calypsox.buggy.product;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import com.calypso.tk.bo.BOProductHandler;
+import com.calypso.tk.bo.BOTransfer;
 import com.calypso.tk.bo.Fee;
 import com.calypso.tk.bo.SDISelector;
 import com.calypso.tk.bo.SDISelectorUtil;
@@ -11,10 +13,12 @@ import com.calypso.tk.bo.TradeTransferRule;
 import com.calypso.tk.core.Action;
 import com.calypso.tk.core.CalypsoServiceException;
 import com.calypso.tk.core.JDate;
+import com.calypso.tk.core.Status;
 import com.calypso.tk.core.Trade;
 import com.calypso.tk.product.Cash;
 import com.calypso.tk.refdata.AccessUtil;
 import com.calypso.tk.service.DSConnection;
+import com.calypso.tk.util.TransferArray;
 
 import calypsox.buggy.infra.ATDSConnection;
 import calypsox.buggy.xfer.ATSdi;
@@ -26,6 +30,9 @@ import calypsox.buggy.xfer.ATTradeTransferRule;
 public class ATTrade {
 
     private static final String SD_STATUS_ASSIGNED = "Assigned";
+    /** The Constant ASSIGNED_STATUS. */
+    private static final String ASSIGNED_STATUS = "Xfer Assigned";
+
     /** The trade. */
     protected Trade trade;
 
@@ -98,10 +105,10 @@ public class ATTrade {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public void assignSdi(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
+    public void assignSdiOnTrade(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
             final String userName) throws CalypsoServiceException {
         final ATDSConnection dsCon = new ATDSConnection(userName);
-
+        // TODO: transferRule debe ser una lista
         final Trade clonedTrade = trade.clone();
         final Vector<String> exceptions = new Vector<>();
         @SuppressWarnings("unchecked")
@@ -137,6 +144,79 @@ public class ATTrade {
         } else {
             dsCon.restoreRealConnection();
             throw new CalypsoServiceException("Action cant be performed with user: " + userName);
+        }
+
+        dsCon.restoreRealConnection();
+    }
+
+    /**
+     * Assign one sdi on transfer.
+     *
+     * @param sdi
+     *            the sdi
+     * @param transferRule
+     *            the transfer rule
+     * @param actionToApply
+     *            the action to apply
+     * @param userName
+     *            the user name
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
+     */
+    public void assignSdiOnTransfer(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
+            final String userName) throws CalypsoServiceException, CloneNotSupportedException {
+        if ("PAY".equals(transferRule.getPayReceive())) {
+            assignSdisOnTransfer(sdi, null, transferRule, actionToApply, userName);
+        } else {
+            assignSdisOnTransfer(null, sdi, transferRule, actionToApply, userName);
+        }
+    }
+
+    /**
+     * Assign both sdis on transfer.
+     *
+     * @param payerSdi
+     *            the payer sdi
+     * @param receiverSdi
+     *            the receiver sdi
+     * @param transferRule
+     *            the transfer rule
+     * @param actionToApply
+     *            the action to apply
+     * @param userName
+     *            the user name
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
+     */
+    public void assignSdisOnTransfer(final ATSdi payerSdi, final ATSdi receiverSdi,
+            final ATTradeTransferRule transferRule, final String actionToApply, final String userName)
+            throws CalypsoServiceException, CloneNotSupportedException {
+        final ATDSConnection dsCon = new ATDSConnection(userName);
+
+        final BOTransfer transferToCancel = getRelevantTransfer(transferRule);
+        final BOTransfer amendedTransfer = assignSdi(dsCon, payerSdi, receiverSdi, transferToCancel);
+
+        final List<BOTransfer> underlyingTranfers = modifyUnderlying(transferToCancel, amendedTransfer);
+
+        if (AccessUtil.isAuthorized(transferToCancel, actionToApply)) {
+            final long newTransferId = dsCon.getRemoteBackOffice().save(amendedTransfer, 0, null);
+            dsCon.getRemoteBackOffice().save(transferToCancel, 0, null);
+
+            final BOTransfer nettedTransfer = dsCon.getRemoteBackOffice().getBOTransfer(newTransferId);
+
+            for (final BOTransfer currentAmendedTransfer : underlyingTranfers) {
+                currentAmendedTransfer.setNettedTransferLongId(newTransferId);
+                currentAmendedTransfer.setStatus(nettedTransfer.getStatus());
+
+                dsCon.getRemoteBackOffice().save(currentAmendedTransfer, 0, null);
+            }
+        } else {
+            dsCon.restoreRealConnection();
+            throw new CalypsoServiceException("Action can't be performed with user: " + userName);
         }
 
         dsCon.restoreRealConnection();
@@ -579,6 +659,138 @@ public class ATTrade {
 
         aatDsConn.restoreRealConnection();
         return rst;
+    }
+
+    private BOTransfer assignSdi(final ATDSConnection dsCon, final ATSdi payerSdi, final ATSdi recSdi,
+            final BOTransfer transferToCancel) throws CloneNotSupportedException {
+        final BOTransfer amendedTransfer = (BOTransfer) transferToCancel.clone();
+        final TradeTransferRule transferRule = amendedTransfer.toTradeTransferRule();
+
+        final SDISelector sdiSelector = SDISelectorUtil.find(trade, transferRule);
+
+        if (payerSdi != null) {
+            final Vector<String> settleMethods = new Vector<>();
+            settleMethods.add(payerSdi.getSettlementMethod());
+            sdiSelector.selectSDIs(trade, transferRule, JDate.getNow(), new Vector<String>(), settleMethods, dsCon);
+            amendedTransfer.setPayerSDId(payerSdi.getId());
+            amendedTransfer.setPayerSDStatus(ASSIGNED_STATUS);
+        }
+
+        if (recSdi != null) {
+            final Vector<String> settleMethods = new Vector<>();
+            settleMethods.add(recSdi.getSettlementMethod());
+            sdiSelector.selectSDIs(trade, transferRule, JDate.getNow(), new Vector<String>(), settleMethods, dsCon);
+            amendedTransfer.setReceiverSDId(recSdi.getId());
+            amendedTransfer.setReceiverSDStatus(ASSIGNED_STATUS);
+        }
+
+        amendedTransfer.setExternalSDStatus("Xfer Assigned");
+        amendedTransfer.setInternalSDStatus("Xfer Assigned");
+
+        amendedTransfer.setAction(Action.NEW);
+        amendedTransfer.setStatus(Status.S_NONE);
+        amendedTransfer.setParentLongId(amendedTransfer.getLongId());
+        amendedTransfer.setLongId(0);
+        amendedTransfer.setOtherAmount(0.0D);
+        amendedTransfer.setRealCashAmount(0.0D);
+        amendedTransfer.setCashAccountNumber(0);
+        amendedTransfer.setNettedTransferLongId(0);
+        amendedTransfer.setBusinessReason(Action.S_ASSIGN);
+
+        transferToCancel.setAction(Action.ASSIGN);
+
+        return amendedTransfer;
+    }
+
+    /**
+     * Gets the relevant transfer.
+     *
+     * @param transferRule
+     *            the transfer rule
+     * @return the relevant transfer
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    private BOTransfer getRelevantTransfer(final ATTradeTransferRule transferRule) throws CalypsoServiceException {
+        final TransferArray transferArray = DSConnection.getDefault().getRemoteBackOffice()
+                .getBOTransfers(trade.getId());
+        for (int i = 0; i < transferArray.size(); i++) {
+            final BOTransfer xfer = transferArray.get(i);
+            if (xfer.getTransferType().equals(transferRule.getTransferType())
+                    && xfer.getPayReceive().equals(transferRule.getPayReceive())) {
+                return xfer;
+            }
+        }
+        throw new IllegalArgumentException("Can't find a transfer to assign this transfer rule: " + transferRule);
+    }
+
+    /**
+     * Modify underlying.
+     *
+     * @param transferToCancel
+     *            the transfer to cancel
+     * @param amendedTransfer
+     *            the amended transfer
+     * @return the list
+     * @throws CloneNotSupportedException
+     *             the clone not supported exception
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    private List<BOTransfer> modifyUnderlying(final BOTransfer transferToCancel, final BOTransfer amendedTransfer)
+            throws CloneNotSupportedException, CalypsoServiceException {
+        final TransferArray underlyingTransfers = DSConnection.getDefault().getRemoteBackOffice()
+                .getBOTransfers("netted_transfer_id = " + transferToCancel.getLongId());
+        final List<BOTransfer> amendedUnderTransfers = new ArrayList<>(underlyingTransfers.size());
+
+        for (final BOTransfer underTransfer : underlyingTransfers) {
+            final BOTransfer amendedUndTransfer = (BOTransfer) underTransfer.clone();
+
+            updateRelevantInfo(amendedUndTransfer, amendedTransfer, transferToCancel);
+
+            amendedUnderTransfers.add(amendedUndTransfer);
+
+        }
+
+        return amendedUnderTransfers;
+    }
+
+    /**
+     * Update relevant info.
+     *
+     * @param underliying
+     *            the underliying
+     * @param amendedTransfer
+     *            the amended transfer
+     * @param canceledTransfer
+     *            the canceled transfer
+     */
+    private void updateRelevantInfo(final BOTransfer underliying, final BOTransfer amendedTransfer,
+            final BOTransfer canceledTransfer) {
+        final TradeTransferRule rule = underliying.toTradeTransferRule();
+
+        final SDISelector sdiSelector = SDISelectorUtil.find(trade, rule);
+
+        final Vector<String> settleMethods = new Vector<String>();
+        settleMethods.add(rule.getSettlementMethod());
+
+        sdiSelector.selectSDIs(trade, rule, JDate.getNow(), new Vector<String>(), settleMethods,
+                DSConnection.getDefault());
+
+        underliying.setPayerSDId(amendedTransfer.getPayerSDId());
+        underliying.setReceiverSDId(amendedTransfer.getReceiverSDId());
+        underliying.setPayerSDStatus(ASSIGNED_STATUS);
+        underliying.setReceiverSDStatus(ASSIGNED_STATUS);
+        underliying.setExternalSDStatus("Xfer Assigned");
+        underliying.setInternalSDStatus("Xfer Assigned");
+
+        underliying.setAction(Action.NEW);
+        underliying.setStatus(Status.S_NONE);
+        underliying.setParentLongId(canceledTransfer.getLongId());
+        underliying.setLongId(0);
+        underliying.setOtherAmount(0.0D);
+        underliying.setRealCashAmount(0.0D);
+        underliying.setCashAccountNumber(0);
     }
 
 }
