@@ -40,7 +40,7 @@
 			</p>
 			<p>
 				Se carga la SDI de USD BLAEPAPAN <b>marcada como NO Preferred</b> SDI_USD_18538243: <span concordion:set="#sdiExtRef">AATRDR_18538243</span>
-				<span style="visibility: hidden;" concordion:set="#ContactCparty">ManualAssingDepoSDI/DepoSDIManual.png</span>
+				<span style="visibility: hidden;" concordion:set="#ContactCparty">DepoSDIManual.png</span>
 				<span ext:embed="getImage(#ContactCparty)"> </span>
 				<span style="visibility: hidden;" concordion:set="#sdiExtRefSP">RDR_791590</span>
 			</p>
@@ -50,7 +50,7 @@
 				La operación se define con(TradeDate <span concordion:execute="setProperty('TRADE_DATE', #TEXT)">2027-02-16</span>;
 				StartDate <span concordion:execute="setProperty('START_DATE', #TEXT)">2027-02-16</span>;
 				EndDate <span concordion:execute="setProperty('END_DATE', #TEXT)">2027-03-16</span>)
-				Utilizando el template <span concordion:execute="setProperty('TEMPLATE', #TEXT)">DepoSDIManual.xml</span> 
+				Utilizando el template <span concordion:set="#template">DepoSDIManual.xml</span> 
 				insertamos una operación con external ref 
 				<span concordion:echo="#extRef=generateExternalRef()"> </span>  
 				<span concordion:execute="setProperty('EXTERNAL_REFERENCE', #extRef)"> </span>
@@ -62,9 +62,8 @@
 	<button onclick="showMessage('ack')">Mostrar Ack completo</button>	
 	<pre concordion:echo="#ack" id="ack" style="display:none"> </pre>	
 			
-			<p>
-				<span concordion:execute="#trade=getTrade(#ack.tradeId)"> </span>
-				La operación insertada (<span concordion:echo="#trade"> </span>) es similar a esta:
+			<p>				
+				La operación insertada es similar a esta:
 				<span style="visibility: hidden;" concordion:set="#img">DepoSDIManualTrade.png</span>
 				<span ext:embed="getImage(#img)"> </span>			
 			</p>
@@ -79,7 +78,7 @@
 			<p>
 	        	Se comprueba que el trade se ha insertado, se ha detenido en estado VALIDATED_NO_SDI.
 	        </p>		
-	        <table>
+	        <table concordion:execute="#trade=getTrade(#ack.tradeId)">
 		        <tr>
 		            <th concordion:echo="#trade">Trade</th>
 		            <th concordion:assertEquals="#trade.status">Status</th>
@@ -95,12 +94,12 @@
 	        	Se comprueba que se ha generado una BOTask por no existir SDI válida para cada flujo de la operación.
 				<span concordion:set="#eventType">VALIDATED_NO_SDI_TRADE</span>
 	        </p>		
-	        <table concordion:verifyRows="#task : getTradeTasksByEventType(#extRef,{#eventType})">
+	        <table concordion:verifyRows="#task : getTasksByEventTypes(#trade, {#eventType}, false)">
 				<tr>
 					<th concordion:echo="#task.id">Task Id</th>
 					<th concordion:assertEquals="#task.eventType">Event Type</th>
-					<th concordion:assertEquals="getTaskComment(#task.id)">Task comment</th>
-					<th concordion:echo="#task.tradeId">Trade Id</th>
+					<th concordion:assertEquals="#task.comment">Task comment</th>
+					<th concordion:echo="#task.trade">Trade</th>
 				</tr>
 				<tr>
 					<td></td><td>VALIDATED_NO_SDI_TRADE</td><td>Missing SDI/[CheckSDI]</td><td></td>
