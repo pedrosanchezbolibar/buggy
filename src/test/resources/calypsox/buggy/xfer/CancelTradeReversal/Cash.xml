@@ -22,10 +22,10 @@
         <calypso:tradeParty>
             <calypso:book>
                 <calypso:type>com.calypso.tk.core.Book</calypso:type>
-                <calypso:identifier code="TESORMAD" codifier="convention"/>
+                <calypso:identifier code="BUGGY_BOOK" codifier="convention"/>
                 <calypso:calypsoBusinessKey>
                     <calypso:propertyName>name</calypso:propertyName>
-                    <calypso:propertyValue>TESORMAD</calypso:propertyValue>
+                    <calypso:propertyValue>BUGGY_BOOK</calypso:propertyValue>
                 </calypso:calypsoBusinessKey>
             </calypso:book>
             <calypso:role>Book</calypso:role>

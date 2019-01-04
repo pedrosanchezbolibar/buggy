@@ -96,10 +96,10 @@ public class CdufFile {
 
             if (ack.getRejected() > 0) {
                 final DUPAck aatack = new DUPAck(ack);
-                Log.error(this, "NACK inserting referece data: \r\n" + aatack);
+                Log.error(this, "NACK inserting referece data in file: " + fileName + "\r\n" + aatack);
             }
         } catch (final Exception ex) {
-            Log.error(this, "Exception loading file '" + getFileName() + "'", ex);
+            Log.error(this, "Exception loading file '" + fileName + "'", ex);
         }
     }
 
