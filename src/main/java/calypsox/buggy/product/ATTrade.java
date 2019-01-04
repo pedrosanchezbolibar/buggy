@@ -25,6 +25,7 @@ import calypsox.buggy.xfer.ATTradeTransferRule;
  */
 public class ATTrade {
 
+    private static final String SD_STATUS_ASSIGNED = "Assigned";
     /** The trade. */
     protected Trade trade;
 
@@ -108,21 +109,18 @@ public class ATTrade {
                 exceptions, dsCon, false);
 
         final TradeTransferRule relevantTransferRule = transferRule.getRelevantTransferRule(transferRulesOnTrade);
-        final SDISelector sdiSelector = SDISelectorUtil.find(clonedTrade, relevantTransferRule);
 
         final Vector<String> settleMethods = new Vector<>();
         settleMethods.add(sdi.getSettlementMethod());
         relevantTransferRule.setSettlementMethod(sdi.getSettlementMethod());
+        final SDISelector sdiSelector = SDISelectorUtil.find(clonedTrade, relevantTransferRule);
         sdiSelector.selectSDIs(clonedTrade, relevantTransferRule, JDate.getNow(), exceptions, settleMethods, dsCon);
+        relevantTransferRule.setPayerSDStatus(SD_STATUS_ASSIGNED);
+        relevantTransferRule.setReceiverSDStatus(SD_STATUS_ASSIGNED);
 
-        if ("REC".equalsIgnoreCase("")) {
-            relevantTransferRule.setPayerSDStatus("Assigned");
-            relevantTransferRule.setReceiverSDStatus("Assigned");
+        if ("REC".equalsIgnoreCase(sdi.getPayReceive())) {
             relevantTransferRule.setReceiverSDId(sdi.getId());
-
         } else {
-            relevantTransferRule.setPayerSDStatus("Assigned");
-            relevantTransferRule.setReceiverSDStatus("Assigned");
             relevantTransferRule.setPayerSDId(sdi.getId());
         }
 
@@ -142,39 +140,6 @@ public class ATTrade {
         }
 
         dsCon.restoreRealConnection();
-    }
-
-    /**
-     * Creates the transfer rule.
-     *
-     * @param transferType
-     *            the transfer type
-     * @param payRec
-     *            the pay rec
-     * @return the AT trade transfer rule
-     */
-    public ATTradeTransferRule createTransferRule(final String transferType, final String payRec) {
-        return new ATTradeTransferRule().withTransferType(transferType).withPayRec(payRec);
-    }
-
-    /**
-     * Creates the transfer rule.
-     *
-     * @param transferType
-     *            the transfer type
-     * @param payRec
-     *            the pay rec
-     * @param ccy
-     *            the ccy
-     * @param role
-     *            the role
-     * @param leShortName
-     *            the le short name
-     * @return the AT trade transfer rule
-     */
-    public ATTradeTransferRule createTransferRule(final String transferType, final String payRec, final String ccy,
-            final String role, final String leShortName) {
-        return createTransferRule(transferType, payRec).withCurrency(ccy).withRole(role).withLegalEntity(leShortName);
     }
 
     /**
@@ -616,19 +581,4 @@ public class ATTrade {
         return rst;
     }
 
-    /**
-     * Gets the relevant transfer rule.
-     *
-     * @param sdi
-     *            the sdi
-     * @param transferRulesOnTrade
-     *            the transfer rules on trade
-     * @return the relevant transfer rule
-     */
-    private TradeTransferRule getRelevantTransferRule(final ATSdi sdi,
-            final List<TradeTransferRule> transferRulesOnTrade) {
-        // TODO Auto-generated method stub
-        throw new IllegalArgumentException("Method not implemented");
-        // return null;
-    }
 }

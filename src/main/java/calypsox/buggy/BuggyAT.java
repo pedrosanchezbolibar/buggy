@@ -45,6 +45,7 @@ import calypsox.buggy.uti.ImgResource;
 import calypsox.buggy.uti.References;
 import calypsox.buggy.xfer.ATSdi;
 import calypsox.buggy.xfer.ATSdis;
+import calypsox.buggy.xfer.ATTradeTransferRule;
 import calypsox.buggy.xfer.ATTransfer;
 import calypsox.buggy.xfer.ATTransfers;
 
@@ -166,6 +167,39 @@ public class BuggyAT extends BuggyVersion {
      */
     public JDate calculateDateByTenor(final String tenor, final List<String> holidays, final String timeZone) {
         return new ATJDate().calculateDateByTenor(tenor, holidays, timeZone);
+    }
+
+    /**
+     * Creates the transfer rule.
+     *
+     * @param transferType
+     *            the transfer type
+     * @param payRec
+     *            the pay rec
+     * @return the AT trade transfer rule
+     */
+    public ATTradeTransferRule createTransferRule(final String transferType, final String payRec) {
+        return new ATTradeTransferRule().withTransferType(transferType).withPayRec(payRec);
+    }
+
+    /**
+     * Creates the transfer rule.
+     *
+     * @param transferType
+     *            the transfer type
+     * @param payRec
+     *            the pay rec
+     * @param ccy
+     *            the ccy
+     * @param role
+     *            the role
+     * @param leShortName
+     *            the le short name
+     * @return the AT trade transfer rule
+     */
+    public ATTradeTransferRule createTransferRule(final String transferType, final String payRec, final String ccy,
+            final String role, final String leShortName) {
+        return createTransferRule(transferType, payRec).withCurrency(ccy).withRole(role).withLegalEntity(leShortName);
     }
 
     /**

@@ -44,7 +44,7 @@
 			Insertamos un FXSpot utilizando el template 
 			<span concordion:set="#template">FXSpot.xml</span> 
 			con la Contrapartida 
-			<span concordion:execute="setProperty('CPTY', #TEXT)">CALBO</span>
+			<span concordion:execute="setProperty('CPTY', #TEXT)">TEST_MANCHOICE</span>
 			aplicando la acción <span concordion:execute="setProperty('ACTION', #TEXT)">NEW</span>
 		</p>
 		<p>
@@ -82,6 +82,7 @@
 				<th concordion:echo="#xfer.id">Id</th>
 				<th concordion:assertEquals="#xfer.status">Status</th>
 				<th concordion:assertEquals="#xfer.transferType">Tipo</th>
+				<th concordion:assertEquals="#xfer.eventType">Dirección</th>
 				<th concordion:assertEquals="#xfer.settlementAmount">Cantidad</th>
 				<th concordion:assertEquals="#xfer.valueDate">Fecha valor</th>
 				<th concordion:assertEquals="#xfer.internalSettleDelivery.reference">Internal SDI</th>
@@ -89,21 +90,23 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td>VERIFIED</td>
+				<td>PREMATCH</td>
 				<td>PRINCIPAL</td>
-				<td>4.261.200,00 USD</td>
+				<td>PAYMENT</td>
+				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
-				<td>(null)</td>
-				<td>(null)</td>
+				<td>RDR_791645</td>
+				<td>Test_TEST_MANCHOICE_SWIFTUSD_BOTH_1</td>
 			</tr>
 			<tr>
 				<td></td>
-				<td>VERIFIED</td>
+				<td>PREMATCH</td>
 				<td>PRINCIPAL</td>
-				<td>4.261.200,00 EUR</td>
+				<td>RECEIPT</td>
+				<td>4,261,200.00 EUR</td>
 				<td>08/05/2026</td>
-				<td>(null)</td>
-				<td>(null)</td>
+				<td>RDR_3136726</td>
+				<td>Test_TEST_MANCHOICE_TARGET2EUR_BOTH_1</td>
 			</tr>
 			
 		</table>
@@ -142,22 +145,24 @@
 		</table>
 
 		<p>
-			Asignamos la SDI creada anteriormente a la Liquidación <span concordion:set="#transferType">PRINCIPAL</span>
-				<span concordion:set="#payRec">PAY</span> de EUR 
-				<span concordion:execute="#tr=#trade.createTransferRule(#transferType,#payRec)" > </span> 
+			Asignamos la SDI creada anteriormente a la Liquidación de tipo
+				<span concordion:set="#transferType">PRINCIPAL</span>
+				con eventType <span concordion:set="#eventType">PAYMENT</span> de 
+				<span concordion:set="#amount">4261200.0</span> 
+				<span concordion:set="#ccy">USD</span>. 
+				<span concordion:execute="#transfer=getNettedTransfer(#trade, #amount, #ccy, #eventType, 'PREMATCH')"> </span>
+				<span concordion:echo="#transfer"> </span>
+				<span concordion:execute="#tr=createTransferRule(#transferType, 'PAY')" > </span> 
 				y aplicamos la acción <span concordion:set="#action">ASSIGN</span>.
-				<span concordion:execute="#trade.assignSdi(#sdi, #tr, #action, 'calypso_user')"> </span>.			
+				<span concordion:execute="#transfer.assignSdi({#sdi}, #tr, #action, 'calypso_user')"> </span>.			
 
 		</p>
 		
 		<p>
-			Debe existir una Transfer en estado <span concordion:set="#status">CREATED</span>
-			con eventType <span concordion:set="#eventType">PAYMENT</span> de 
-			<span concordion:set="#amount">4261200.0</span> 
-			<span concordion:set="#ccy">USD</span>. 
-			<span concordion:execute="#transfer1=getNettedTransfer(#trade, #amount, #ccy, #eventType, #status)"> </span>
+			Ahora debe haberse cancelado la tranferencia anterior y se debe haber creado una nueva en estado CREATED
+			<span concordion:execute="#transfer1=getNettedTransfer(#trade, #amount, #ccy, #eventType, 'CREATED')"> </span>			
 			(<span concordion:assertTrue="assertNotNull(#transfer1)">OK</span>
-			<span concordion:echo="#transfer1.id"> </span>)
+			<span concordion:echo="#transfer1"> </span>)
 		</p>
 			
 		<p>
@@ -169,6 +174,7 @@
 				<th concordion:echo="#xfer.id">Id</th>
 				<th concordion:assertEquals="#xfer.status">Status</th>
 				<th concordion:assertEquals="#xfer.transferType">Tipo</th>
+				<th concordion:assertEquals="#xfer.eventType">Dirección</th>
 				<th concordion:assertEquals="#xfer.settlementAmount">Cantidad</th>
 				<th concordion:assertEquals="#xfer.valueDate">Fecha valor</th>
 				<th concordion:assertEquals="#xfer.internalSettleDelivery.reference">Internal SDI reference</th>
@@ -179,6 +185,7 @@
 				<td></td>
 				<td>CANCELED</td>
 				<td>PRINCIPAL</td>
+				<td>PRINCIPAL</td>
 				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
 				<td></td>
@@ -188,6 +195,7 @@
 				<td></td>
 				<td>CREATED</td>
 				<td>PRINCIPAL</td>
+				<td>PRINCIPAL</td>
 				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
 				<td></td>
@@ -196,6 +204,7 @@
 			<tr>
 				<td></td>
 				<td>PREMATCH</td>
+				<td>PRINCIPAL</td>
 				<td>PRINCIPAL</td>
 				<td>4,261,200.00 EUR</td>
 				<td>08/05/2026</td>

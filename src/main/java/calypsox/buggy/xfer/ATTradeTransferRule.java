@@ -566,32 +566,76 @@ public class ATTradeTransferRule {
         return tradetransferrule.getTransferType();
     }
 
+    /**
+     * With currency.
+     *
+     * @param ccy
+     *            the ccy
+     * @return the AT trade transfer rule
+     */
     public ATTradeTransferRule withCurrency(final String ccy) {
         tradetransferrule.setSettlementCurrency(ccy);
         return this;
     }
 
+    /**
+     * With legal entity.
+     *
+     * @param leShortName
+     *            the le short name
+     * @return the AT trade transfer rule
+     */
     public ATTradeTransferRule withLegalEntity(final String leShortName) {
         final LegalEntity legalEntity = BOCache.getLegalEntity(DSConnection.getDefault(), leShortName);
         tradetransferrule.setReceiverLegalEntityId(legalEntity.getId());
         return this;
     }
 
+    /**
+     * With pay rec.
+     *
+     * @param payRec
+     *            the pay rec
+     * @return the AT trade transfer rule
+     */
     public ATTradeTransferRule withPayRec(final String payRec) {
         tradetransferrule.setPayReceive(payRec);
         return this;
     }
 
+    /**
+     * With role.
+     *
+     * @param role
+     *            the role
+     * @return the AT trade transfer rule
+     */
     public ATTradeTransferRule withRole(final String role) {
         tradetransferrule.setReceiverLegalEntityRole(role);
         return this;
     }
 
+    /**
+     * With transfer type.
+     *
+     * @param transferType
+     *            the transfer type
+     * @return the AT trade transfer rule
+     */
     public ATTradeTransferRule withTransferType(final String transferType) {
         tradetransferrule.setTransferType(transferType);
         return this;
     }
 
+    /**
+     * Match.
+     *
+     * @param expected
+     *            the expected
+     * @param actual
+     *            the actual
+     * @return true, if successful
+     */
     private boolean match(final int expected, final int actual) {
         if (expected == 0) {
             return true;
@@ -600,6 +644,15 @@ public class ATTradeTransferRule {
         }
     }
 
+    /**
+     * Match.
+     *
+     * @param expected
+     *            the expected
+     * @param actual
+     *            the actual
+     * @return true, if successful
+     */
     private boolean match(final String expected, final String actual) {
         if (expected == null) {
             // don't need to check this

@@ -89,6 +89,26 @@ public class ATTransfers {
     }
 
     /**
+     * Gets the netted transfer.
+     *
+     * @param trade
+     *            the trade
+     * @param ccy
+     *            the ccy
+     * @return the netted transfer
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public ATTransfer getNettedTransfer(final ATTrade trade, final String ccy) throws CalypsoServiceException {
+        if (trade != null) {
+            final String where = String.format("trade_id = %d and amount_ccy = '%s' and netted_transfer_id = 0",
+                    trade.getId(), ccy);
+            return getFirstBOTransfer(null, where);
+        }
+        return null;
+    }
+
+    /**
      * Gets the BO transfers.
      *
      * @param trade
