@@ -218,7 +218,7 @@
 			que aparecerá en la pestaña de Xfer CREATED/BD/SPLIT/ASSIGN para la validación 4-eyes. 
 		</p>	
 		
-		<table concordion:verifyRows="#task : getTasksByEventTypes(#trade, { #taskType })">
+		<table concordion:verifyRows="#task : getTasksByEventTypes(#trade, { #taskType }, false)">
 			<tr>
 				<th concordion:echo="#task.id">Task Id</th>
 				<th concordion:echo="#task.trade">Trade</th>
@@ -229,23 +229,9 @@
 			<tr>
 				<td></td>
 				<td></td>
-				<td>MAN_CHOICE_PAYMENT</td>
+				<td>CREATED_PAYMENT</td>
 				<td></td>
 				<td>NEW</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td>VERIFIED_RECEIPTMSG</td>
-				<td>Filter _isNotMessageSentSTP rejects Message</td>
-				<td>NEW</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td>VERIFIED_RECEIPTMSG</td>
-				<td>[CheckKickOff]</td>
-				<td>COMPLETED</td>
 			</tr>
 		</table>
 	
@@ -253,69 +239,68 @@
 		<h2>Resultado</h2>
 		<p>
 			Aplicamos la accion  <span concordion:set="#action">AUTHORIZE_MAN</span>
-			al transfer (<span concordion:echo="#transfer1.longId"> </span>) 
-			<span concordion:execute="applyActionToTransfer(#transfer1.longId,#action)"> </span>.
+			al transfer (<span concordion:echo="#transfer1"> </span>) 
+			<span concordion:execute="#transfer1.applyAction(#action)"> </span>.
 			Comprobamos que el transfer ha viajado al estado 
-			<span concordion:set="#status">CANCELED</span> y se ha creado otro en VERIFIED 
-			<span concordion:execute="#transferF=getTradeXfer(#extRef,#amount,#ccy,#eventType,'VERIFIED')"> </span> 
-			<span concordion:echo="#transferF.longId"> </span>
+			<span concordion:set="#status">CANCELED</span> y se ha creado otro en VERIFIED 		
+			<span concordion:execute="#transferF=getNettedTransfer(#trade, #amount, #ccy, #eventType, 'VERIFIED')"> </span>			
+			(<span concordion:assertTrue="assertNotNull(#transferF)">OK</span>
+			<span concordion:echo="#transferF"> </span>)
 			.
 		</p>
 		
-		<table concordion:verifyRows="#xfer : getTradeNettedXfers(#extRef)">
+		<table concordion:verifyRows="#xfer : getNettedTransfers(#trade)">
 			<tr>
-				<th concordion:echo="#xfer.longId">Id</th>
+				<th concordion:echo="#xfer.id">Id</th>
 				<th concordion:assertEquals="#xfer.status">Status</th>
 				<th concordion:assertEquals="#xfer.transferType">Tipo</th>
+				<th concordion:assertEquals="#xfer.eventType">Dirección</th>
 				<th concordion:assertEquals="#xfer.settlementAmount">Cantidad</th>
-				<th concordion:assertEquals="#xfer.settlementCurrency">Divisa</th>
 				<th concordion:assertEquals="#xfer.valueDate">Fecha valor</th>
-				<th concordion:echo="#xfer.internalSettleDeliveryId">Internal SDI id</th>
-				<th concordion:echo="#xfer.externalSettleDeliveryId">External SDI id</th>
+				<th concordion:assertEquals="#xfer.internalSettleDelivery.reference">Internal SDI reference</th>
+				<th concordion:assertEquals="#xfer.externalSettleDelivery.reference">External SDI reference</th>
+			</tr>
+			
+			<tr>
+				<td></td>
+				<td>CANCELED</td>
+				<td>PRINCIPAL</td>
+				<td>PAYMENT</td>
+				<td>4,261,200.00 USD</td>
+				<td>08/05/2026</td>
+				<td>RDR_791645</td>
+				<td>Test_TEST_MANCHOICE_SWIFTUSD_BOTH_1</td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>CANCELED</td>
 				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>USD</td>
+				<td>PAYMENT</td>
+				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
-				<td></td>
-				<td></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>CANCELED</td>
-				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>USD</td>
-				<td>08/05/2026</td>
-				<td></td>
-				<td></td>
+				<td>Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</td>
+				<td>Test_TEST_MANCHOICE_SWIFTUSD_BOTH_1</td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>VERIFIED</td>
 				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>USD</td>
+				<td>PAYMENT</td>
+				<td>4,261,200.00 USD</td>
 				<td>08/05/2026</td>
-				<td></td>
-				<td></td>
+				<td>Test_TEST_MANCHOICE_SDI_ASIGN_DIFF</td>
+				<td>Test_TEST_MANCHOICE_SWIFTUSD_BOTH_1</td>
 			</tr>
 			<tr>
 				<td></td>
 				<td>PREMATCH</td>
 				<td>PRINCIPAL</td>
-				<td>4261200.0</td>
-				<td>EUR</td>
+				<td>RECEIPT</td>
+				<td>4,261,200.00 EUR</td>
 				<td>08/05/2026</td>
-				<td></td>
-				<td></td>
+				<td>RDR_3136726</td>
+				<td>Test_TEST_MANCHOICE_TARGET2EUR_BOTH_1</td>
 			</tr>
-			
-			
-			
 		</table>
 
 		<h3>Limpieza de datos de pruebas</h3>
