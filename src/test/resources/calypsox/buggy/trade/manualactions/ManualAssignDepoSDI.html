@@ -1,0 +1,229 @@
+<html 
+	xmlns:concordion="http://www.concordion.org/2007/concordion" 
+	xmlns:ext="urn:concordion-extensions:2010">
+	
+	<head>
+		<title>Asignación Manual de SDIs en Deposito</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	</head>
+
+	<body>
+	
+		<h1>Asignación Manual de SDIs en Deposito</h1>
+	
+		<table border="1">
+			<tr>
+				<th colspan="4">Control de cambios</th>
+			</tr>
+			<tr>
+				<th align="left">Detectado</th>
+				<td>20/02/2018</td>
+				<th align="left">Version</th>
+				<td>4.0.0</td>
+			</tr>
+			<tr>
+				<th align="left">JIRA</th>
+				<td></td>
+				<th align="left">Calypso call</th>
+				<td>N/A</td>
+			</tr>
+			<tr>
+				<th align="left">Calypso</th>
+				<td><span concordion:echo="getDataModelVersion()"> </span></td>
+				<th align="left">DataUploader</th>
+				<td><span concordion:echo="getDataUploaderVersion()"> </span></td>
+			</tr>
+			<tr>
+				<th colspan="2" align="left">Generación</th>
+				<td colspan="2">
+					<span concordion:echo="getCurrentTime()">@</span> 
+					<span concordion:echo="getEnvironmentName()"> </span>
+				</td>
+			</tr>
+		</table>
+	
+		<h2>Descripción</h2>
+			<p>
+				El usuario de Back Office tiene la capacidad de asignar SDIs a operaciones ya sea porque las SDIs definidas para la contrapartida sean 
+				manuales, o porque haya varias SDIs automáticas con la misma prioridad. La asignación de SDIs se realiza a través de la acción de usuario 
+				BO_AMEND 
+			</p>
+			<p>
+				Insertamos una operación para una contrapartida que tiene SDIs de asignación manual. La operación no puede por tanto será validada y se 
+				detiene en estado VALIDATED_NO_SDI. Se seleccionan las SDIs manuales previamente cargadas y se asignan a la operación, aplicando la
+				acción BO_AMEND
+			</p>
+			
+		<h2>Datos de Referencia</h2>
+			<p>
+				Se utiliza la contrapartida <span concordion:set="#cpty">AATBBVACN7646</span>
+				<span concordion:execute="addPrototypeParam('CPTY',#cpty)"> </span> 
+			</p>
+			<p>
+				Se carga la SDI de USD BLAEPAPAN <b>marcada como NO Preferred</b> SDI_USD_18538243: <span concordion:set="#sdiExtRef">AATRDR_18538243</span>
+				<span style="visibility: hidden;" concordion:set="#ContactCparty">/com/bbva/klyo/aat/release/data/img/ManualAssingDepoSDI/DepoSDIManual.png</span>
+				<span ext:embed="getImage(#ContactCparty)"> </span>
+				<span style="visibility: hidden;" concordion:set="#sdiExtRefSP">RDR_791590</span>
+			</p>
+
+		<h2>Proceso de Prueba</h2>
+			<p>
+				La operación se define con(TradeDate <span concordion:execute="addPrototypeParam('TRADE_DATE', #TEXT)">2027-02-16</span>;
+				StartDate <span concordion:execute="addPrototypeParam('START_DATE', #TEXT)">2027-02-16</span>;
+				EndDate <span concordion:execute="addPrototypeParam('END_DATE', #TEXT)">2027-03-16</span>)
+				Utilizando el template <span concordion:execute="addPrototypeParam('TEMPLATE', #TEXT)">/com/bbva/klyo/aat/release/data/trade/DepoSDIManual.xml</span> insertamos una operación con external ref 
+		        <span concordion:execute="#extRef=addExternalRef()"> </span><span concordion:echo="#extRef" > </span>
+				y el pricing environment <span concordion:set="#pricingEnv">OFFICIAL-MAD</span>
+		    </p>	 
+		    <p>
+				<span concordion:assertTrue="insertTrade()">Insertamos</span> la operación.
+			</p>
+			<p>
+				La operación insertada es copia de la imagen:  
+	            <span style="visibility: hidden;" concordion:set="#imgTrade">/com/bbva/klyo/aat/release/data/img/ManualAssingDepoSDI/DepoSDIManualTrade.png</span>
+				<span ext:embed="getImage(#imgTrade)"> </span> 
+			</p>		
+			<p>
+			    Esperamos hasta que Calypso procese completamente los mensajes de la operación comprobando que el 
+			    <span concordion:set="#engine">TradeUploaderEngine</span> no tenga eventos pendientes.
+			    <span concordion:execute="waitForEngine(#engine)"> </span>			
+			</p>
+			<p>
+				<b>Comprobamos que se detiene por SDIs</b>
+			</p>
+			<p>
+	        	Se comprueba que el trade se ha insertado, se ha detenido en estado VALIDATED_NO_SDI.
+	        </p>		
+	        <table concordion:execute="#trade = getTrade(#extRef)">
+		        <tr>
+		            <th concordion:echo="#trade.id">Trade Id</th>
+		            <th concordion:assertEquals="#trade.status">Status</th>
+		            <th concordion:echo="#trade.settleDate">Settle Date</th>
+				</tr>
+				<tr>
+					<td> </td>
+					<td>VALIDATED_NO_SDI</td>
+					<td> </td>
+				</tr>
+			</table>
+	        <p>
+	        	Se comprueba que se ha generado una BOTask por no existir SDI válida para cada flujo de la operación.
+				<span concordion:set="#eventType">VALIDATED_NO_SDI_TRADE</span>
+	        </p>		
+	        <table concordion:verifyRows="#task : getTradeTasksByEventType(#extRef,{#eventType})">
+				<tr>
+					<th concordion:echo="#task.id">Task Id</th>
+					<th concordion:assertEquals="#task.eventType">Event Type</th>
+					<th concordion:assertEquals="getTaskComment(#task.id)">Task comment</th>
+					<th concordion:echo="#task.tradeId">Trade Id</th>
+				</tr>
+				<tr>
+					<td></td><td>VALIDATED_NO_SDI_TRADE</td><td>Missing SDI/[CheckSDI]</td><td></td>
+				</tr>
+			</table>			
+			<ul>
+				<li>
+					<span concordion:set="#transferType">PRINCIPAL</span>- 
+					<span concordion:set="#payRec">RECEIVE</span> - <span concordion:set="#ccy">USD</span> - <span concordion:set="#direction">Payer</span>:
+					<span concordion:echo="#sdiExtRef"> </span>
+					<span concordion:execute="#tr=createTransferRule(#transferType, #payRec, #direction, #ccy, #sdiExtRef)" > </span> 
+				</li>
+				<li>
+					<span concordion:set="#transferType">INTEREST</span>- 
+					<span concordion:set="#payRec">PAY</span> - <span concordion:set="#ccy">USD</span> - <span concordion:set="#direction">Receiver</span>: 
+					<span concordion:echo="#sdiExtRef"> </span>
+					<span concordion:execute="#tr2=createTransferRule(#transferType, #payRec, #direction, #ccy, #sdiExtRef)" > </span>
+				</li>
+				<li>
+					<span concordion:set="#transferType">PRINCIPAL</span>- 
+					<span concordion:set="#payRec">PAY</span> - <span concordion:set="#ccy">USD</span> - <span concordion:set="#direction">Receiver</span>: 
+					<span concordion:echo="#sdiExtRef"> </span>
+					<span concordion:execute="#tr3=createTransferRule(#transferType, #payRec, #direction, #ccy, #sdiExtRef)" > </span>
+				</li>
+			</ul>
+			<p>
+		        Asignamos la SDI de USD <span concordion:echo="#sdiExtRef"> </span>
+		        a todos los flujos de la operación y aplicamos la acción <span concordion:set="#boAmend">BO_AMEND</span>: 
+		        <span concordion:assertEquals="assignSdisOnTrade(#extRef, #boAmend, {#tr, #tr2,#tr3})">OK</span>
+	        </p>
+	        
+       	<h2>Resultado</h2>
+	        <p>
+		        Comprobamos que la operación ha alcanzado el estado VERIFIED, que la SDI de USD se ha quedado asignada manualmente y que las tareas de tipo 
+		        VALIDATED_NO_SDI has sido completadas.
+			</p>
+			<table concordion:execute="#trade = getTrade(#extRef)">
+		        <tr>
+		            <th concordion:echo="#trade.id">Trade Id</th>
+		            <th concordion:assertEquals="#trade.status">Status</th>
+		            <th concordion:echo="#trade.settleDate">Settle Date</th>
+				</tr>
+				<tr>
+					<td> </td>
+					<td>VERIFIED</td>
+					<td> </td>
+				</tr>
+			</table>		
+			<p>
+				Comprobamos que la SDI de USD se ha quedado asignada manualmente segun se muestra en la tabla:
+			</p>
+			<table concordion:verifyRows="#sdi : getTradeSdi(#extRef)">
+				<tr>
+					<th concordion:assertEquals="#sdi.tradeTransferRule.payReceive">Pay	/ Receive</th>
+					<th concordion:assertEquals="#sdi.tradeTransferRule.transferType">Transfer Type</th>
+					<th concordion:assertEquals="#sdi.tradeTransferRule.settleDate">Settle Date</th>
+					<th concordion:assertEquals="#sdi.poSDI.description">Descripción</th>
+					<th concordion:echo="#sdi.poSDI.id">SDI Id</th>
+					<th concordion:assertEquals="#sdi.poSDI.reference">SDI External Ref</th>
+					<th concordion:assertEquals="#sdi.poSDI.role">Rol</th>
+					<th concordion:assertEquals="#sdi.poSDI.staticFilterSet">SDFilter</th>
+				</tr>
+				<tr>
+					<td>PAY</td>
+					<td>INTEREST</td>
+					<td>16/03/2027</td>
+					<td>CONTABLE/01820061722250053033</td>
+					<td></td>
+					<td>AATRDR_18538243</td>
+					<td>CounterParty</td>
+					<td>NotCLS</td>
+				</tr>
+				<tr>
+					<td>PAY</td>
+					<td>PRINCIPAL</td>
+					<td>16/03/2027</td>
+					<td>CONTABLE/01820061722250053033</td>
+					<td></td>
+					<td>AATRDR_18538243</td>
+					<td>CounterParty</td>
+					<td>NotCLS</td>
+				</tr>
+				<tr>
+					<td>RECEIVE</td>
+					<td>PRINCIPAL</td>
+					<td>16/02/2027</td>
+					<td>CONTABLE/01820061722250053033</td>
+					<td></td>
+					<td>AATRDR_18538243</td>
+					<td>CounterParty</td>
+					<td>NotCLS</td>
+				</tr>
+			</table>
+			<p>
+				Se comprueba que las tareas de gestion de SDIs han sido completadas.
+			</p>
+			<table concordion:verifyRows="#task : getTradeTasksByEventType(#extRef,{#eventType})">
+				<tr>
+					<th concordion:echo="#task.id">Task Id</th>
+					<th concordion:assertEquals="#task.eventType">Event Type</th>
+					<th concordion:assertEquals="getTaskComment(#task.id)">Task comment</th>
+					<th concordion:assertEquals="#task.statusAsString">Task Status</th>
+					<th concordion:echo="#task.tradeId">Trade Id</th>
+				</tr>
+				<tr>
+					<td></td><td>VALIDATED_NO_SDI_TRADE</td><td>Missing SDI/[CheckSDI]</td><td>COMPLETED</td><td></td>
+				</tr>
+			</table>
+			
+	</body>
+</html>

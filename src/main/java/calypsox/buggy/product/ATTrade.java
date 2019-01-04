@@ -106,8 +106,8 @@ public class ATTrade {
      * @throws CalypsoServiceException
      *             the calypso service exception
      */
-    public void assignSdiOnTrade(final ATSdi sdi, final ATTradeTransferRule transferRule, final String actionToApply,
-            final String userName) throws CalypsoServiceException {
+    public void assignSdiOnTrade(final ATSdi sdi, final List<ATTradeTransferRule> transferRules,
+            final String actionToApply, final String userName) throws CalypsoServiceException {
         final ATDSConnection dsCon = new ATDSConnection(userName);
         final Trade clonedTrade = trade.clone();
         final Vector<String> exceptions = new Vector<>();
@@ -115,20 +115,22 @@ public class ATTrade {
         final Vector<TradeTransferRule> transferRulesOnTrade = BOProductHandler.buildTransferRules(clonedTrade,
                 exceptions, dsCon, false);
 
-        final TradeTransferRule relevantTransferRule = transferRule.getRelevantTransferRule(transferRulesOnTrade);
+        for (final ATTradeTransferRule transferRule : transferRules) {
+            final TradeTransferRule relevantTransferRule = transferRule.getRelevantTransferRule(transferRulesOnTrade);
 
-        final Vector<String> settleMethods = new Vector<>();
-        settleMethods.add(sdi.getSettlementMethod());
-        relevantTransferRule.setSettlementMethod(sdi.getSettlementMethod());
-        final SDISelector sdiSelector = SDISelectorUtil.find(clonedTrade, relevantTransferRule);
-        sdiSelector.selectSDIs(clonedTrade, relevantTransferRule, JDate.getNow(), exceptions, settleMethods, dsCon);
-        relevantTransferRule.setPayerSDStatus(SD_STATUS_ASSIGNED);
-        relevantTransferRule.setReceiverSDStatus(SD_STATUS_ASSIGNED);
+            final Vector<String> settleMethods = new Vector<>();
+            settleMethods.add(sdi.getSettlementMethod());
+            relevantTransferRule.setSettlementMethod(sdi.getSettlementMethod());
+            final SDISelector sdiSelector = SDISelectorUtil.find(clonedTrade, relevantTransferRule);
+            sdiSelector.selectSDIs(clonedTrade, relevantTransferRule, JDate.getNow(), exceptions, settleMethods, dsCon);
+            relevantTransferRule.setPayerSDStatus(SD_STATUS_ASSIGNED);
+            relevantTransferRule.setReceiverSDStatus(SD_STATUS_ASSIGNED);
 
-        if ("REC".equalsIgnoreCase(sdi.getPayReceive())) {
-            relevantTransferRule.setReceiverSDId(sdi.getId());
-        } else {
-            relevantTransferRule.setPayerSDId(sdi.getId());
+            if ("REC".equalsIgnoreCase(sdi.getPayReceive())) {
+                relevantTransferRule.setReceiverSDId(sdi.getId());
+            } else {
+                relevantTransferRule.setPayerSDId(sdi.getId());
+            }
         }
 
         final Action action = Action.valueOf(actionToApply);
