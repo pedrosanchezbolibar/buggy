@@ -42,8 +42,26 @@
 				Se carga la SDI de USD BLAEPAPAN <b>marcada como NO Preferred</b> SDI_USD_18538243: <span concordion:set="#sdiExtRef">AATRDR_18538243</span>
 				<span style="visibility: hidden;" concordion:set="#ContactCparty">DepoSDIManual.png</span>
 				<span ext:embed="getImage(#ContactCparty)"> </span>
-				<span style="visibility: hidden;" concordion:set="#sdiExtRefSP">RDR_791590</span>
 			</p>
+			
+			<table concordion:execute="#sdi=getSdi(#sdiExtRef)">
+			<tr>
+				<th concordion:echo="#sdi.id">SDI id</th>
+				<th concordion:assertEquals="#sdi.description">Description</th>
+				<th concordion:assertEquals="#sdi.products">Propducts</th>
+				<th concordion:assertEquals="#sdi.beneficiaryLE">Beneficiary</th>
+				<th concordion:assertEquals="#sdi.role">Role</th>
+                <th concordion:assertEquals="#sdi.currencies">Currencies</th>  
+			</tr>
+			<tr>
+				<td></td>
+				<td>CONTABLE/01820061722250053033</td>
+				<td>ANY</td>
+				<td>AATBBVACN7646</td>
+				<td>CounterParty</td>
+				<td>USD</td>
+			</tr>
+		</table>
 
 		<h2>Proceso de Prueba</h2>
 			<p>
@@ -105,30 +123,13 @@
 					<td></td><td>VALIDATED_NO_SDI_TRADE</td><td>Missing SDI/[CheckSDI]</td><td></td>
 				</tr>
 			</table>			
-			<ul>
-				<li>
-					<span concordion:set="#transferType">PRINCIPAL</span>- 
-					<span concordion:set="#payRec">RECEIVE</span> - <span concordion:set="#ccy">USD</span> - <span concordion:set="#direction">Payer</span>:
-					<span concordion:echo="#sdiExtRef"> </span>
-					<span concordion:execute="#tr=createTransferRule(#transferType, #payRec, #direction, #ccy, #sdiExtRef)" > </span> 
-				</li>
-				<li>
-					<span concordion:set="#transferType">INTEREST</span>- 
-					<span concordion:set="#payRec">PAY</span> - <span concordion:set="#ccy">USD</span> - <span concordion:set="#direction">Receiver</span>: 
-					<span concordion:echo="#sdiExtRef"> </span>
-					<span concordion:execute="#tr2=createTransferRule(#transferType, #payRec, #direction, #ccy, #sdiExtRef)" > </span>
-				</li>
-				<li>
-					<span concordion:set="#transferType">PRINCIPAL</span>- 
-					<span concordion:set="#payRec">PAY</span> - <span concordion:set="#ccy">USD</span> - <span concordion:set="#direction">Receiver</span>: 
-					<span concordion:echo="#sdiExtRef"> </span>
-					<span concordion:execute="#tr3=createTransferRule(#transferType, #payRec, #direction, #ccy, #sdiExtRef)" > </span>
-				</li>
-			</ul>
+			<span concordion:execute="#tr=createTransferRule('PRINCIPAL', 'RECEIVE', 'PAYER')" > </span> 
+			<span concordion:execute="#tr2=createTransferRule('PRINCIPAL', 'PAY', 'RECEIVER')" > </span>
+			<span concordion:execute="#tr3=createTransferRule('INTEREST', 'PAY', 'RECEIVER')" > </span>
 			<p>
 		        Asignamos la SDI de USD <span concordion:echo="#sdiExtRef"> </span>
-		        a todos los flujos de la operación y aplicamos la acción <span concordion:set="#boAmend">BO_AMEND</span>: 
-		        <span concordion:assertEquals="assignSdisOnTrade(#extRef, #boAmend, {#tr, #tr2,#tr3})">OK</span>
+		        a todos los flujos de la operación y aplicamos la acción <span concordion:set="#action">BO_AMEND</span>: 
+		        <span concordion:execute="#trade.assignSdiOnTrade(#sdi, {#tr, #tr2, #tr3}, #action)"> </span>
 	        </p>
 	        
        	<h2>Resultado</h2>
@@ -136,9 +137,9 @@
 		        Comprobamos que la operación ha alcanzado el estado VERIFIED, que la SDI de USD se ha quedado asignada manualmente y que las tareas de tipo 
 		        VALIDATED_NO_SDI has sido completadas.
 			</p>
-			<table concordion:execute="#trade = getTrade(#extRef)">
+			<table concordion:execute="#trade.reload()">
 		        <tr>
-		            <th concordion:echo="#trade.id">Trade Id</th>
+		            <th concordion:echo="#trade">Trade</th>
 		            <th concordion:assertEquals="#trade.status">Status</th>
 		            <th concordion:echo="#trade.settleDate">Settle Date</th>
 				</tr>
@@ -151,16 +152,16 @@
 			<p>
 				Comprobamos que la SDI de USD se ha quedado asignada manualmente segun se muestra en la tabla:
 			</p>
-			<table concordion:verifyRows="#sdi : getTradeSdi(#extRef)">
+			<table concordion:verifyRows="#sdi : #trade.getTransferRules()">
 				<tr>
-					<th concordion:assertEquals="#sdi.tradeTransferRule.payReceive">Pay	/ Receive</th>
-					<th concordion:assertEquals="#sdi.tradeTransferRule.transferType">Transfer Type</th>
-					<th concordion:assertEquals="#sdi.tradeTransferRule.settleDate">Settle Date</th>
-					<th concordion:assertEquals="#sdi.poSDI.description">Descripción</th>
-					<th concordion:echo="#sdi.poSDI.id">SDI Id</th>
-					<th concordion:assertEquals="#sdi.poSDI.reference">SDI External Ref</th>
-					<th concordion:assertEquals="#sdi.poSDI.role">Rol</th>
-					<th concordion:assertEquals="#sdi.poSDI.staticFilterSet">SDFilter</th>
+					<th concordion:assertEquals="#sdi.payReceive">Pay	/ Receive</th>
+					<th concordion:assertEquals="#sdi.transferType">Transfer Type</th>
+					<th concordion:assertEquals="#sdi.settleDate">Settle Date</th>
+					<th concordion:assertEquals="#sdi.counterPartySDId">Descripción</th>
+					<th concordion:echo="#sdi.counterPartySDId.id">SDI Id</th>
+					<th concordion:assertEquals="#sdi.counterPartySDId.reference">SDI External Ref</th>
+					<th concordion:assertEquals="#sdi.counterPartySDId.role">Rol</th>
+					<th concordion:assertEquals="#sdi.counterPartySDId.staticFilterSet">SDFilter</th>
 				</tr>
 				<tr>
 					<td>PAY</td>
@@ -196,13 +197,13 @@
 			<p>
 				Se comprueba que las tareas de gestion de SDIs han sido completadas.
 			</p>
-			<table concordion:verifyRows="#task : getTradeTasksByEventType(#extRef,{#eventType})">
+			<table concordion:verifyRows="#task : getTasksByEventTypes(#trade, {#eventType}, true)">
 				<tr>
 					<th concordion:echo="#task.id">Task Id</th>
 					<th concordion:assertEquals="#task.eventType">Event Type</th>
-					<th concordion:assertEquals="getTaskComment(#task.id)">Task comment</th>
-					<th concordion:assertEquals="#task.statusAsString">Task Status</th>
-					<th concordion:echo="#task.tradeId">Trade Id</th>
+					<th concordion:assertEquals="#task.comment">Task comment</th>
+					<th concordion:assertEquals="#task.status">Task Status</th>
+					<th concordion:echo="#task.trade.id">Trade Id</th>
 				</tr>
 				<tr>
 					<td></td><td>VALIDATED_NO_SDI_TRADE</td><td>Missing SDI/[CheckSDI]</td><td>COMPLETED</td><td></td>

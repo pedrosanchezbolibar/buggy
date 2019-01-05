@@ -25,6 +25,9 @@ public class ATTradeTransferRule {
     /** The tradetransferrule. */
     private final TradeTransferRule tradetransferrule;
 
+    /** The internal sdi. */
+    private String direction;
+
     /**
      * Instantiates a new AT trade transfer rule.
      */
@@ -116,6 +119,15 @@ public class ATTradeTransferRule {
      */
     public String getDeliveryType() {
         return tradetransferrule.getDeliveryType();
+    }
+
+    /**
+     * Gets the direction.
+     *
+     * @return the direction
+     */
+    public String getDirection() {
+        return direction;
     }
 
     /**
@@ -575,6 +587,18 @@ public class ATTradeTransferRule {
      */
     public ATTradeTransferRule withCurrency(final String ccy) {
         tradetransferrule.setSettlementCurrency(ccy);
+        return this;
+    }
+
+    /**
+     * With direction (can be PAYER o RECEIVER).
+     *
+     * @param direction
+     *            the direction
+     * @return the AT trade transfer rule
+     */
+    public ATTradeTransferRule withDirection(final String direction) {
+        this.direction = direction;
         return this;
     }
 

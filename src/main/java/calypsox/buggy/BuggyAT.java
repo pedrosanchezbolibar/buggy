@@ -189,6 +189,22 @@ public class BuggyAT extends BuggyVersion {
      *            the transfer type
      * @param payRec
      *            the pay rec
+     * @param direction
+     *            which SDI need to be assigned PAYER or RECEIVER
+     * @return the AT trade transfer rule
+     */
+    public ATTradeTransferRule createTransferRule(final String transferType, final String payRec,
+            final String direction) {
+        return new ATTradeTransferRule().withTransferType(transferType).withPayRec(payRec).withDirection(direction);
+    }
+
+    /**
+     * Creates the transfer rule.
+     *
+     * @param transferType
+     *            the transfer type
+     * @param payRec
+     *            the pay rec
      * @param ccy
      *            the ccy
      * @param role

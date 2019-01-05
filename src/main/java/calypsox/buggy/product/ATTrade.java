@@ -1,6 +1,7 @@
 package calypsox.buggy.product;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -93,6 +94,23 @@ public class ATTrade {
     }
 
     /**
+     * Assign sdi on trade.
+     *
+     * @param sdi
+     *            the sdi
+     * @param transferRules
+     *            the transfer rules
+     * @param actionToApply
+     *            the action to apply
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    public void assignSdiOnTrade(final ATSdi sdi, final List<ATTradeTransferRule> transferRules,
+            final String actionToApply) throws CalypsoServiceException {
+        assignSdiOnTrade(sdi, transferRules, actionToApply, null);
+    }
+
+    /**
      * Assign SDI.
      *
      * @param sdi
@@ -123,12 +141,15 @@ public class ATTrade {
             relevantTransferRule.setSettlementMethod(sdi.getSettlementMethod());
             final SDISelector sdiSelector = SDISelectorUtil.find(clonedTrade, relevantTransferRule);
             sdiSelector.selectSDIs(clonedTrade, relevantTransferRule, JDate.getNow(), exceptions, settleMethods, dsCon);
-            relevantTransferRule.setPayerSDStatus(SD_STATUS_ASSIGNED);
             relevantTransferRule.setReceiverSDStatus(SD_STATUS_ASSIGNED);
+            relevantTransferRule.setPayerSDStatus(SD_STATUS_ASSIGNED);
 
-            if ("REC".equalsIgnoreCase(sdi.getPayReceive())) {
+            if (transferRule.getDirection().startsWith("REC")) {
                 relevantTransferRule.setReceiverSDId(sdi.getId());
-            } else {
+            } else if (transferRule.getDirection().startsWith("PAY")) {
+                relevantTransferRule.setPayerSDId(sdi.getId());
+            } else if (transferRule.getDirection().startsWith("BOTH")) {
+                relevantTransferRule.setReceiverSDId(sdi.getId());
                 relevantTransferRule.setPayerSDId(sdi.getId());
             }
         }
@@ -495,6 +516,27 @@ public class ATTrade {
      */
     public String getTraderName() {
         return trade.getTraderName();
+    }
+
+    /**
+     * Builds the transfer rules.
+     *
+     * @return the list
+     * @throws CalypsoServiceException
+     *             the calypso service exception
+     */
+    @SuppressWarnings("unchecked")
+    public List<ATTradeTransferRule> getTransferRules() throws CalypsoServiceException {
+        final List<ATTradeTransferRule> result = new ArrayList<>();
+        Vector<TradeTransferRule> transferRules = trade.getTransferRules();
+        if (transferRules == null) {
+            transferRules = BOProductHandler.buildTransferRules(trade, new Vector<String>(), DSConnection.getDefault());
+        }
+        Collections.sort(transferRules);
+        for (final TradeTransferRule rule : transferRules) {
+            result.add(new ATTradeTransferRule(rule));
+        }
+        return result;
     }
 
     /**
